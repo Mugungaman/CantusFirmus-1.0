@@ -20,8 +20,6 @@ public class Driver {
 	private static boolean test1S = false;
 	private static boolean run1S = false;
 	
-	private static boolean test2S = false;
-	private static boolean run2S = false;
 	
 	//VANILLA CF AEOLIAN
 	//test tritone resolution
@@ -183,9 +181,6 @@ public class Driver {
 				if(run1S) {
 					runFirstSpecies(cfx);
 				}
-				if(run2S) {
-					runSecondSpecies(cfx);
-				}
 			}
 			
 
@@ -223,27 +218,6 @@ public class Driver {
 			}
 	}
 	
-	private static void runSecondSpecies(CantusFirmus cfx) {
-		if (test2S) {
-			TestMelody testMelody = new TestMelody(test2SMelody, test2SLengths);
-			cfx.setChildSpeciesTest(testMelody);
-//			log("FIRST SPECIES TEST MELODY SET");	
-		} 
-		log(" call cantus Firmus second species type" );
-		cfx.generateSpecies(SpeciesType.SECOND_SPECIES);				
-		secondSpeciesCount += cfx.secondSpeciesList.size();
-		log("firstSpeciesTotalCount:" + firstSpeciesCount);
-		
-		//System.out.println("CF OBJECT CREATED");
-		log("CF # " + cantusFirmusCount+ " With " + cfx.secondSpeciesList.size() + " second species");
-		
-		//TODO, print cantus firmus first species and verify
-		if(cfx.secondSpeciesList.size() > 0) {
-			generatedCantusFirmi.add(cfx);
-			cfW1s++;
-		}
-		
-	}
 
 	//TODO refactor "run species into one method"
 	private static void runFirstSpecies(CantusFirmus cfx) {

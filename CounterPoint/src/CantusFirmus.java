@@ -14,7 +14,6 @@ public class CantusFirmus extends NoteMelody {
 	
 	private Pattern cantusFirmusPattern;
 	public ArrayList<FirstSpecies> firstSpeciesList = new ArrayList<FirstSpecies>();
-	public ArrayList<SecondSpecies> secondSpeciesList = new ArrayList<SecondSpecies>();
 	private String cfMIDIpattern = "";
 	private ArrayList<String> firstSpeciesPatternStrings = new ArrayList<String>();
 	private ArrayList<String> secondSpeciesPatternStrings = new ArrayList<String>();
@@ -85,16 +84,6 @@ public class CantusFirmus extends NoteMelody {
 		firstSpeciesMIDIPatterns.add(new Pattern(patternString));
 	}
 	
-
-	private void logSecondSpecies(SpeciesBuilder newCFB) {
-		secondSpeciesList.add(new SecondSpecies(newCFB.getMelody()));
-//		System.out.println("logging new first Species" + newCFB.getNotes());
-		String patternString = mUtility.getMIDIString(this.getLastSecondSpecies(),getMode(), mUtility.melodyStartIndex);
-//		log("returned 1s string:" + patternString);
-		secondSpeciesPatternStrings.add(patternString);
-		secondSpeciesMIDIPatterns.add(new Pattern(patternString));
-	}
-	
 	
 	
 
@@ -130,7 +119,7 @@ public class CantusFirmus extends NoteMelody {
 	//need a way to return notes
 	public void createMIDIfile(String directory, String filenamePrefix) {
 		log("How many first Species to write:" + firstSpeciesList.size());
-		if(this.firstSpeciesList.size() > 0 || this.secondSpeciesList.size() > 0) {
+		if(this.firstSpeciesList.size() > 0 ) {
 			writeMasterMIDIFile(filenamePrefix);			
 		}
 	}
@@ -139,10 +128,6 @@ public class CantusFirmus extends NoteMelody {
 
 	public NoteMelody getLastFirstSpecies() {
 		return firstSpeciesList.get(firstSpeciesList.size() - 1);
-	}
-	
-	public NoteMelody getLastSecondSpecies() {
-		return secondSpeciesList.get(secondSpeciesList.size() - 1);
 	}
 	
 	private void log(String msg) {
