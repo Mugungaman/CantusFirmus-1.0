@@ -84,8 +84,6 @@ public class CantusFirmus extends NoteMelody {
 		firstSpeciesMIDIPatterns.add(new Pattern(patternString));
 	}
 	
-	
-	
 
 
 	private void writeMasterMIDIFile(String prefix) {
@@ -99,7 +97,7 @@ public class CantusFirmus extends NoteMelody {
 //		for(Pattern p : secondSpeciesMIDIPatterns) {
 //			masterMIDIPattern += p + "R ";
 //		}
-		//System.out.println("masterMIDIPattern:" + masterMIDIPattern);
+		System.out.println("masterMIDIPattern:" + masterMIDIPattern);
 		Pattern masterPattern = new Pattern(masterMIDIPattern);
 		File file = new File(MIDIdirectory + prefix + cantusFirmusPattern.toString() + ".mid" );
 		try {
@@ -119,9 +117,9 @@ public class CantusFirmus extends NoteMelody {
 	//need a way to return notes
 	public void createMIDIfile(String directory, String filenamePrefix) {
 		log("How many first Species to write:" + firstSpeciesList.size());
-		if(this.firstSpeciesList.size() > 0 ) {
+		//if(this.firstSpeciesList.size() > 0 ) {
 			writeMasterMIDIFile(filenamePrefix);			
-		}
+		//}
 	}
 
 

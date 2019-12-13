@@ -18,7 +18,7 @@ public class Driver {
 	private static boolean quitAfterCF = false;
 	
 	private static boolean test1S = false;
-	private static boolean run1S = false;
+	private static boolean run1S = true;
 	
 	
 	//VANILLA CF AEOLIAN

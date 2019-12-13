@@ -61,6 +61,7 @@ public final class MusicUtility {
 				break;
 			
 			case SECOND_SPECIES:
+				//TODO Figure out how to write the Second Species with the MIDI library
 				log("NEED TO CREATE SECOND SEPECIES MIDI PATTERN LOGIC");
 				break;
 			

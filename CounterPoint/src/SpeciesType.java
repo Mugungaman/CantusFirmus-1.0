@@ -39,7 +39,7 @@ public enum SpeciesType {
 			new int[] {6, 10, 11}, //invalid Step Outlines
 			5,                     //maximum # of note repeats 
 			false),
-	THIRD_SPECIES("Second Species",
+	THIRD_SPECIES("Third Species",
 			SpeciesSystem.FUXIAN_COUNTERPOINT,
 			new int[] {-2, 1, 2, 4, -1,-3, -4, 5, 3, 7, -7},     //valid intervals between notes
 			new int[] {-11, -9, -7, -5, -4, -2, 0, 2, 4, 5, 7, 9, 11},   // valid index harmonies w/ cantus firmus
@@ -49,7 +49,7 @@ public enum SpeciesType {
 			new int[] {6, 10, 11}, //invalid Step Outlines
 			5,                     //maximum # of note repeats 
 			false),
-	FOURTH_SPECIES("Second Species",
+	FOURTH_SPECIES("Fourth Species",
 			SpeciesSystem.FUXIAN_COUNTERPOINT,
 			new int[] {-2, 1, 2, 4, -1,-3, -4, 5, 3, 7, -7},     //valid intervals between notes
 			new int[] {-11, -9, -7, -5, -4, -2, 0, 2, 4, 5, 7, 9, 11},   // valid index harmonies w/ cantus firmus
