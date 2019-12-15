@@ -10,13 +10,12 @@ public class CantusFirmus extends NoteMelody {
 	
 	private final  String MIDIdirectory = "MidiFiles/";
 	private final MusicUtility mUtility = new MusicUtility();
-	//notes in step incremenct (0 = tonic, 1 = a minor second, 2 =major second, 12 = octave, etc)
+	//notes in step increment (0 = tonic, 1 = a minor second, 2 =major second, 12 = octave, etc)
 	
 	private Pattern cantusFirmusPattern;
 	public ArrayList<FirstSpecies> firstSpeciesList = new ArrayList<FirstSpecies>();
 	private String cfMIDIpattern = "";
 	private ArrayList<String> firstSpeciesPatternStrings = new ArrayList<String>();
-	private ArrayList<String> secondSpeciesPatternStrings = new ArrayList<String>();
 	public ArrayList<Pattern> firstSpeciesMIDIPatterns = new ArrayList<Pattern>();
 	public ArrayList<Pattern> secondSpeciesMIDIPatterns = new ArrayList<Pattern>();
 	private static ArrayList<SpeciesBuilder> buildChain = new ArrayList<SpeciesBuilder>();
