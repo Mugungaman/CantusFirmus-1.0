@@ -1,32 +1,34 @@
-About me:
+...........About me...........
 
 I am primarily for musical and/or software nerds. Everyone else is entering a world of pain. 
 
-I am an experimental algorithm that generates musical melodies as usable MIDI files. Please focus on my class 
-structure and what I can accomplish. 
-
-Traditional Fuxian Counterpoint has a very discrete set of melodic rules and is the perfect pilot to
-build the framework around. It has the quintessential Baroque classical music sound and is presently my only 
-functional melodic rule system. 
+I am an experimental algorithm that generates musical melodies as usable MIDI files. Please focus on how I use Object Oriented 
+Programming to model musical concepts.
 
 
 
-Usage:
+..............Usage..............
 
 I have no front end yet so one must run the DRIVER from an IDE (like eclipse), at whence the folder Counterpoint\MidiFiles will 
 populate with playable midi file(s). Play the midi files with your computer's default midi. Note that you can set the gregorian 
 Mode in the driver. 
 
 Each MIDI file will have many variations of melodies based upon a single Cantus Firmus (primary melody). It will sound 
-repetitive because of my recursive algorithm, but each bar is slightly different. 
+repetitive because of my recursive algorithm, but each bar is slightly different.
 
 Windows: Should be able to play a MIDI file. 
 Mac: May have to open garageband and drag the MIDI file to a MIDI track to hear it (itunes apparently cannot handle it)
 
 
 
+..........Fuxian Counterpoint.........
+Traditional Fuxian Counterpoint has a very discrete set of melodic rules and is the perfect pilot to
+build the framework around. It has the quintessential Baroque classical music sound and is presently my only 
+functional melodic rule system. 
 
-Vernacular:
+
+
+..........Vernacular........
 
 Cantus Firmus: Single note melody line following particular fuxian counterpoint rules
 
@@ -36,4 +38,9 @@ counterpoint
 Zenith: the highest note of the melody, which can only occur once, and abolishes the need of a Nadir
 
 Nadir: The lowest note of the melody, which can only occur once, and abolishes the need for a Zenith
+
+Pentultimate Note: The second to last note in the melody. Since there are strict rules on what notes bring closure to a 
+melody, there are also strict rules on how that final note can be approached from the second to last note. 
+
+Leap: When a melody "leaps" over other notes in the scale to reach the next note, as oppose to stepwise motion
 

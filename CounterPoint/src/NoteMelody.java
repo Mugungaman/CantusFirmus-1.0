@@ -299,7 +299,6 @@ public abstract class NoteMelody extends NoteCollection {
 	}
 
 	public int getClimaxPos() {
-	    //log("returning climax pos" + climaxPos);
 		return climaxPos;
 	}
 
@@ -308,7 +307,6 @@ public abstract class NoteMelody extends NoteCollection {
 	}
 	
 	public int leapTally() {
-//		log("leapTally() intervals are: " + intervals);
 		return intervals.leapTally();
 	}
 
@@ -393,15 +391,6 @@ public abstract class NoteMelody extends NoteCollection {
 		return testMelody;
 	}
 	
-//	public void setChildSpeciesTest(int[] testMelody) {
-//		log("setting child test melody!!" + testMelody);
-//		testChildMelodyNotes = new ArrayList<Integer>();
-//		
-//		for (int i = 0; i < testMelody.length; i++) {
-//			this.testChildMelodyNotes.add(testMelody[i]);
-//		}
-//	}
-	
 	public boolean isTestingChildSpecies() {
 		return null == testChildMelody ? false : true;
 	}
@@ -425,7 +414,6 @@ public abstract class NoteMelody extends NoteCollection {
 	}
 	
 	public double testMelodyLength() {
-		// TODO Auto-generated method stub
 		return testMelody.melodyLength();
 	}
 	

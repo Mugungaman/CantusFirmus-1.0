@@ -14,7 +14,7 @@ public class Driver {
 	private final static String MIDIdirectory = "MidiFiles/";
 	private static boolean chordTest = false;
 	
-	private static boolean testCF = true;
+	private static boolean testCF = false;
 	private static boolean quitAfterCF = false;
 	
 	private static boolean test1S = false;
@@ -103,7 +103,7 @@ public class Driver {
 	}
 	
 	/**
-	 * A species is simply a musical melody. The species builder is the active melody builder that collects notes and 
+	 * A species is simply a musical melody. The species builder is the active melody building class that collects notes and 
 	 * actively checks all the rules for whatever type of melody we are creating. This is what ultimately decides if 
 	 * each note will be kept or discarded from the current melody. 
 	 */
@@ -162,7 +162,6 @@ public class Driver {
 				}
 			} else {
 				failCount++;
-				//System.out.println("Does not work as next itnerval");
 			}
 		}
 		buildChain.remove(buildChain.size() - 1);
@@ -217,7 +216,12 @@ public class Driver {
 			 double CF1s = (double)firstSpeciesCount/(double)cantusFirmusCount;
 			 long timePerCF = totalTime/cantusFirmusCount;
 			 log("1S per CF" + CF1s + " Empty CF#: " + cfW1s + " timePerCF:" + timePerCF);
-			 System.exit(1);
+			 /*
+			  * Exit here to quit after 1 Cantus Firmus and its melodies has been found. Otherwise this program will
+			  * run for a long time and create thousands of MIDI files. 
+			  */
+			 
+			 //System.exit(1);
 			
 			try {
 				bw.newLine();

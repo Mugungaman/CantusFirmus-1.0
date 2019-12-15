@@ -9,6 +9,7 @@ public class ChordProgression implements Iterable<Chord>{
 	public ChordProgression() {
 		
 	}
+	
 	public ChordProgression(ArrayList<Chord> chords) {
 		for(Chord chord : chords)  {
 			this.chords.add(chord);

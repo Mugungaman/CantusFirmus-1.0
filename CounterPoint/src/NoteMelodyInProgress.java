@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 
+/**
+ *  A Note Melody that is a type of Note Melody, but it tracks certain characteristics that need to be met for
+ *  the melody to be complete, mostly in the form of boolean switchs that are turned on when certain conditions are 
+ *  met for this melody
+ */
 public class NoteMelodyInProgress extends NoteMelody {
 	
 	private boolean tritoneResolutionNeeded;

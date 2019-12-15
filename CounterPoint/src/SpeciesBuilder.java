@@ -3,7 +3,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * 
+ * @author laurencemarrin
+ *
+ */
 public class SpeciesBuilder {
 	//public boolean logTestString = false;
 	public boolean logginOn = true;
@@ -26,7 +30,7 @@ public class SpeciesBuilder {
 	//private MelodyInProgress melodyInProgress; // = new MelodyInProgress();
 	private NoteMelodyInProgress noteMelody;
 	
-	//Test Fields
+	//Test Fields used to vet whether the current note being tested will be a valid addition to the melody
 	private int testInterval;
 	private int testStepInterval;
 	private int testIndex;
@@ -206,17 +210,6 @@ public class SpeciesBuilder {
 		return true;
 	}
 	
-//	public void setTestMelody(TestMelody testMelody) {
-//		log("Setting test melody to:" + testMelody.getAllNotes());
-//		testingAMelody = true;
-//		this.testMelody = testMelody;
-////		this.testMelody = new NoteIndexCollection();
-////		for(int i: testCFMelody) {
-////			this.testMelody.add(i);
-////		}	
-//		log("this.testMelody" + this.testMelody.getAll().toString());
-//	}
-	
 	//called during constructors
 	private void setNotesAndRanges() {
 		
@@ -239,7 +232,6 @@ public class SpeciesBuilder {
 	private boolean isChildSpecies() {
 		return rules.speciesType.equals(SpeciesType.CANTUS_FIRMUS) ? false : true;
 	}
-	
 	private boolean isFirstSpecies() {
 		return rules.speciesType.equals(SpeciesType.FIRST_SPECIES) ? true : false;
 	}
@@ -253,6 +245,17 @@ public class SpeciesBuilder {
 		return rules.speciesType.equals(SpeciesType.FOURTH_SPECIES) ? true : false;
 	}
 
+	/**
+	 * Here we have a partial melody and are testing whether the proposed next note is valid (testIndex)
+	 * Thus, we need to check all the rules of our melody, and as soon as our note breaks a rule, we return 
+	 * false to indicate this is an invalid note and to move on to the next one. 
+	 * 
+	 * The rules are ordered to determine the invalid note as soon as possible, for efficiency. 
+	 * 
+	 * 
+	 * @param testIndex
+	 * @return
+	 */
 	public boolean testAsNextIndex(int testIndex) {
 		
 		//debugging purposes only
@@ -260,7 +263,10 @@ public class SpeciesBuilder {
 			logginOn = false;
 		}
 		
+		//the starting note is 0, so our Index is the # of half steps away from the starting note. 
 		this.testIndex = testIndex;
+		
+		//an Interval is the # of half steps from the previous note, 
 		testInterval = testIndex - lastIndex;
 		log(" $$$ testingIndex:" + testIndex + "testInterval: " + testInterval + " for " + noteMelody.getAll().toString() + " $$$ "); 
 		log("final note ready? " + noteMelody.finalNoteIsReady() + "  pentultiamte found? " + noteMelody.isPentultimateFound());
@@ -276,7 +282,11 @@ public class SpeciesBuilder {
 			//TODO check end of melody (skipFirstDownbeat, pentultimateWholeNote)
 		}
 
-		//if final note ready but we aren't a final notes, then become false. 
+		/*
+		 * If the melody is ready to conclude with a final note, but the current test index is not a
+		 * valid final note, then we are no longer ready for the final note, however, processing 
+		 * continues because we might still be a valid melody
+		 */
 		if(noteMelody.finalNoteIsReady()) {
 			if ( isCantusFirmus() && testIndex != 0) {
 				noteMelody.setFinalNoteNotReady(); 
@@ -285,7 +295,7 @@ public class SpeciesBuilder {
 			} 
 		}
 		
-		//is note in bounds of cantus firmus range? -> if not, alse sets testNote
+		//is note in bounds of cantus firmus range? -> if not, sets testNote
 		if(!rules.checkTestNoteRange(testIndex, noteMelody)) {
 //			log("Index " + testIndex + " out of range");
 			return false;

@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 
 /**
+ * This class contains all the rule checks for building the melody. SpeciesBuilder will call this class
+ * many times, as it validates each index as a valid note to add to the melody. 
+ * 
  * This set of rules assumes we are building modal melodies based on the indexes of the key:
  * 
  *      0 = Tonic
@@ -9,18 +12,19 @@ import java.util.ArrayList;
  * 		-1 = leading tone
  * 		6 = leading tone
  * 
- * This allows us to build old school baroquish counterpoint melodies.
  * 
  * @author laurencemarrin
  *
  */
 public class SpeciesRules {
 	
+	//TODO Refactor these finals to use the Interval class
 	private static final int TRITONE_STEPS = 6;
 	private static final int TRITONE_INDEXES = 4;
 	private static final int MELODIC_INDEX = 5;
 	private static final int OCTAVE_STEPS = 12; //interval between 0 (tonic) and an octave
 	private static final int PERFECT_FIFTH_STEPS = 7; //interval between 0 (tonic) and an octave
+	
 	private final int CONTRARY_MOTION = 1;
 	private final int OBLIQUE_MOTION = 2;
 	private final int PARALLEL_MOTION = 3;
@@ -77,6 +81,9 @@ public class SpeciesRules {
 //		log(this.speciesType.validCFStepHarmonies.length + "length is:");
 	}
 
+	/*
+	 * Each melody must be confined to a range of notes
+	 */
 	public boolean checkTestNoteRange(int testIndex, NoteMelodyInProgress noteMelody) {
 		//log("min Nadir index: " + notes.getMinNadirIndex());
 		//log("max Zenith index: " + notes.getMaxZenithIndex());
@@ -85,7 +92,9 @@ public class SpeciesRules {
 		}
 		return true;
 	}
-	
+	/*
+	 * Determine if this note can be the second to last note (implying the next note will attempt to conclude the melody)
+	 */
 	public boolean checkAsPotentialPentultimate(NoteMelodyInProgress noteMelody, int testIndex,  int testInterval) {
 		boolean pentultimateFound = false;
 //		log("melody's valid pentultimates:" + melody.getValidPentultimates());
@@ -114,7 +123,6 @@ public class SpeciesRules {
 		//cannot approach pentultimate from leap greater than a 3rd.
 		if (Math.abs(testInterval) > 2) {
 //			log("Cannot approach pentultimate from leap > 3rd:" + testInterval);
-			
 //			logMelodies(melody);
 			return false;
 		}
@@ -137,44 +145,45 @@ public class SpeciesRules {
 			return false;
 		}
 		
-//		log("about to melody set p found");
+		/*
+		 * If we get this far, we have found a valid second-to-last note
+		 */
 		noteMelody.setPentultimateFound(true);
 		
 		return true;
 		
 	}
 	
+	/*
+	 * Each melody must have a certain number of leaps, but not too many
+	 */
 	private boolean minLeapHit(int testIndex, NoteMelodyInProgress noteMelody) {
-		//do we have the correct amount of leaps in the melody
-		
 		int leapTally = noteMelody.leapTally();
 		if(!(leapTally >= minLeaps || (leapTally == minLeaps - 1 && Math.abs(testIndex - noteMelody.getLast()) > 1))) {
 //			log("leapTally: " + leapTally + "minLeaps:" + minLeaps + " melody: " + melody.getAll());
 			return false;
 		}
-		
 		return true;
 	}
 
+	
 	public boolean checkClimaxesAsPotentialPentultimate(int testIndex, NoteMelodyInProgress noteMelody) {
 		
 		if(!minimumNoteCheck(noteMelody)) {
 			log("Have not met minimum notes with only " + noteMelody.size() + " notes");
 			return false;
 		}
-		//TODO : needs climax to be on the strong note
+		//TODO : need to enforce that climax is on a strong downbeat!
 		boolean validZenith = checkZenithAsPentultimate(testIndex, noteMelody);
 		boolean validNadir = checkNadirAsPentultimate(testIndex, noteMelody);
-		//sets Zenith or Nadir for Cantus Firmus (Climax)
 //		log("valid Zenith:" + validZenith);
 //		log("valid Nadir:" + validNadir);
-		/**
-		 * If both the zenith and the Nadir are valid, the one with the greater magnitude takes precedent
+		/*
+		 * If both the Zenith and the Nadir are valid, the one with the greater magnitude takes precedent
 		 */
 		if(validZenith) {
 			if(validNadir) {
 				if(noteMelody.zenithMagnitude() >= noteMelody.nadirMagnitude()) {
-					//validNadir = false;
 					noteMelody.annealZenith();
 				} else {
 					noteMelody.annealNadir();
@@ -203,6 +212,9 @@ public class SpeciesRules {
 		return (validZenith || validNadir);	
 	}
 
+	/*
+	 * Melody must have a certain number of notes or it just sounds like a fragment
+	 */
 	private boolean minimumNoteCheck(NoteMelodyInProgress noteMelody) {
 		
 		if(speciesType == SpeciesType.CANTUS_FIRMUS) {
@@ -303,8 +315,8 @@ public class SpeciesRules {
 			}
 		}
 		
-		/**
-		 *  Rules that apply only if we have more than two notes already logged
+		/*
+		 *  Cannot have too many consecutive leaps
 		 */
 		if(noteMelody.size() > 2) {
 			if(!consecutiveLeapsCheck(testInterval, noteMelody )) {
@@ -316,6 +328,12 @@ public class SpeciesRules {
 		
 	}
 
+	/*
+	 * Very specific rules about what intervals can be used as leaps, and in what direction, etc
+	 * 
+	 * Many are only applicable with certain size leaps, hence we check the Interval size before 
+	 * even worrying about certain rules
+	 */
 	private boolean verifyLeaps(NoteMelodyInProgress noteMelody, int testInterval) {
 //		(e) Octave and minor sixth leaps must be preceded and followed by a motion
 //		in the opposite direction.
@@ -418,7 +436,7 @@ public class SpeciesRules {
 		return true;
 	}
 
-	/**
+	/*
 	 * RULE: Cannot exceed maximum number of leaps in a row.
 	 * TODO: Make # of leaps dynamic so it's based on a rules variable.
 	 * @param testInterval
@@ -448,14 +466,12 @@ public class SpeciesRules {
 			
 		// TODO PRUNE THE NEXT NOTES AFTER TWO LEAPS SO THEY ONLY TEST UPWARD NOTES
 		if (noteMelody.getInterval(-2) < -1 && noteMelody.getInterval(-1) < -1 && testInterval < 0) {
-			//System.out.println("two negative leaps must be followed by upward motion");
 			return false;
 		}
 		//log("intervals: " + intervals.toString());
 		// TODO PRUNE THE NEXT NOTES AFTER TWO LEAPS SO THEY ONLY TEST UPWARD NOTES
 		if (noteMelody.getInterval(-2) > 1 && noteMelody.getInterval(-1) > 1 && testInterval > 0) {
 //			log("two positive leaps must be followed by downward motion" + melody.getAll() + "testInterval: " + testInterval);
-			
 			return false;
 		}
 		
@@ -474,7 +490,7 @@ public class SpeciesRules {
 		return true;
 	}
 
-	/** 
+	/*
 	 *   RULE: Cannot exceeds the maximum number of leaps in a given melody
 	 *   TODO: keep track of leaps as we go if it speeds up efficiency. Currently we are calculating as we go. 
 	 */  
@@ -514,6 +530,7 @@ public class SpeciesRules {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
 	public boolean validIntervalForSpecies(int testInterval) {	
 		boolean vInterval = false;
 		for(int i : this.validIntervals) {
@@ -549,14 +566,12 @@ public class SpeciesRules {
 			}	
 		}
 		
-		//log("testStepINterval" + testStepInterval);
 		if(Math.abs(testStepInterval) == TRITONE_STEPS ) {
 //			log("Cannot jump a tritone");
 			return false;
 		}
-	
 		
-		//TODO -> Disallow outlining a triTone, whatever that means. 
+		//TODO -> Disallow outlining a triTone, but make sure it doesn't actually sound cool before disabling. 
 		
 		return true;
 	}
@@ -621,10 +636,11 @@ public class SpeciesRules {
 		return true;
 	}
 
+	/*
+	 * Cannot have too many repeated notes
+	 */
 	public boolean checkNoteRepetition(int testIndex, int lastIndex, int testInterval, NoteMelodyInProgress noteMelody) {
 		//log("repetition check for: " + testIndex + " vs: " + lastIndex);
-		//check if repeating same note twice in a row
-		
 		if(testInterval == 0) {
 			if(noteMelody.noteRepeatCount() == speciesType.maxNoteRepeats) {
 //					log("exceeded max note repeats" + speciesType.maxNoteRepeats + " melodY: " + melody.getAll() + " testIndex" + testIndex);
@@ -633,6 +649,9 @@ public class SpeciesRules {
 			}
 		}
 		
+		/*
+		 * Cannot have the same note too many times in a single melody, even if spaced out
+		 */
 		if(noteMelody.modeNotesTally(testIndex) >= speciesType.speciesSystem.maxNoteOccurrences) {			
 //			log(" vv NoteIndex " + testIndex + " repeated too many times within melody " + melody.modeNotesTally(testIndex));
 //			logMelodies(melody);
@@ -662,7 +681,7 @@ public class SpeciesRules {
 		//log("is First Species" + isFirstSpecies);
 		//log("notes.size" + notes.size());
 
-		//checkStandardDeviation
+		//TODO enforce a certain standard deviation be present in the melody so we know it has enough movement
 //		if (notes.size() >= 5) {
 //			int[] stdCheck = {testNoteIndex, notes.get(notes.size()-1),notes.get(notes.size()-2),
 //					notes.get(notes.size()-3),notes.get(notes.size()-4),notes.get(notes.size()-5) };
@@ -806,13 +825,12 @@ public class SpeciesRules {
 		return speciesType == SpeciesType.FOURTH_SPECIES ? true : false;
 	}
 	
-//	public ArrayList<Integer> tailorStepIndexes(Melody melody) {
 	public ArrayList<Integer> tailorStepIndexes(NoteMelody melody) {
 //		log("tailoring Step Indexes...");
 		ArrayList<Integer> stepIndexes = new ArrayList<Integer>();
 		int c = 0;
 		int stepIndex = 0;
-		//TODO RAISEFINALBAR LOGIC APPLIED TO RAISE ANY INSTANCE IN FINAL BAR. REMOVING FOR NOW
+		//TODO RAISE FINAL BAR LOGIC APPLIED TO RAISE ANY INSTANCE IN FINAL BAR. REMOVING FOR NOW
 		boolean raiseFinalBar = melody.size() > 11 ? true : false;
 //		log("oldStepIndexes:" + melody.getStepIndexes());
 //		log("melody size: " + melody.size());
@@ -871,14 +889,14 @@ public class SpeciesRules {
 //		log("newStepIndexes:" + stepIndexes);
 		return stepIndexes;
 		//		log("newStepIndexes:" + stepIndexes);
-
-		
-		
+	
 	}
 
-	
+	/*
+	 * Not currently using the final bar logic because it doesn't sound right. Need to research
+	 * what this rule really meant
+	 */
 	private int finalBarSpecialLogic(int stepIndex, xMelody melody) {
-		//NOT USING THIS LOGIC< CAUSING WEIRD ISSUES
 //		if(Math.abs(stepIndex - melody.getLastStepIndex()) == 2) {
 ////			log("raising  what should be the leading tones " + c + "th note, index:" + stepIndex);
 //			switch(melody.getMode()) {
@@ -900,6 +918,10 @@ public class SpeciesRules {
 		return stepIndex;
 	}
 
+	/*
+	 * A melody being built upon a primary melody must follow certain rules about not clashing notes, or having movement
+	 * in certain directions
+	 */
 	public boolean checkAgainstParentMelody(NoteMelodyInProgress noteMelody, int testIndex, int testStepIndex, int testInterval) {
 		//check for voice crossing.
 //		log("check against parent melody....");
@@ -987,6 +1009,7 @@ public class SpeciesRules {
 				}
 			
 			} 
+			
 //			log("next note cross test");
 			if(noteMelody.size() < noteMelody.getParentMelody().size() - 1) {
 				int nextCfNote = noteMelody.getParentMelody().get(noteMelody.size() + 2);	
@@ -1264,8 +1287,6 @@ public class SpeciesRules {
 	}
 	
 	int determineMotionType(NoteMelodyInProgress noteMelody, int interval) {
-		//int thisInterval = lastIndex - testNoteIndex;
-		//int cfInterval = melody.get(melody.getParentMelody().size() + 1) - melody.getParentMelody().get(melody.size());
 		int cfInterval = noteMelody.getParentMelody().getInterval(noteMelody.size());
 		//log("cf Interval: " + cfInterval + "melody.size()" + melody.size());
 		//log("testInterval:" + interval + "vs intrv: " + melody.getParentMelody().getIntervals());
@@ -1319,7 +1340,6 @@ public class SpeciesRules {
 		return true;
 	}
 	
-//	public void setMelodyPentultimates(MelodyInProgress melody) {
 	public void setMelodyPentultimates(NoteMelodyInProgress melody) {
 		if(isCantusFirmus()) {
 			for (int i : validEndIndexes) {
