@@ -4,6 +4,10 @@ import java.util.ArrayList;
  * 
  * @author laurencemarrin
  *
+ * Each Chord is composed of stacked intervals, and each interval is a particular # of half steps.
+ * 
+ * For example, a Major chord is expressed as a Major 3rd Interval (4 half steps) followed by a Minor 3rd (3 half steps)
+ *
  *Step reference:
  *     1   -> minor 2nd
  *     2  -> major 2nd
@@ -88,9 +92,7 @@ public enum ChordType {
 		StepIndexCollection  chordSteps = new StepIndexCollection();
 		chordSteps.add(0);
 		for(Interval i : intervals) {
-//			int nextInterval = chordSteps.sum() + i.steps;
 			chordSteps.appendInterval(i);
-//			chordSteps.add(chordSteps.getLast() + i.steps);
 //			log("chordSteps:" + chordSteps.toString());
 		}
 		return chordSteps;
@@ -181,12 +183,6 @@ public enum ChordType {
 		return null;
 	}
 
-/**
- *  C MAJOr
- * 
- * 
- * 
- */
 
 }
 

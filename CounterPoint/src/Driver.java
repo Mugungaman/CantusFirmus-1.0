@@ -14,14 +14,13 @@ public class Driver {
 	private final static String MIDIdirectory = "MidiFiles/";
 	private static boolean chordTest = false;
 	
-	private static boolean testCF = true;
+	private static boolean testCF = false;
 	private static boolean quitAfterCF = false;
 	
 	private static boolean test1S = false;
-	private static boolean run1S = false;
+	private static boolean run1S = true;
 	
-	private static boolean test2S = false;
-	private static boolean run2S = false;
+// !!!TESTING: 
 	
 	//VANILLA CF AEOLIAN
 	//test tritone resolution
@@ -59,13 +58,16 @@ public class Driver {
 	private static int[] test2SMelody  = {7,  8, 9, 8,10, 9, 7, 5, 6, 7, 9,10,11, 4, 5, 6,7}; 
 	private static double[] test2SLengths = {.5,.5,.5,.5,.5,.5,.5,.5,.5,.5,.5,.5,.5,.5,.5,.5,1};
 	
+/**
+ * Set the mode of the fuxian counterpoint melody. 
+ */
 //	private static Mode mode = Mode.IONIAN;
 //	private static Mode mode = Mode.DORIAN;
-//	private static Mode mode = Mode.PHYRGIAN;
+	private static Mode mode = Mode.PHYRGIAN;
 	//TODO LYDIAN NEEDS  A FLATTED fourth to avoid a tritone as a 4th. 
 //	private static Mode mode = Mode.LYDIAN;
 //	private static Mode mode = Mode.MIXOLYDIAN;
- 	private static Mode mode = Mode.AEOLIAN;
+// 	private static Mode mode = Mode.AEOLIAN;
 // 	private static Mode mode = Mode.LOCRIAN;
  	
 	static File fout = new File("cantiFirmi.txt");
@@ -76,9 +78,8 @@ public class Driver {
 	private static int secondSpeciesCount = 0;
 	private static int cfW1s = 0;
 	static FileOutputStream fos = null;
-	static BufferedWriter bw; //bw = new BufferedWriter(new OutputStreamWriter(fos));
+	static BufferedWriter bw;
 
-	//private static int writeCount = 0;
 	private static int successCount = 0;
 	private static int failCount = 0;
 	private static long startTime;
@@ -100,10 +101,14 @@ public class Driver {
 		}
 		closeOutputFiles();
 	}
-
+	
+	/**
+	 * A species is simply a musical melody. The species builder is the active melody building class that collects notes and 
+	 * actively checks all the rules for whatever type of melody we are creating. This is what ultimately decides if 
+	 * each note will be kept or discarded from the current melody. 
+	 */
 	private static void runSpeciesBuilder() {
 		SpeciesBuilder patientZero;
-//		log("Have created first SB object");
 		
 		if(testCF) {
 			TestMelody testMelody = new TestMelody(testCFMelody, NoteLength.WHOLE_NOTE);
@@ -128,17 +133,25 @@ public class Driver {
 		
 	}
 
+	/**
+	 * @param buildChain
+	 * 
+	 * To sequentially build a melody, we start with a first note (the tonic) and based on the parameters of our 
+	 * type of melody, we will check every single next potential note to see if the melody would still be valid. 
+	 * We continue to check all potential notes until the melody concludes. 
+	 * Thus, recursion is needed for this because if we find a bad note, we only need to rewind to the previous note and 
+	 * continue checking so we can determine every possible variation. 
+	 * Every fragment of a melody is saved as a Species Builder
+	 */
 	private static void recursiveMelodySequencer(ArrayList<SpeciesBuilder> buildChain) {
 		
 		SpeciesBuilder currentCFB = buildChain.get(buildChain.size()-1);
 		ArrayList<Integer> nextValidIndexes = currentCFB.getNextValidIndexArrayRandomized();
-//		log("Recursive Randomized Indexes: " + nextValidIndexes);
 		for (int i : nextValidIndexes) {
 			//log("Current cf: " + currentCFB.getNotes().toString() + " current testIndex: " + i);
 			if (currentCFB.testAsNextIndex(i)) {
 				//log("Add next  I to: " + currentCFB.getNotes());
 				SpeciesBuilder newCFB = new SpeciesBuilder(currentCFB);
-//				log("Good, add next Interval: " + newCFB.nextInterval + " to: " + newCFB.getNotes());
 				if (newCFB.addIntervalAndCheckForCompletion(newCFB.nextInterval)) {
 					successCount++;
 					writeCantusFirmus(newCFB);
@@ -149,7 +162,6 @@ public class Driver {
 				}
 			} else {
 				failCount++;
-				//System.out.println("Does not work as next itnerval");
 			}
 		}
 		buildChain.remove(buildChain.size() - 1);
@@ -166,7 +178,6 @@ public class Driver {
 				//bw.write("/n Notes:" + cf.getNotes().toString() + "  Mode: " + cf.getModeName());
 				//bw.write("/n Steps:" + cf.getStepIndexes().toString());
 				cantusFirmusCount++;
-				//writeCount++;
 			} catch (IOException e) {
 				log("fail to write success stats ");
 				e.printStackTrace();
@@ -180,40 +191,37 @@ public class Driver {
 			
 			CantusFirmus cfx = new CantusFirmus(cf, test1S);
 			if(!quitAfterCF) {
+				/*
+				 * A Cantus Firmus is a primary starting melody that follows fauxian counterpoint rules. 
+				 * 
+				 * A First Species is a seconday melody on top of the first. When running First Species (1S) we will 
+				 * determine ALL valid first species that fit with the Cantus Firmus. 
+				 * 
+				 */
 				if(run1S) {
 					runFirstSpecies(cfx);
 				}
-				if(run2S) {
-					runSecondSpecies(cfx);
-				}
 			}
 			
-
-//			log("About to try to crate midi file");
-			cfx.createMIDIfile(MIDIdirectory, generatedCantusFirmi.size() + " Master");
+			/*
+			 * Once all the notes have been determined, create a MIDI file so the melody can 
+			 * be further manipulated with music editing software
+			 */
+			 cfx.createMIDIfile(MIDIdirectory, generatedCantusFirmi.size() + " Master");
+			 
+			 //Metrics ensuring we haven't suddenly drastically decreased the # of valid melodies
 			 endTime = System.currentTimeMillis();
 			 long totalTime = endTime-startTime;
 			 log("totalTime:" + totalTime);
 			 double CF1s = (double)firstSpeciesCount/(double)cantusFirmusCount;
-			 //double emptyCF = (double)(cantusFirmusCount - cfW1s)/(double)(cfW1s);
 			 long timePerCF = totalTime/cantusFirmusCount;
-			 log("1S per CF" + CF1s + " EmptyCF#: " + cfW1s + " timePerCF:" + timePerCF);
-			 System.exit(1);
-			//for (int i = 0; i < cfx.firstSpeciesList.size(); i++) {
-			try {
-//				log("firstSpeciesCount" + firstSpeciesCount);
-//				log("cantusFirmusCount" + cantusFirmusCount);
-				bw.write("hello");
-				//bw.write("1S per CF" + CF1s + " EmptyCF%: " + emptyCF + " timePerCF:" + timePerCF);
-				
-				
-				//bw.write("1S per CF:" + (double) firstSpeciesCount + "" + (double)cantusFirmusCount + "");
-//				bw.write("1S per CF: " + (double) firstSpeciesCount/(double)cantusFirmusCount + 
-//						" %emptyCF: " + (double)(cantusFirmusCount - cfW1s)/(double)cfW1s);
-			} catch (IOException e) {
-				log("Fail to write 1s stats");
-				e.printStackTrace();
-			}
+			 log("1S per CF" + CF1s + " Empty CF#: " + cfW1s + " timePerCF:" + timePerCF);
+			 /*
+			  * Exit here to quit after 1 Cantus Firmus and its melodies has been found. Otherwise this program will
+			  * run for a long time and create thousands of MIDI files. 
+			  */
+			 
+			 //System.exit(1);
 			
 			try {
 				bw.newLine();
@@ -223,55 +231,36 @@ public class Driver {
 			}
 	}
 	
-	private static void runSecondSpecies(CantusFirmus cfx) {
-		if (test2S) {
-			TestMelody testMelody = new TestMelody(test2SMelody, test2SLengths);
-			cfx.setChildSpeciesTest(testMelody);
-//			log("FIRST SPECIES TEST MELODY SET");	
-		} 
-		log(" call cantus Firmus second species type" );
-		cfx.generateSpecies(SpeciesType.SECOND_SPECIES);				
-		secondSpeciesCount += cfx.secondSpeciesList.size();
-		log("firstSpeciesTotalCount:" + firstSpeciesCount);
-		
-		//System.out.println("CF OBJECT CREATED");
-		log("CF # " + cantusFirmusCount+ " With " + cfx.secondSpeciesList.size() + " second species");
-		
-		//TODO, print cantus firmus first species and verify
-		if(cfx.secondSpeciesList.size() > 0) {
-			generatedCantusFirmi.add(cfx);
-			cfW1s++;
-		}
-		
-	}
-
-	//TODO refactor "run species into one method"
+	/**
+	 *
+	 * @param cfx
+	 * 
+	 * A First Species is actually the second melody that fits over our base melody.
+	 * 
+	 * When First Species is turned on, we generate every secondary melody that is valid for our initial Cantus Firmus
+	 * and send it to a MIDI file for further analysis.
+	 */
 	private static void runFirstSpecies(CantusFirmus cfx) {
 		if (test1S) {
 			TestMelody testMelody = new TestMelody(test1SMelody, NoteLength.WHOLE_NOTE);
 			cfx.setChildSpeciesTest(testMelody);
-//			log("FIRST SPECIES TEST MELODY SET");	
 		} 
 		
 		cfx.generateSpecies(SpeciesType.FIRST_SPECIES);				
 		firstSpeciesCount += cfx.firstSpeciesList.size();
 		log("firstSpeciesTotalCount:" + firstSpeciesCount);
 		
-		//System.out.println("CF OBJECT CREATED");
 		log("CF # " + cantusFirmusCount+ " With " + cfx.firstSpeciesList.size() + " first species");
 		
-		//TODO, print cantus firmus first species and verify
 		if(cfx.firstSpeciesList.size() > 0) {
 			generatedCantusFirmi.add(cfx);
 			cfW1s++;
-		}
-		
+		}	
 	}
 
 	private static void createMIDIDirectory() throws IOException {
 		 File file = new File("MidiFiles");
 		 if (file.exists() ) {
-//			 log("Deleting the folder");
 			 deleteFolder(file);
 		 }
 		 if (file.mkdir()) {
@@ -316,12 +305,8 @@ public class Driver {
 	    		if(file.list().length==0){
 	    			
 	    		   file.delete();
-	    		   //log("Directory is deleted : " 
-	               //                                  + file.getAbsolutePath());
 	    			
 	    		}else{
-	    			
-	    		   //list all the directory contents
 	        	   String files[] = file.list();
 	     
 	        	   for (String temp : files) {
@@ -335,27 +320,24 @@ public class Driver {
 	        	   //check the directory again, if empty then delete it
 	        	   if(file.list().length==0){
 	           	     file.delete();
-	        	     //log("Directory is deleted : " 
-	                 //                                 + file.getAbsolutePath());
 	        	   }
 	    		}
 	    		
 	    	}else{
 	    		//if file, then delete it
 	    		file.delete();
-	    		//log("File is deleted : " + file.getAbsolutePath());
 	    	}
-
 	}
 	
 	private static void closeOutputFiles() {
 		try {
 			bw.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	
 	private static void log(String msg) {
 		System.out.println("Driver-Log:           " + msg);
 	}

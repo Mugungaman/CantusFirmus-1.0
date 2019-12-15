@@ -2,7 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class NoteMelody extends NoteCollection {
-	protected SpeciesRules rules; // = new SpeciesRules();
+	
+	protected SpeciesRules rules;
 	
 	private boolean uniqueZenith = false;
 	private boolean uniqueNadir = false;
@@ -13,8 +14,6 @@ public abstract class NoteMelody extends NoteCollection {
 	public boolean validZenith;
 	public boolean validNadir;
 	public boolean raisedLeadingTone;
-	//protected ArrayList<Integer> testChildMelodyNotes;
-	//private int firstNote;
 	private int minNadirIndex;
 	private int maxZenithIndex;
 	private List<Integer> validZenithIndexes = new ArrayList<Integer>();
@@ -22,7 +21,6 @@ public abstract class NoteMelody extends NoteCollection {
 	private StepIndexCollection stepIndexes = new StepIndexCollection();
 	private ArrayList<Integer> motions = new ArrayList<Integer>();
 	private ArrayList<Integer> downBeats = new ArrayList<Integer>();
-	//protected Melody parentMelody;
 	protected NoteMelody parentNoteMelody;
 	private TestMelody testMelody;
 	protected TestMelody testChildMelody;
@@ -37,24 +35,34 @@ public abstract class NoteMelody extends NoteCollection {
 	public NoteMelody() {
 		
 	}
-	
 
+	/**
+	 * 
+	 * @param rules
+	 * @param mode
+	 * 
+	 * Use this constructor for an intial melody which only knows its particular rules (ex fuxian counterpoint)
+	 * and mode (ex Dorian). It is not subject to any other melodies. 
+	 */
 	public NoteMelody(SpeciesRules rules, Mode mode) {
 		this.rules = rules;
 		this.mode = mode;
 //		log("Melody rulesOnly constructor rules object: " + rules);
 	}
 	
+	/**
+	 * 
+	 * @param parent
+	 * 
+	 * Use this constructor when the melody is building upon a particular parent melody and must 
+	 * follow the predetermined rules. For example: in Fuxian counterpoint, the parent melody would be the Cantus Firmus
+	 * which means a First Species or Second Species melody needs to subject itself to it in this constructor. Thus,
+	 * the parent melody needs to be fed in and obviously contains all relevant information. 
+	 */
 	public NoteMelody (NoteMelody parent) {
 		addAllNotes(parent);
-//		for(int i : parentNIC.getAll()) {
-//			this.items.add(i);
-//		}
-		//this.firstNote = parentNIC.firstNote;
 		this.rules = parent.rules;
 		this.mode = parent.mode;
-//		log("Melody constructorClone rules object:" + rules);
-		//this.parentMelody = parent.parentMelody;
 		this.parentNoteMelody = parent.parentNoteMelody;
 		this.uniqueNadir = parent.uniqueNadir;
 		this.uniqueZenith = parent.uniqueZenith;
@@ -70,7 +78,6 @@ public abstract class NoteMelody extends NoteCollection {
 		this.upperVoice = parent.upperVoice;
 		this.lowerVoice = parent.lowerVoice;
 		
-		//this.validNadirIndexes = new ArrayList<Integer>();
 		for(int i : rules.validNadirIndexesPrimitive) {
 			this.validNadirIndexes.add(i);
 		}
@@ -85,36 +92,23 @@ public abstract class NoteMelody extends NoteCollection {
 			this.intervals.add(i);
 		}
 		
-		//this.stepIndexes = new StepIndexCollection();
-//		log("ParentNIC step INdexes in Melody constructor: " + parentNIC.getStepIndexes());
 		for (int i : parent.stepIndexes.getAll()) {
 			this.stepIndexes.add(i);
 		}
 		
-		//this.motions = new ArrayList<Integer>();
 		for(int i : parent.motions) {
 			this.motions.add(i);
 		}
-//		log("what are my stepINdex now: " + this.getStepIndexes());
 		
 		for(int i : parent.downBeats) {
 			this.downBeats.add(i);
 		}
 	}
-	
-
 
 	//this method is used instead of add to perform extra maintenance logic every time a note is added. 
 	public void addNote(int newNote, double length) {
-		//log("items before:" + items.toString());
-		//log("addNote Melody constructor:" + size());
 		super.add(new Note(newNote, length));
-		//super.add(newNote);  ///old call adding an integer
-		//log("items now:" + items.toString());
-		//stepIndexes.add(newStepIndex);
 		checkInternals(newNote);
-		//log("zenith is: " + zenith() + "and unique is:" + uniqueZenith );
-		//log("nadir iz: " + nadir() + "and unique is:" + uniqueNadir);	
 	}
 	
 	public void addStepIndex(Integer newStepIndex) {
@@ -140,7 +134,6 @@ public abstract class NoteMelody extends NoteCollection {
 				uniqueZenith = false;
 			}
 			if(newNote < nadir()) {
-				//log("New note less than current Nadir");
 				nadirPos = notes.size();
 				uniqueNadir = true;
 				maxZenithIndex = (maxZenithIndex > (nadir() + rules.maxIndexRange())) ? (nadir() + rules.maxIndexRange()) : maxZenithIndex;
@@ -164,12 +157,6 @@ public abstract class NoteMelody extends NoteCollection {
 			
 		}
 		
-		/**
-		 * If neither upper nor lower voice has been checked, check them upon adding this note 
-		 * 
-		 */
-
-		//log("Note add to Melody, Zenith of : " + zenith() + " is " + uniqueZenith + "; nadir of " + nadir() + " is " + uniqueNadir);
 	}
 	
 	protected boolean hasParentMelody() {
@@ -217,13 +204,8 @@ public abstract class NoteMelody extends NoteCollection {
 	public int getMaxZenithIndex() {
 		return maxZenithIndex;
 	}
-
-//	private int getPentultimateNote() {
-//		return items.get(items.size() - 2);
-//	}
 	
 	public boolean checkIfValidZenithIndex(int testIndex) {
-//		log("validZenithIndexs" + validZenithIndexes.toString() + "testIndex:" + testIndex );
 		if(this.validZenithIndexes.contains((get(1) + testIndex)%7)) {
 			return true;
 		}
@@ -317,7 +299,6 @@ public abstract class NoteMelody extends NoteCollection {
 	}
 
 	public int getClimaxPos() {
-	    //log("returning climax pos" + climaxPos);
 		return climaxPos;
 	}
 
@@ -326,7 +307,6 @@ public abstract class NoteMelody extends NoteCollection {
 	}
 	
 	public int leapTally() {
-//		log("leapTally() intervals are: " + intervals);
 		return intervals.leapTally();
 	}
 
@@ -411,15 +391,6 @@ public abstract class NoteMelody extends NoteCollection {
 		return testMelody;
 	}
 	
-//	public void setChildSpeciesTest(int[] testMelody) {
-//		log("setting child test melody!!" + testMelody);
-//		testChildMelodyNotes = new ArrayList<Integer>();
-//		
-//		for (int i = 0; i < testMelody.length; i++) {
-//			this.testChildMelodyNotes.add(testMelody[i]);
-//		}
-//	}
-	
 	public boolean isTestingChildSpecies() {
 		return null == testChildMelody ? false : true;
 	}
@@ -443,7 +414,6 @@ public abstract class NoteMelody extends NoteCollection {
 	}
 	
 	public double testMelodyLength() {
-		// TODO Auto-generated method stub
 		return testMelody.melodyLength();
 	}
 	

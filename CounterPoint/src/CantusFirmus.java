@@ -10,14 +10,12 @@ public class CantusFirmus extends NoteMelody {
 	
 	private final  String MIDIdirectory = "MidiFiles/";
 	private final MusicUtility mUtility = new MusicUtility();
-	//notes in step incremenct (0 = tonic, 1 = a minor second, 2 =major second, 12 = octave, etc)
+	//notes in step increment (0 = tonic, 1 = a minor second, 2 =major second, 12 = octave, etc)
 	
 	private Pattern cantusFirmusPattern;
 	public ArrayList<FirstSpecies> firstSpeciesList = new ArrayList<FirstSpecies>();
-	public ArrayList<SecondSpecies> secondSpeciesList = new ArrayList<SecondSpecies>();
 	private String cfMIDIpattern = "";
 	private ArrayList<String> firstSpeciesPatternStrings = new ArrayList<String>();
-	private ArrayList<String> secondSpeciesPatternStrings = new ArrayList<String>();
 	public ArrayList<Pattern> firstSpeciesMIDIPatterns = new ArrayList<Pattern>();
 	public ArrayList<Pattern> secondSpeciesMIDIPatterns = new ArrayList<Pattern>();
 	private static ArrayList<SpeciesBuilder> buildChain = new ArrayList<SpeciesBuilder>();
@@ -86,18 +84,6 @@ public class CantusFirmus extends NoteMelody {
 	}
 	
 
-	private void logSecondSpecies(SpeciesBuilder newCFB) {
-		secondSpeciesList.add(new SecondSpecies(newCFB.getMelody()));
-//		System.out.println("logging new first Species" + newCFB.getNotes());
-		String patternString = mUtility.getMIDIString(this.getLastSecondSpecies(),getMode(), mUtility.melodyStartIndex);
-//		log("returned 1s string:" + patternString);
-		secondSpeciesPatternStrings.add(patternString);
-		secondSpeciesMIDIPatterns.add(new Pattern(patternString));
-	}
-	
-	
-	
-
 
 	private void writeMasterMIDIFile(String prefix) {
 		log("Writing Master MIDI!");
@@ -110,7 +96,7 @@ public class CantusFirmus extends NoteMelody {
 //		for(Pattern p : secondSpeciesMIDIPatterns) {
 //			masterMIDIPattern += p + "R ";
 //		}
-		//System.out.println("masterMIDIPattern:" + masterMIDIPattern);
+		System.out.println("masterMIDIPattern:" + masterMIDIPattern);
 		Pattern masterPattern = new Pattern(masterMIDIPattern);
 		File file = new File(MIDIdirectory + prefix + cantusFirmusPattern.toString() + ".mid" );
 		try {
@@ -130,19 +116,15 @@ public class CantusFirmus extends NoteMelody {
 	//need a way to return notes
 	public void createMIDIfile(String directory, String filenamePrefix) {
 		log("How many first Species to write:" + firstSpeciesList.size());
-		if(this.firstSpeciesList.size() > 0 || this.secondSpeciesList.size() > 0) {
+		//if(this.firstSpeciesList.size() > 0 ) {
 			writeMasterMIDIFile(filenamePrefix);			
-		}
+		//}
 	}
 
 
 
 	public NoteMelody getLastFirstSpecies() {
 		return firstSpeciesList.get(firstSpeciesList.size() - 1);
-	}
-	
-	public NoteMelody getLastSecondSpecies() {
-		return secondSpeciesList.get(secondSpeciesList.size() - 1);
 	}
 	
 	private void log(String msg) {

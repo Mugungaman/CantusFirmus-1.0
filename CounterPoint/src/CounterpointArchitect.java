@@ -1,6 +1,16 @@
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * Eventually Counterpoint Architect will be the master controller that calls Arpeggiator, Melody sequencer, etc
+ * and will build entire songs based on user parameters. 
+ * 
+ * Bach's Prelude in C Major is a perfect example of arpeggiation and Chord progression, 
+ * so we are using it to model the components necessary for an arpeggiator: Notes, Keys, Intervals, ChordType, etc....
+ * 
+ * @author laurencemarrin
+ *
+ */
 public class CounterpointArchitect {
 	
 	private SpeciesRules rules;
