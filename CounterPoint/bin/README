@@ -1,8 +1,8 @@
-...........About me...........
+...........About CounterPoint...........
 
-I am primarily for musical and/or software nerds. Everyone else is entering a world of pain. 
+I am primarily for musical and/or software people. Everyone else is entering a world of pain. 
 
-I am an experimental algorithm that generates musical melodies as usable MIDI files. Please focus on how I use Object Oriented 
+I am an algorithm that generates musical melodies as usable MIDI files. Please focus on how I use Object Oriented 
 Programming to model musical concepts.
 
 
@@ -10,8 +10,7 @@ Programming to model musical concepts.
 ..............Usage..............
 
 I have no front end yet so one must run the DRIVER from an IDE (like eclipse), at whence the folder Counterpoint\MidiFiles will 
-populate with playable midi file(s). Play the midi files with your computer's default midi. Note that you can set the gregorian 
-Mode in the driver. 
+populate with playable midi file(s). Play the midi files with your computer's default midi. 
 
 Each MIDI file will have many variations of melodies based upon a single Cantus Firmus (primary melody). It will sound 
 repetitive because of my recursive algorithm, but each bar is slightly different.
@@ -25,6 +24,8 @@ Mac: May have to open garageband and drag the MIDI file to a MIDI track to hear 
 Traditional Fuxian Counterpoint has a very discrete set of melodic rules and is the perfect pilot to
 build the framework around. It has the quintessential Baroque classical music sound and is presently my only 
 functional melodic rule system. 
+
+Note that you can set the Gregorian Mode in the driver. 
 
 
 
