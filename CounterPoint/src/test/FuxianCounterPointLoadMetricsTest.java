@@ -10,7 +10,19 @@ import com.mugunga.counterpoint.SpeciesBuilder;
 import com.mugunga.counterpoint.SpeciesType;
 import com.mugunga.counterpoint.TestMelody;
 
-public class FuxianCounterPointSingleMelodyTest {
+/**
+ * This Test class is for large batch monitoring of algorithm. When running many Cantus/Firmus, metrics like 
+ * Standard Deviation, # of empty Cantus Firmus, # of First Species per Cantus Firmus, etc, should
+ * remain steady. A large swing means something drastic happened to the algorithm.
+ * 
+ *  
+ * 
+ * 
+ * @author laurencemarrin
+ *
+ */
+//TODO Set this class to run a specified # of Melodies and to assert the metrics are in range
+public class FuxianCounterPointLoadMetricsTest {
 	
 	private int successCount = 0;
 	private int failCount = 0;
@@ -25,10 +37,22 @@ public class FuxianCounterPointSingleMelodyTest {
 	private int firstSpeciesCount = 0;
 	private int cantusFirmusCount = 0;
 	private int cfW1s = 0;
+	private int targetCantusFirmusCount;
 	private ArrayList <CantusFirmus> generatedCantusFirmi = new ArrayList<CantusFirmus>();
 	
-	public FuxianCounterPointSingleMelodyTest() {
-		log(this.toString());
+	public FuxianCounterPointLoadMetricsTest() {
+		mode = Mode.IONIAN;
+		targetCantusFirmusCount = 250;
+	}
+	
+	public FuxianCounterPointLoadMetricsTest(Mode mode) {
+		this.mode = mode;
+		targetCantusFirmusCount = 250;
+	}
+	
+	public FuxianCounterPointLoadMetricsTest(Mode mode, int cantusFirmusCount) {
+		this.mode = mode;
+		targetCantusFirmusCount = this.cantusFirmusCount;
 	}
 
 	public void testCantusFirmus() {

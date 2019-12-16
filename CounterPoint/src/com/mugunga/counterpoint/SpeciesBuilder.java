@@ -279,8 +279,6 @@ public class SpeciesBuilder {
 //				log("needs to be last note of species but isn't");
 				return false;
 			}
-		} else if(isSecondSpecies()) {
-			//TODO check end of melody (skipFirstDownbeat, pentultimateWholeNote)
 		}
 
 		/*
@@ -321,12 +319,6 @@ public class SpeciesBuilder {
 				}
 			}
 		}
-		
-//		if(is2SDownbeat()) {
-//			//TODO test coming from parallel 5th or octave
-//			//TODO is dissonant?
-//		} else if(is2SHalfbeat()) {
-//		}
 		
 		if(noteMelody.size() > 0) {
 //			log("about to check motion..");
@@ -371,7 +363,7 @@ public class SpeciesBuilder {
 //			log("Species Rules Leap CHeck Fail");
 			return false;
 		}
-//		log("Leap Check Passed");
+		log("Leap Check Passed");
 		
 		
 		if(!rules.validTestInterval(noteMelody, testInterval, testStepInterval)) {
@@ -626,15 +618,10 @@ public class SpeciesBuilder {
 	}
 	
 	private void generateS2ArraysFromValidHarmonyIndexes() {
-		//Downbeatindexes map
-		//offbeat indexes map
 		int mapIndex = 0;
 		mapIndex++;
 		validIndexesMap.put(mapIndex, validNextIndexes);
 		log("valid NExt INdexes: " + validNextIndexes);
-		
-		
-		
 		log("generate s2Arrays from valid Harmony Indexes");
 		log("map has: " + validIndexesMap.size() + " entries");
 		ArrayList<Integer> currHalfBeatIndexList = new ArrayList<Integer>();
@@ -642,7 +629,6 @@ public class SpeciesBuilder {
 			currHalfBeatIndexList.add(i);
 		}
 				
-		
 		
 		int c = 0;
 		for (int i : noteMelody.getParentMelody().getAll()) {
