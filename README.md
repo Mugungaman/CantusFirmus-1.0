@@ -1,2 +1,5 @@
 # CantusFirmus-1.0
-First attempt at creating cantus firmus software
+
+First attempt at creating musical melody generation algorithms. 
+
+Based on Fuxian Counterpoint
