@@ -45,9 +45,7 @@ public class SpeciesRules {
 	private final double climaxBoundsThreshold = .2;
 	
 	//SpeciesType intervals
-	//public final int[] firstSpeciesStartNotes =  {0 , 4, 7};
 	public final int[] validIntervals;
-	//public final int[] validCFHarmonies;
 	public final int[] validStartIndexes;
 	public final int[] validEndIndexes;
 	public final int[] invalidStepOutlines;
@@ -57,18 +55,11 @@ public class SpeciesRules {
 	public final int minMeasures;
 	public final int minLeaps;
 	public final int maxLeaps;
-	//public final int maxNoteOccurrences;
 	
-	//public SpeciesRules() {}
 	
 	public SpeciesRules(SpeciesType speciesType){
-//		log("Rules Construcor, about to set valid Intervals");
-//		log("Species Type is: " + speciesType.toString());
-//		log("species valid intervals = " + speciesType.validIntervals.toString());
 		this.speciesType = speciesType;
-//		log("this rules object is:" + this);
 		validIntervals = speciesType.validIntervals;
-		//validCFHarmonies = speciesType.validCFHarmonies;
 		validStartIndexes = speciesType.validStartIndexes;
 		validEndIndexes = speciesType.validEndIndexes;
 		invalidStepOutlines = speciesType.invalidStepOutlines;
@@ -77,9 +68,6 @@ public class SpeciesRules {
 		minMeasures = speciesType.speciesSystem.minMeasures;
 		minLeaps = speciesType.speciesSystem.minLeaps;
 		maxLeaps = speciesType.speciesSystem.maxLeaps;
-		//maxNoteOccurrences = speciesType.speciesSystem.maxNoteOccurrences;
-		
-//		log(this.speciesType.validCFStepHarmonies.length + "length is:");
 	}
 
 	/*
@@ -93,6 +81,7 @@ public class SpeciesRules {
 		}
 		return true;
 	}
+	
 	/*
 	 * Determine if this note can be the second to last note (implying the next note will attempt to conclude the melody)
 	 */
@@ -374,7 +363,7 @@ public class SpeciesRules {
 			case -4: 
 				
 				if (lastInterval <= -4) {
-					log("no two fifths in the same direction"+ noteMelody.getIntervals() + " testInterval: " + testInterval);
+//					log("no two fifths in the same direction"+ noteMelody.getIntervals() + " testInterval: " + testInterval);
 					return false;
 				}
 				
@@ -1294,11 +1283,9 @@ public class SpeciesRules {
 		//log("testInterval:" + interval + "vs notes: " + melody.getParentMelody().getAll());
 //		log("Parallel?" + (testInterval == cfInterval));
 		if(interval == 0) {
-//			log("oblique");
 			return OBLIQUE_MOTION;
 		} else if((interval < 0 && cfInterval > 0) ||
 		   (interval > 0 && cfInterval < 0)	) {
-//			log("contrary");
 			return CONTRARY_MOTION;
 		} else if(interval == cfInterval) {
 			return PARALLEL_MOTION;
@@ -1311,7 +1298,6 @@ public class SpeciesRules {
 //		log("checking pentultimate...." + testIndex + " for " + melody.getAll() + " min notes: " + minNotes);
 		//log("maxNotes:" + maxNotes);
 		
-		//TODO if pentultimate not already found and final note not already ready. 
 		if(isCantusFirmus() && noteMelody.size() >= minMeasures - 2 && !noteMelody.finalNoteIsReady()) {	
 //			log("inside check cantus");
 			if(!checkAsPotentialPentultimate(noteMelody, testIndex, testInterval)) {
@@ -1337,7 +1323,6 @@ public class SpeciesRules {
 				return false;
 			}
 		}
-//		log("about to return true");
 		return true;
 	}
 	
@@ -1347,7 +1332,7 @@ public class SpeciesRules {
 				melody.addValidPentultimate(i+1);
 				log("validPentultimates." + melody.getValidPentultimates());
 				
-				//turn this on to allow cantus firmus to approach from below
+				//!!!turn this on to allow cantus firmus to approach from below
 				//validPentultimates.add(i -1);
 			}		
 		} else if (isFirstSpecies()){
@@ -1522,10 +1507,6 @@ public class SpeciesRules {
 		return true;
 	}
 
-	/*    B A <D>  
-	 *    A   B   C    
-	 * 
-	 */
 	public boolean checkValid2SHalfbeat(NoteMelodyInProgress noteMelody, int testIndex, int testInterval) {
 		int parentNote = (noteMelody.getParentNote((noteMelody.size()/2) + 1));
 		log("parent note to test: " + parentNote);

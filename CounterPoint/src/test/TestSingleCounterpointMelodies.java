@@ -1,15 +1,42 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
 import com.mugunga.counterpoint.*;
 
 
-class MelodyTests {
-
+class TestSingleCounterpointMelodies {
+	
+	FuxianCounterPointSingleMelodyTest cpt;
+	
+	//TODO should not have 3 steps of parallel motion
+	@Test
+	void parallelMotionViolationTest() {
+		FuxianCounterPointSingleMelodyTest cpt = new FuxianCounterPointSingleMelodyTest();
+		
+		int[] testCFMelody =   {0, -2, 0, 1, 2, 4, 3, 2, 1, 2, 3, 1, 0}; //Andrew's cantus firmus, gets melodic minor
+		
+		cpt.setTestCantusFirmus(testCFMelody);
+		int[] test1SMelody  =  {4, 3, 2, 3, 7, 6, 8, 7, 3, 4, 5, 6, 7};  //also need to raise leading tone in final bar.
+		cpt.setTestFirstSpecies(test1SMelody);
+		cpt.setMode(Mode.PHYRGIAN);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
+		assertTrue(cpt.validFirstSpecies());
+	}
+	
+	//TODO Melody shouldn't jump down a third and right back up to the tonic
+	@Test
+	void repeatThirdPatternTest() {
+		FuxianCounterPointSingleMelodyTest cpt = new FuxianCounterPointSingleMelodyTest();
+		
+		int[] testCFMelody =   {0, -2, 0, 1, -2, -3, -4, -5, 2, 1, 0}; 
+		cpt.setTestCantusFirmus(testCFMelody);
+		cpt.setMode(Mode.PHYRGIAN);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
+	}
+	
 	//TODO This melody needs to fail because the pentultimate note is not the leading tone
 	@Test
 	void phyrgianIllegalEndWithLeapTest() {
@@ -17,9 +44,9 @@ class MelodyTests {
 		
 		int[] testCFMelody =   {0, 3, 5, 4, 3, 1, 0, -1, -2, 0}; 
 		cpt.setTestCantusFirmus(testCFMelody);
-		cpt.setMode(Mode.LYDIAN);
-		cpt.testCantusFirmus();
-		assertEquals(cpt.validCantusFirmus(), false);
+		cpt.setMode(Mode.PHYRGIAN);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
 	}
 	
 	@Test
@@ -31,9 +58,9 @@ class MelodyTests {
 		int[] test1SMelody  =  {0, 4, 6, 5, 6, 9, 7, 6, 5, 6, 7};  //also need to raise leading tone in final bar.
 		cpt.setTestFirstSpecies(test1SMelody);
 		cpt.setMode(Mode.AEOLIAN);
-		cpt.testCantusFirmus();
-		assertEquals(cpt.validCantusFirmus(), true);
-		assertEquals(cpt.validFirstSpecies(), true);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
+		assertTrue(cpt.validFirstSpecies());
 	}
 	
 	@Test
@@ -45,9 +72,9 @@ class MelodyTests {
 		int[] test1SMelody  =  {7, 6, 8, 7, 9, 8, 7, 6, 5, 6, 6,  7,  };  
 		cpt.setTestFirstSpecies(test1SMelody);
 		cpt.setMode(Mode.IONIAN);
-		cpt.testCantusFirmus();
-		assertEquals(cpt.validCantusFirmus(), true);
-		assertEquals(cpt.validFirstSpecies(), true);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
+		assertTrue(cpt.validFirstSpecies());
 	}
 	
 	@Test
@@ -57,8 +84,8 @@ class MelodyTests {
 		int[] testCFMelody =   {0, -2, -5, -4, 0, -1, 2, 0, -1, 1, 0}; 
 		cpt.setTestCantusFirmus(testCFMelody);
 		cpt.setMode(Mode.IONIAN);
-		cpt.testCantusFirmus();
-		assertEquals(cpt.validCantusFirmus(), true);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
 	}
 	
 	@Test
@@ -68,8 +95,8 @@ class MelodyTests {
 		int[] testCFMelody =   {0, -2, 1, 2, -1, 0, 2, 1, 0}; 
 		cpt.setTestCantusFirmus(testCFMelody);
 		cpt.setMode(Mode.LYDIAN);
-		cpt.testCantusFirmus();
-		assertEquals(cpt.validCantusFirmus(), true);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
 	}
 	
 	/*
@@ -84,9 +111,9 @@ class MelodyTests {
 		int[] test1SMelody  =  {4, 7, 8, 10, 9, 12, 11, 10, 7, 6, 5, 6, 7 };  
 		cpt.setTestFirstSpecies(test1SMelody);
 		cpt.setMode(Mode.AEOLIAN);
-		cpt.testCantusFirmus();
-		assertEquals(cpt.validCantusFirmus(), true);
-		assertEquals(cpt.validFirstSpecies(), false);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
+		assertTrue(cpt.validFirstSpecies());
 		//TODO assertEquals(cpy.failCode,FailCode.ILLEGAL_VOICE_CROSS), etc
 	}
 	
@@ -99,9 +126,9 @@ class MelodyTests {
 		int[] test1SMelody  =  {4, 5, 5, 10, 9, 8, 11, 10, 9, 5, 6, 7 };  
 		cpt.setTestFirstSpecies(test1SMelody);
 		cpt.setMode(Mode.AEOLIAN);
-		cpt.testCantusFirmus();
-		assertEquals(cpt.validCantusFirmus(), true);
-		assertEquals(cpt.validFirstSpecies(), false);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
+		assertTrue(cpt.validFirstSpecies());
 		//TODO assertEquals(cpy.failCode,FailCode.ILLEGAL_VOICE_CROSS), etc
 	}
 	
