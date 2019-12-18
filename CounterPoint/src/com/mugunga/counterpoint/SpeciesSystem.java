@@ -58,4 +58,5 @@ public enum SpeciesSystem {
 		this.maxNoteOccurrences = maxNoteOccurrences;
 		this.consonantIntervals = consonantIntervals;
 	}
+
 }

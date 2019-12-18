@@ -40,9 +40,8 @@ public class CantusFirmus extends NoteMelody {
 		SpeciesBuilder speciesZero = new SpeciesBuilder(this, speciesType);
 		for(int i : speciesZero.getValidNextIndexesRandomized()) {
 			SpeciesBuilder childSpecies = new SpeciesBuilder(speciesZero);
-			log("---------Testing child species first note: " + i + "-------");
+			//log("---------Testing child species first note: " + i + "-------");
 			if(childSpecies.checkAndSetFirstNote(i)) {
-				log(speciesType + "Got to here.");
 				buildChain.add(childSpecies);
 				recursiveMelodySequencer(buildChain);				
 			}
@@ -54,24 +53,21 @@ public class CantusFirmus extends NoteMelody {
 		SpeciesBuilder currentSB = buildChain.get(buildChain.size()-1);
 		ArrayList<Integer> nextValidIndexes = currentSB.getNextValidIndexArrayRandomized();
 		
-		log("RECURSION: next valid Indexes that we will test:" + nextValidIndexes.toString() + "for: " + currentSB.getNotes().getAll());
+		//log("RECURSION: next valid Indexes that we will test:" + nextValidIndexes.toString() + "for: " + currentSB.getNotes().getAll());
 		
 		for (int i : nextValidIndexes) {
-			log("Current melody: " + currentSB.getNotes().getAll()+ " current testIndex: " + i);
+			//log("Current melody: " + currentSB.getNotes().getAll()+ " current testIndex: " + i);
 			if (currentSB.testAsNextIndex(i)) {
 				SpeciesBuilder newSB = new SpeciesBuilder(currentSB);
-				//System.out.println("Next Interval:" +newSB.nextInterval);
 				if (newSB.addIntervalAndCheckForCompletion(newSB.nextInterval)) {
 					//writeCantusFirmus(newSB);
 					logFirstSpecies(newSB);
 						
 				} else {
 					buildChain.add(newSB);
-					//System.out.println("buildChain Length:" + buildChain.size());
 					recursiveMelodySequencer(buildChain);
 				}
 			} else {
-				//System.out.println("Does not work as next itnerval");
 			}
 		}
 		buildChain.remove(buildChain.size() - 1);
@@ -94,9 +90,6 @@ public class CantusFirmus extends NoteMelody {
 			masterMIDIPattern += p + "R ";
 		}
 		
-//		for(Pattern p : secondSpeciesMIDIPatterns) {
-//			masterMIDIPattern += p + "R ";
-//		}
 		System.out.println("masterMIDIPattern:" + masterMIDIPattern);
 		Pattern masterPattern = new Pattern(masterMIDIPattern);
 		File file = new File(MIDIdirectory + prefix + cantusFirmusPattern.toString() + ".mid" );

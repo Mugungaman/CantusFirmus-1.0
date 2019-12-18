@@ -45,9 +45,7 @@ public class SpeciesRules {
 	private final double climaxBoundsThreshold = .2;
 	
 	//SpeciesType intervals
-	//public final int[] firstSpeciesStartNotes =  {0 , 4, 7};
 	public final int[] validIntervals;
-	//public final int[] validCFHarmonies;
 	public final int[] validStartIndexes;
 	public final int[] validEndIndexes;
 	public final int[] invalidStepOutlines;
@@ -57,18 +55,11 @@ public class SpeciesRules {
 	public final int minMeasures;
 	public final int minLeaps;
 	public final int maxLeaps;
-	//public final int maxNoteOccurrences;
 	
-	//public SpeciesRules() {}
 	
 	public SpeciesRules(SpeciesType speciesType){
-//		log("Rules Construcor, about to set valid Intervals");
-//		log("Species Type is: " + speciesType.toString());
-//		log("species valid intervals = " + speciesType.validIntervals.toString());
 		this.speciesType = speciesType;
-//		log("this rules object is:" + this);
 		validIntervals = speciesType.validIntervals;
-		//validCFHarmonies = speciesType.validCFHarmonies;
 		validStartIndexes = speciesType.validStartIndexes;
 		validEndIndexes = speciesType.validEndIndexes;
 		invalidStepOutlines = speciesType.invalidStepOutlines;
@@ -77,9 +68,6 @@ public class SpeciesRules {
 		minMeasures = speciesType.speciesSystem.minMeasures;
 		minLeaps = speciesType.speciesSystem.minLeaps;
 		maxLeaps = speciesType.speciesSystem.maxLeaps;
-		//maxNoteOccurrences = speciesType.speciesSystem.maxNoteOccurrences;
-		
-//		log(this.speciesType.validCFStepHarmonies.length + "length is:");
 	}
 
 	/*
@@ -93,6 +81,7 @@ public class SpeciesRules {
 		}
 		return true;
 	}
+	
 	/*
 	 * Determine if this note can be the second to last note (implying the next note will attempt to conclude the melody)
 	 */
@@ -374,7 +363,7 @@ public class SpeciesRules {
 			case -4: 
 				
 				if (lastInterval <= -4) {
-					log("no two fifths in the same direction"+ noteMelody.getIntervals() + " testInterval: " + testInterval);
+//					log("no two fifths in the same direction"+ noteMelody.getIntervals() + " testInterval: " + testInterval);
 					return false;
 				}
 				

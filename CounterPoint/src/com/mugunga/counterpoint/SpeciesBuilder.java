@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class SpeciesBuilder {
 	//public boolean logTestString = false;
-	public boolean logginOn = true;
+	public boolean logginOn = false;
 	public boolean logCF = false;
 	public boolean testingAMelody = false;
 	
@@ -47,10 +47,7 @@ public class SpeciesBuilder {
 						SpeciesType speciesType, 
 						TestMelody testMelody) {
 		
-		//this.speciesType = speciesType;
 		rules = new SpeciesRules(speciesType);
-//		log("Have created Rules in primary Species Builder..." + rules);
-		//melodyInProgress = new MelodyInProgress(rules, mode);
 		noteMelody = new NoteMelodyInProgress(rules, mode);
 		maxMeasures = rules.maxMeasures;
 		minMeasures = rules.minMeasures;
@@ -66,7 +63,6 @@ public class SpeciesBuilder {
 		} else {
 			testingAMelody = true;
 			noteMelody.setTestMelody(testMelody);
-			//setTestMelody(testMelody);
 			minMeasures = testMelody.melodyLength();
 			maxMeasures = testMelody.melodyLength();
 			startIdxList.add(testMelody.getFirst());
@@ -90,9 +86,7 @@ public class SpeciesBuilder {
 	public SpeciesBuilder(CantusFirmus cantusFirmus, SpeciesType speciesType) {
 //		log("Species Builder Constructor from first Species");
 		//this.mode = cantusFirmus.getMode();
-		//this.speciesType = speciesType;
 		rules =  new SpeciesRules(speciesType);
-		//this.cantusFirmus = cantusFirmus;
 //		melodyInProgress = new MelodyInProgress(rules, cantusFirmus.getMode());
 //		melodyInProgress.setParentMelody(cantusFirmus);
 		noteMelody = new NoteMelodyInProgress(rules, cantusFirmus.getMode());
@@ -476,25 +470,8 @@ public class SpeciesBuilder {
 		return validNextIndexes.getRandomized();
 	}
 	
-//11-30-2018 combined with generate valid note arrays - can remove	
-//	public void generateValid1SNoteArrays() {
-////		log("generating valid S1 arrays");
-//		//log("max peak index:" + maxPeakIndex);
-//		//log("min low index:" + minLowIndex);
-//		validIndexesMap = new HashMap<Integer, NoteIndexCollection>();
-//		CantusFirmus cf = (CantusFirmus) melodyInProgress.getParentMelody();
-//		if(cf.isTestingChildSpecies()) {
-//			log("Testing first spsecies!!!" + cf.getChildSpeciesTestMelody());
-//			generateChildArraysFromTestMelody();
-//		} else {
-//			generateS1ArraysFromValidHarmonyIndexes();
-//		}
-//	}
-	
 	public void generateValidNoteArrays() {
 		validIndexesMap = new HashMap<Integer, NoteIndexCollection>();
-//		CantusFirmus cf = (CantusFirmus) melodyInProgress.getParentMelody();
-//		if(cf.isTestingChildSpecies()) {
 		log("generating valid note arrays, are we testing a melody?" + testingAMelody);
 		if(testingAMelody) {
 			
@@ -697,7 +674,6 @@ public class SpeciesBuilder {
 	
 	private void generateChildArraysFromTestMelody() {
 		int c = 0;
-//		for(int i : noteMelody.getParentMelody().getChildSpeciesTestMelody()) {
 		for(int i : noteMelody.getTestMelody().getAll()) {
 			c++;
 			ArrayList<Integer> currIdxList = new ArrayList<Integer>();
@@ -1095,7 +1071,6 @@ public class SpeciesBuilder {
 //		log("melodyInProgress size" + melodyInProgress.size());
 //		log("valid next indexes:" + validNextIndexes);
 		return validNextIndexes.getRandomized();
-	
 	}
 	
 	public SpeciesSystem getSpeciesSystem() {
@@ -1104,15 +1079,10 @@ public class SpeciesBuilder {
 	
 	public void log(String msg) {
 		if(logginOn) {
-			
 			System.out.println("SpeciesBuilder-Log:   " + msg + "   testIndex " + testIndex + "         melody: " + noteMelody.getAll() );
 		}
 	}
 
-
-//	public MelodyInProgress getMelody() {
-//		return melodyInProgress;
-//	}
 	public NoteMelodyInProgress getMelody() {
 		return noteMelody;
 	}
