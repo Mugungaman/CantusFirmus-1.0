@@ -886,7 +886,7 @@ public class SpeciesRules {
 	 * Not currently using the final bar logic because it doesn't sound right. Need to research
 	 * what this rule really meant
 	 */
-	private int finalBarSpecialLogic(int stepIndex, xMelody melody) {
+	private int finalBarSpecialLogic(int stepIndex, NoteMelody melody) {
 //		if(Math.abs(stepIndex - melody.getLastStepIndex()) == 2) {
 ////			log("raising  what should be the leading tones " + c + "th note, index:" + stepIndex);
 //			switch(melody.getMode()) {

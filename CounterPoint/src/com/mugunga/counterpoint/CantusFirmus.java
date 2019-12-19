@@ -26,11 +26,9 @@ public class CantusFirmus extends NoteMelody {
 		super(sb.getMelody());
 		this.tailorStepIndexes();
 		setPattern();
-		
 	}
 
 	public void generateSpecies(SpeciesType speciesType) {
-		log("generate species() with: " + speciesType);
 		if(null == testChildMelody) {
 			log("Generate like normal");
 		} else {
@@ -53,14 +51,11 @@ public class CantusFirmus extends NoteMelody {
 		SpeciesBuilder currentSB = buildChain.get(buildChain.size()-1);
 		ArrayList<Integer> nextValidIndexes = currentSB.getNextValidIndexArrayRandomized();
 		
-		//log("RECURSION: next valid Indexes that we will test:" + nextValidIndexes.toString() + "for: " + currentSB.getNotes().getAll());
-		
 		for (int i : nextValidIndexes) {
 			//log("Current melody: " + currentSB.getNotes().getAll()+ " current testIndex: " + i);
 			if (currentSB.testAsNextIndex(i)) {
 				SpeciesBuilder newSB = new SpeciesBuilder(currentSB);
 				if (newSB.addIntervalAndCheckForCompletion(newSB.nextInterval)) {
-					//writeCantusFirmus(newSB);
 					logFirstSpecies(newSB);
 						
 				} else {
@@ -75,7 +70,6 @@ public class CantusFirmus extends NoteMelody {
 	private void logFirstSpecies(SpeciesBuilder newCFB) {
 		firstSpeciesList.add(new FirstSpecies(newCFB.getMelody()));
 		String patternString = mUtility.getMIDIString(this.getLastFirstSpecies(), getMode(), mUtility.melodyStartIndex);
-//		log("returned 1s string:" + patternString);
 		firstSpeciesPatternStrings.add(patternString);
 		firstSpeciesMIDIPatterns.add(new Pattern(patternString));
 	}
@@ -90,11 +84,10 @@ public class CantusFirmus extends NoteMelody {
 			masterMIDIPattern += p + "R ";
 		}
 		
-		System.out.println("masterMIDIPattern:" + masterMIDIPattern);
+		//System.out.println("masterMIDIPattern:" + masterMIDIPattern);
 		Pattern masterPattern = new Pattern(masterMIDIPattern);
 		File file = new File(MIDIdirectory + prefix + cantusFirmusPattern.toString() + ".mid" );
 		try {
-			//System.out.println("Writing a first Species MASTER MIDI");
 		       MidiFileManager.savePatternToMidi((PatternProducer) masterPattern, file);
 		} catch (Exception ex) {
 				System.out.println("Could not save midi file");
@@ -107,15 +100,9 @@ public class CantusFirmus extends NoteMelody {
 		this.cantusFirmusPattern = mUtility.getMIDIPattern(this, getMode(), mUtility.melodyStartIndex);
 	}
 
-	//need a way to return notes
 	public void createMIDIfile(String directory, String filenamePrefix) {
-		log("How many first Species to write:" + firstSpeciesList.size());
-		//if(this.firstSpeciesList.size() > 0 ) {
-			writeMasterMIDIFile(filenamePrefix);			
-		//}
+		writeMasterMIDIFile(filenamePrefix);			
 	}
-
-
 
 	public NoteMelody getLastFirstSpecies() {
 		return firstSpeciesList.get(firstSpeciesList.size() - 1);

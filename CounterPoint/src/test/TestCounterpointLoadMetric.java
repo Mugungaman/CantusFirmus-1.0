@@ -39,7 +39,7 @@ class TestCounterpointLoadMetric {
 		//Ensure the # of firstSpecies create per each Base Species is in a proper range
 		//TODO store these min/max type variables in a metrics class or something and use them
 		assertTrue(stats.firstSpeciesperBaseSpecies() > 13 && stats.firstSpeciesperBaseSpecies() < 35);
-		assertTrue(stats.baseSpeciesSuccessRate() > .0045 && stats.baseSpeciesSuccessRate() < .007 );
+		assertTrue(stats.baseSpeciesSuccessRate() > .0045 && stats.baseSpeciesSuccessRate() < .01 );
 		
 	}
 	

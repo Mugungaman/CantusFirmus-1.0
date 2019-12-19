@@ -21,11 +21,11 @@ package com.mugunga.counterpoint;
  *
  *
  */
-public class ThirdSpecies extends xMelody {
+public class ThirdSpecies extends NoteMelody {
 	
 	
 	
-	public ThirdSpecies(xMelody melody) {
+	public ThirdSpecies(NoteMelody melody) {
 		super(melody);
 	}
 }

@@ -1,7 +1,11 @@
 package com.mugunga.counterpoint;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 /**
  * This class should receive the parameters needed to create the melody. It needs to know whether
@@ -16,11 +20,15 @@ import java.util.ArrayList;
  */
 public class CounterPointRunner {
 	
+	private final  String MIDIdirectory = "MidiFiles/LoadTest/";
+	private File csvout = new File("cantiFirmi.csv");
+	private FileOutputStream csvfos = null;
+	private BufferedWriter csvbw;
+	
 	private SpeciesSystem speciesSystem;
 	private SpeciesType speciesType;
 	private CounterPointStats stats;
 	private Mode mode;
-	private final static String MIDIdirectory = "MidiFiles/LoadTest/";
 	private TestMelody testBaseMelody;
 	private TestMelody testFirstSpeciesMelody;
 	private boolean speciesGenerationComplete = false;
@@ -47,12 +55,8 @@ public class CounterPointRunner {
 
 	public void generateMusic() {
 		
-		try {
-			createMIDIDirectory();
-		} catch (IOException e1) {
-			log("failed to create midi directory");
-			e1.printStackTrace();
-		}
+		fileSetup();
+
 		stats = new CounterPointStats();
 		stats.setStartTime(System.currentTimeMillis());
 		SpeciesBuilder patientZero = new SpeciesBuilder(mode, speciesType, testBaseMelody);
@@ -70,6 +74,7 @@ public class CounterPointRunner {
 		stats.setBaseMeldies(baseSpeciesCount);
 		stats.setBaseFailCount(baseFailCount);
 		stats.logStats();
+		closeOutputFiles();
 	}
 	
 	private void recursiveMelodySequencer(ArrayList<SpeciesBuilder> buildChain) {
@@ -85,7 +90,7 @@ public class CounterPointRunner {
 				if (newCFB.addIntervalAndCheckForCompletion(newCFB.nextInterval) & !speciesGenerationComplete) {
 					baseSpeciesCount++;
 					log("Cantus Firmus Count: " + baseSpeciesCount );
-					writeBaseSpecies(newCFB);
+					processBaseSpecies(newCFB);
 					if (baseSpeciesCount >= targetBaseSpeciesCount) {
 						speciesGenerationComplete = true;
 					}
@@ -100,9 +105,26 @@ public class CounterPointRunner {
 		buildChain.remove(buildChain.size() - 1);	
 	}
 	
-	private void writeBaseSpecies(SpeciesBuilder cf) {
+	private void processBaseSpecies(SpeciesBuilder cf) {
 	    log("Found CF: " + cf.getNotes().getAll());
 		CantusFirmus cfx = new CantusFirmus(cf, test1S);
+		//String csvLine = cf.getNotes().getAll().toString();
+		//String csvLine = cfx.getStepIndexes().getAll() + "";
+		String csvLine = cfx.getNotesAsCSV();
+		try {
+			csvbw.write(csvLine);
+		} catch (IOException e) {
+			log("fail to write success stats ");
+			e.printStackTrace();
+		}
+		try {
+			csvbw.newLine();
+		} catch (IOException e) {
+			log("fail to create new line");
+			e.printStackTrace();
+		}
+
+		
 		generatedCantusFirmi.add(cfx);
 		if(run1S) {
 			runFirstSpecies(cfx);
@@ -115,7 +137,6 @@ public class CounterPointRunner {
 		cfx.setChildSpeciesTest(testFirstSpeciesMelody);
 		cfx.generateSpecies(SpeciesType.FIRST_SPECIES);				
 		stats.tallyFirstSpecies(cfx.firstSpeciesList.size());
-		log("firstSpeciesTotalCount:" + cfx.firstSpeciesList.size());
 		log("CF # " + baseSpeciesCount + " With " + cfx.firstSpeciesList.size() + " first species");
 		if(cfx.firstSpeciesList.size() > 0) {
 			cfW1s++;
@@ -214,6 +235,44 @@ public class CounterPointRunner {
 	    		//if file, then delete it
 	    		file.delete();
 	    	}
+	}
+	
+	private void fileSetup() {
+		
+		 if (csvout.exists()){
+		     csvout.delete();
+		 }
+		
+//		try {
+//			deleteFolder(csvout);
+//		} catch (IOException e2) {
+//			// TODO Auto-generated catch block
+//			e2.printStackTrace();
+//		}
+		//.csv for R analysis
+		try {
+			csvfos = new FileOutputStream(csvout);
+		} catch (FileNotFoundException e) {
+			log("failed to create csv file output stream");
+			e.printStackTrace();
+		}
+		csvbw = new BufferedWriter(new OutputStreamWriter(csvfos));
+		
+		try {
+			createMIDIDirectory();
+		} catch (IOException e1) {
+			log("failed to create midi directory");
+			e1.printStackTrace();
+		}
+	}
+	
+	private void closeOutputFiles() {
+
+		try {
+			csvbw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

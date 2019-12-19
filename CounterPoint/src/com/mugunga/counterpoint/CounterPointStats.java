@@ -63,6 +63,4 @@ public class CounterPointStats {
 		return (double)totalBaseMelodies/(double)baseFailCount;
 	}
 
-	
-
 }

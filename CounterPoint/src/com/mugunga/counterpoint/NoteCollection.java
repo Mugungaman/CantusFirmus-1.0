@@ -141,8 +141,7 @@ public abstract class NoteCollection implements Iterable<Note> {
 		System.out.println("MusicIntColl-Log:     " + msg);
 	}
 	
-	public void removeDuplicates() {
-		//
+	public String getNotesAsCSV() {
+		return notes.toArray().toString().replaceAll("[\\[\\]]", "");
 	}
-	
 }

@@ -32,8 +32,8 @@ package com.mugunga.counterpoint;
  */
 
 
-public class FourthSpecies extends xMelody {
-	public FourthSpecies(xMelody melody) {
+public class FourthSpecies extends NoteMelody {
+	public FourthSpecies(NoteMelody melody) {
 		super(melody);
 		
 	}

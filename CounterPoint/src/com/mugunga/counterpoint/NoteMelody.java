@@ -229,10 +229,7 @@ public abstract class NoteMelody extends NoteCollection {
 //		}
 //		this.parentMelody = parentNoteIndexes;
 	}
-//	
-//	public Melody getParentMelody() {
-//		return parentMelody;
-//	}
+
 	
 	public NoteMelody getParentMelody() {
 		return parentNoteMelody;
@@ -240,7 +237,6 @@ public abstract class NoteMelody extends NoteCollection {
 	private void log(String msg) {
 		System.out.println("Melody-Log:           " + msg);
 	}
-
 
 	public int zenithMagnitude() {
 		return Math.abs(zenith() - getFirst());
@@ -290,12 +286,6 @@ public abstract class NoteMelody extends NoteCollection {
 			t = modeNotesTally(noteIndex); //TODO verify for cantus firmus. 
 		}
 		
-//		for (int i: getAll()) {
-//			if((i + 14)%7 == testNote) {
-//				t++;
-//			}
-//		}
-		//log("returning mode tally of: " + t);
 		return t;
 	}
 
@@ -338,6 +328,10 @@ public abstract class NoteMelody extends NoteCollection {
 		return stepIndexes;
 	}
 	
+	public String getNotesAsCSV() {
+		return getAll().toString().replaceAll("[\\[\\]]", "");
+	}
+	
 	public Mode getMode() {
 		return mode;
 	}
@@ -373,12 +367,6 @@ public abstract class NoteMelody extends NoteCollection {
 	public void addMotion(int newMotion) {
 		motions.add(newMotion);
 	}
-	
-	//TODO -> how is this handled? 
-//	public ArrayList<Integer> getChildSpeciesTestMelody() {
-//		return testChildMelodyNotes;
-//	}
-	
 	
 	public void setChildSpeciesTest(TestMelody testMelody) {
 		this.testChildMelody = testMelody;

@@ -1,14 +1,14 @@
 package com.mugunga.arpeggiator;
 import java.util.HashMap;
 
-import com.mugunga.counterpoint.xMelody;
-import com.mugunga.counterpoint.xMelodyInProgress;
+import com.mugunga.counterpoint.NoteMelody;
+import com.mugunga.counterpoint.NoteMelodyInProgress;
 
 
 public class Arpeggiator {
 	Chord tonicChord;
 	ChordSystem system;
-	xMelodyInProgress melody;
+	NoteMelodyInProgress melody;		
 	ChordProgression chordProg;
 	final public int NOTES_PER_CHORD = 6;
 	private int[] arpPattern = {0, 1, 2, 3, 4, 2, 3, 4};
@@ -20,8 +20,8 @@ public class Arpeggiator {
 		l("" + tonicChord);
 	}
 	
-	public xMelody arpeggiate(int numChords) {
-		melody = new xMelodyInProgress();
+	public NoteMelody arpeggiate(int numChords) {
+		melody = new NoteMelodyInProgress();
 		chordProg = new ChordProgression();
 		//first Chord
 		
