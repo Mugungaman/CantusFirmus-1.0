@@ -13,12 +13,12 @@ public class CounterPointStats {
 		totalFirstSpeciesMelodies = 0;
 	}
 
-	public void setStartTime(long currentTimeMillis) {
-		this.startTime = currentTimeMillis;
+	public void logStartTime() {
+		this.startTime = System.currentTimeMillis();
 	}
 	
-	public void setEndTime(long currentTimeMillis) {
-		this.endTime = currentTimeMillis;
+	public void logEndTime() {
+		this.endTime = System.currentTimeMillis();
 	}
 	
 	public double firstSpeciesperBaseSpecies() {

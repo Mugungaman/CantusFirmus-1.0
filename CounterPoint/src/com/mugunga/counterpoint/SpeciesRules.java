@@ -925,17 +925,14 @@ public class SpeciesRules {
 			boolean lowerVoice = noteMelody.isLowerVoice();
 //			log("cfStepIndex: " + cfStepIndex + " testStepINdex" + testStepIndex);
 //			log("all cf step indexes:" + melody.getParentMelody().getStepIndexes().getAll());
-//			log("melody.size()" + melody.size() + " melody: " + melody.getAll());
 			
 			if(noteMelody.size() == 0) {
-				
-//				log("check the voice dispositions: " + upperVoice + lowerVoice );
 				int cfNextIndex = noteMelody.getParentMelody().get(2);
 				int cfStartIndex = noteMelody.getParentMelody().getFirst();
 				
 				if ((testIndex > cfStartIndex && testIndex <= cfNextIndex) ||
 						(testIndex < cfStartIndex && testIndex >= cfNextIndex)) {
-					log("#$% CF will cross melody on second note.");
+//					log("#$% CF will cross melody on second note.");
 					logMelodies(noteMelody);
 					return false;
 				}
@@ -943,8 +940,8 @@ public class SpeciesRules {
 			}
 			
 			if(noteMelody.size() > 0) {
-//				log("check the voice dispositions: " + upperVoice + lowerVoice );
-				int previousCfNote = noteMelody.getParentMelody().get(noteMelody.size());	
+				int previousCfNote = noteMelody.getParentMelody().get(noteMelody.size());
+				int previousNote = noteMelody.get(-1);
 				if(upperVoice && testIndex <= previousCfNote) {
 //					log(testIndex + " is lower than previousCFnote + " + previousCfNote + " in an uppder voice" );
 					return false;
@@ -960,6 +957,12 @@ public class SpeciesRules {
 						(testMotionType == SIMILAR_MOTION || testMotionType == PARALLEL_MOTION)) {
 //					log("Must only arrive at perfect consonance by oblique or contrary motion...parent: " + melody.getParentMelody().getIntervals());
 //					log("melody:" + melody.getIntervals() + " testIndex: " + testInterval);
+					return false;
+				}
+				
+				//Cannot have a unison followed by an octave
+				if(harmony == OCTAVE_STEPS && previousCfNote == previousNote) {
+//					log("Don't follow a unison w an octave");
 					return false;
 				}
 			
@@ -1175,10 +1178,10 @@ public class SpeciesRules {
 	}
 	
 	private void logMelodies(NoteMelodyInProgress noteMelody) {
-		if(!isCantusFirmus()) {
-			log(" parentMelody: " + noteMelody.getParentMelody().getAll());
-		}
-		log(" working melody: " + noteMelody.getAll());
+//		if(!isCantusFirmus()) {
+//			log(" parentMelody: " + noteMelody.getParentMelody().getAll());
+//		}
+//		log(" working melody: " + noteMelody.getAll());
 		
 	}
 

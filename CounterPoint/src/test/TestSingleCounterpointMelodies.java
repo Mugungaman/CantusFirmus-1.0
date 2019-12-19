@@ -9,11 +9,24 @@ class TestSingleCounterpointMelodies {
 	
 	FuxianCounterPointSingleMelodyTest cpt;
 	
+	
 	/*
-	 * TODO Should be able to run 1 cantus firmis and generate 1s, not continue trying 
-	 * to create more cantus firmus.
-	 * 
-	 * TODO when 1S and CF start on a unison, they should not progress to an octave because 
+	 * TODO A melody shouldn't move 6 notes in the same direction
+	 */
+	@Test
+	void tooMuchMovementInOneDirectionTest() {
+		FuxianCounterPointSingleMelodyTest cpt = new FuxianCounterPointSingleMelodyTest();
+		
+		int[] testCFMelody =   {0, 5, 4, 3, 2, 9, 8, 5, 4, 2, 1, 0}; 
+		
+		cpt.setTestCantusFirmus(testCFMelody);
+		cpt.setMode(Mode.LOCRIAN);
+		cpt.testMelody();
+		assertFalse(cpt.validCantusFirmus());
+	}
+	
+	/*
+	 * When 1S and CF start on a unison, they should not progress to an octave because 
 	 * there is no melodic movement
 	 */
 	@Test
@@ -23,12 +36,12 @@ class TestSingleCounterpointMelodies {
 		int[] testCFMelody =   {0, 5, 4, 3, 4, 8, 9, 7, 6, 2, 1, 0}; 
 		
 		cpt.setTestCantusFirmus(testCFMelody);
-		//int[] test1SMelody  =  {0,-2, -5, -4, 2, 1, 0, -2, -3, -2, -1, 0}; 
-		//cpt.setTestFirstSpecies(test1SMelody);
+		int[] test1SMelody  =  {0,-2, -5, -4, 2, 1, 0, -2, -3, -2, -1, 0}; 
+		cpt.setTestFirstSpecies(test1SMelody);
 		cpt.setMode(Mode.LOCRIAN);
 		cpt.testMelody();
 		assertTrue(cpt.validCantusFirmus());
-		assertTrue(cpt.validFirstSpecies());
+		assertFalse(cpt.validFirstSpecies());
 	}
 	
 	//TODO should not have 3 steps of parallel motion

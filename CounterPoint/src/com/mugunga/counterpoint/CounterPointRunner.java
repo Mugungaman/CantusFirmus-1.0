@@ -58,7 +58,7 @@ public class CounterPointRunner {
 		fileSetup();
 
 		stats = new CounterPointStats();
-		stats.setStartTime(System.currentTimeMillis());
+		stats.logStartTime();
 		SpeciesBuilder patientZero = new SpeciesBuilder(mode, speciesType, testBaseMelody);
 		ArrayList<SpeciesBuilder> buildChain = new ArrayList<SpeciesBuilder>();
 		buildChain.add(patientZero);
@@ -70,7 +70,7 @@ public class CounterPointRunner {
 				recursiveMelodySequencer(buildChain);				
 			}
 		}
-		
+		stats.logEndTime();
 		stats.setBaseMeldies(baseSpeciesCount);
 		stats.setBaseFailCount(baseFailCount);
 		stats.logStats();
@@ -106,10 +106,18 @@ public class CounterPointRunner {
 	}
 	
 	private void processBaseSpecies(SpeciesBuilder cf) {
-	    log("Found CF: " + cf.getNotes().getAll());
 		CantusFirmus cfx = new CantusFirmus(cf, test1S);
-		//String csvLine = cf.getNotes().getAll().toString();
-		//String csvLine = cfx.getStepIndexes().getAll() + "";
+		writeBaseSpecies(cfx);
+		generatedCantusFirmi.add(cfx);
+		if(run1S) {
+			runFirstSpecies(cfx);
+		}
+		cfx.createMIDIfile(MIDIdirectory, generatedCantusFirmi.size() + " Master");
+		//System.exit(1);
+	}
+
+	private void writeBaseSpecies(NoteMelody cfx) {
+//	    log("Found CF: " + cf.getNotes().getAll());
 		String csvLine = cfx.getNotesAsCSV();
 		try {
 			csvbw.write(csvLine);
@@ -125,12 +133,6 @@ public class CounterPointRunner {
 		}
 
 		
-		generatedCantusFirmi.add(cfx);
-		if(run1S) {
-			runFirstSpecies(cfx);
-		}
-		cfx.createMIDIfile(MIDIdirectory, generatedCantusFirmi.size() + " Master");
-		//System.exit(1);
 	}
 
 	private void runFirstSpecies(CantusFirmus cfx) {

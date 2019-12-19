@@ -39,7 +39,7 @@ class TestCounterpointLoadMetric {
 		//Ensure the # of firstSpecies create per each Base Species is in a proper range
 		//TODO store these min/max type variables in a metrics class or something and use them
 		assertTrue(stats.firstSpeciesperBaseSpecies() > 13 && stats.firstSpeciesperBaseSpecies() < 35);
-		assertTrue(stats.baseSpeciesSuccessRate() > .0045 && stats.baseSpeciesSuccessRate() < .01 );
+		assertTrue(stats.baseSpeciesSuccessRate() > .0045 && stats.baseSpeciesSuccessRate() < .075 );
 		
 	}
 	
@@ -56,7 +56,24 @@ class TestCounterpointLoadMetric {
 		//Ensure the # of firstSpecies create per each Base Species is in a proper range
 		//TODO store these min/max type variables in a metrics class or something and use them
 		assertTrue(stats.firstSpeciesperBaseSpecies() > 25 && stats.firstSpeciesperBaseSpecies() < 80);
-		assertTrue(stats.baseSpeciesSuccessRate() > .0045 && stats.baseSpeciesSuccessRate() < .011 );
+		assertTrue(stats.baseSpeciesSuccessRate() > .0045 && stats.baseSpeciesSuccessRate() < .0175 );
+		
+	}
+	
+	@Test
+	void LocrianLoadTest() {
+		int baseMelodyCount = 100;
+		FuxianCounterPointLoadMetricsTest cpt = new FuxianCounterPointLoadMetricsTest(Mode.LOCRIAN, baseMelodyCount);
+		cpt.run();
+		stats = cpt.getStats();
+		
+		//Ensure we are creating exactly as many base Melodies as we think we are
+		assertEquals(stats.baseMelodyCount(), baseMelodyCount);
+		
+		//Ensure the # of firstSpecies create per each Base Species is in a proper range
+		//TODO store these min/max type variables in a metrics class or something and use them
+		assertTrue(stats.firstSpeciesperBaseSpecies() > 25 && stats.firstSpeciesperBaseSpecies() < 80);
+		assertTrue(stats.baseSpeciesSuccessRate() > .0045 && stats.baseSpeciesSuccessRate() < .0175 );
 		
 	}
 	

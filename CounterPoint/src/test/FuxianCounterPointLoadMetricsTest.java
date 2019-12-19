@@ -1,17 +1,9 @@
 package test;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import com.mugunga.counterpoint.CantusFirmus;
 import com.mugunga.counterpoint.CounterPointRunner;
 import com.mugunga.counterpoint.CounterPointStats;
 import com.mugunga.counterpoint.Mode;
-import com.mugunga.counterpoint.NoteLength;
-import com.mugunga.counterpoint.SpeciesBuilder;
 import com.mugunga.counterpoint.SpeciesSystem;
-import com.mugunga.counterpoint.SpeciesType;
-import com.mugunga.counterpoint.TestMelody;
 
 /**
  * This Test class is for large batch monitoring of algorithm. When running many Cantus/Firmus, metrics like 

@@ -29,16 +29,15 @@ public class CantusFirmus extends NoteMelody {
 	}
 
 	public void generateSpecies(SpeciesType speciesType) {
-		if(null == testChildMelody) {
-			log("Generate like normal");
-		} else {
-			log("Sending 1sTest melody: " + testChildMelody);
-		}
-		//TODO add something for when 2st species is starting on half note. 
+//		if(null == testChildMelody) {
+//			log("Generate like normal");
+//		} else {
+//			log("Sending 1sTest melody: " + testChildMelody);
+//		}
 		SpeciesBuilder speciesZero = new SpeciesBuilder(this, speciesType);
 		for(int i : speciesZero.getValidNextIndexesRandomized()) {
 			SpeciesBuilder childSpecies = new SpeciesBuilder(speciesZero);
-			//log("---------Testing child species first note: " + i + "-------");
+//			log("---------Testing child species first note: " + i + "-------");
 			if(childSpecies.checkAndSetFirstNote(i)) {
 				buildChain.add(childSpecies);
 				recursiveMelodySequencer(buildChain);				
@@ -77,7 +76,6 @@ public class CantusFirmus extends NoteMelody {
 
 
 	private void writeMasterMIDIFile(String prefix) {
-		log("Writing Master MIDI!");
 		String masterMIDIPattern = cfMIDIpattern + "R ";
 		
 		for(Pattern p : firstSpeciesMIDIPatterns) {

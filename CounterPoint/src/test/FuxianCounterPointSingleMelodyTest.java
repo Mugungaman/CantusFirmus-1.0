@@ -5,12 +5,14 @@ import com.mugunga.counterpoint.Mode;
 import com.mugunga.counterpoint.NoteLength;
 import com.mugunga.counterpoint.SpeciesSystem;
 import com.mugunga.counterpoint.TestMelody;
-
+/**
+ * This is basically a wrapper class for single-melody testing via CounterPointRunner
+ * 
+ * @author laurencemarrin
+ *
+ */
 public class FuxianCounterPointSingleMelodyTest {
 	
-	private TestMelody testBaseMelody;
-	private TestMelody testFirstSpeciesMelody;
-	private boolean test1S = false;
 	private CounterPointRunner cpr;
 	
 	public FuxianCounterPointSingleMelodyTest() {
@@ -18,32 +20,21 @@ public class FuxianCounterPointSingleMelodyTest {
 	}
 
 	public void testMelody() {
-		
-		cpr.setTestBaseMelody(testBaseMelody);
-		if(test1S) {
-			cpr.setTestFirstSpeciesMelody(testFirstSpeciesMelody);
-		}
 		cpr.generateMusic();
 	}	
 	
 
 	public void setTestCantusFirmus(int[] testCFMelody) {
 		cpr.setTestBaseMelody(new TestMelody(testCFMelody, NoteLength.WHOLE_NOTE));
-//		this.testBaseMelody = ;
-		
+		cpr.setTargetBaseSpeciesCount(1);
 	}
 
 	public void setTestFirstSpecies(int[] test1SMelody) {
 		cpr.setTestFirstSpeciesMelody(new TestMelody(test1SMelody, NoteLength.WHOLE_NOTE));
-		//this.testFirstSpeciesMelody = ;
-		//this.test1S = true;
-		
 	}
 
 	public void setMode(Mode mode) {
 		cpr.setMode(mode);
-//		this.mode = mode;
-		
 	}
 
 	public boolean validCantusFirmus() {
