@@ -7,6 +7,7 @@ public class CounterPointStats {
 	private int totalBaseMelodies;
 	private int baseFailCount;
 	private int totalFirstSpeciesMelodies;
+	private Mode mode;
 	
 	public CounterPointStats() {
 		totalBaseMelodies = 0;
@@ -61,6 +62,14 @@ public class CounterPointStats {
 
 	public double baseSpeciesSuccessRate() {
 		return (double)totalBaseMelodies/(double)baseFailCount;
+	}
+	
+	public void setMode(Mode m) {
+		this.mode = m;
+	}
+
+	public String toCSV() {
+		return mode.toString() + "," + totalBaseMelodies + "," + totalFirstSpeciesMelodies;
 	}
 
 }

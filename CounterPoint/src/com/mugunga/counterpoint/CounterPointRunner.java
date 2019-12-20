@@ -59,6 +59,7 @@ public class CounterPointRunner {
 
 		stats = new CounterPointStats();
 		stats.logStartTime();
+		stats.setMode(mode);
 		SpeciesBuilder patientZero = new SpeciesBuilder(mode, speciesType, testBaseMelody);
 		ArrayList<SpeciesBuilder> buildChain = new ArrayList<SpeciesBuilder>();
 		buildChain.add(patientZero);
@@ -73,7 +74,7 @@ public class CounterPointRunner {
 		stats.logEndTime();
 		stats.setBaseMeldies(baseSpeciesCount);
 		stats.setBaseFailCount(baseFailCount);
-		stats.logStats();
+		//stats.logStats();
 		closeOutputFiles();
 	}
 	
@@ -89,7 +90,7 @@ public class CounterPointRunner {
 				SpeciesBuilder newCFB = new SpeciesBuilder(currentCFB);
 				if (newCFB.addIntervalAndCheckForCompletion(newCFB.nextInterval) & !speciesGenerationComplete) {
 					baseSpeciesCount++;
-					log("Cantus Firmus Count: " + baseSpeciesCount );
+					//log("Cantus Firmus Count: " + baseSpeciesCount );
 					processBaseSpecies(newCFB);
 					if (baseSpeciesCount >= targetBaseSpeciesCount) {
 						speciesGenerationComplete = true;
@@ -139,7 +140,7 @@ public class CounterPointRunner {
 		cfx.setChildSpeciesTest(testFirstSpeciesMelody);
 		cfx.generateSpecies(SpeciesType.FIRST_SPECIES);				
 		stats.tallyFirstSpecies(cfx.firstSpeciesList.size());
-		log("CF # " + baseSpeciesCount + " With " + cfx.firstSpeciesList.size() + " first species");
+		//log("CF # " + baseSpeciesCount + " With " + cfx.firstSpeciesList.size() + " first species");
 		if(cfx.firstSpeciesList.size() > 0) {
 			cfW1s++;
 		}	

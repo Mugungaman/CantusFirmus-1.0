@@ -19,25 +19,18 @@ import java.util.ArrayList;
  */
 public class SpeciesRules {
 	
-	//TODO Refactor these finals to use the Interval class
-	private static final int TRITONE_STEPS = 6;
-	private static final int TRITONE_INDEXES = 4;
+	private static final int TRITONE_STEPS = Interval.TRITONE.steps;
+	private static final int TRITONE_INDEXES = Interval.TRITONE.modeIndex;
 	private static final int MELODIC_INDEX = 5;
-	private static final int OCTAVE_STEPS = 12; //interval between 0 (tonic) and an octave
-	private static final int PERFECT_FIFTH_STEPS = 7; //interval between 0 (tonic) and an octave
+	private static final int OCTAVE_STEPS = Interval.OCTAVE.steps; 
+	private static final int PERFECT_FIFTH_STEPS = Interval.PERFECT_5TH.steps; 
 	
 	private final int CONTRARY_MOTION = 1;
 	private final int OBLIQUE_MOTION = 2;
 	private final int PARALLEL_MOTION = 3;
 	private final int SIMILAR_MOTION = 4;
-//	private static final int MINOR_7TH_STEPS = 10;
-//	private static final int MAJOR_7TH_STEPS = 11;
 
 	public final SpeciesType speciesType;
-	
-	//public final int maxIndexRange = 9; //max range is a tenth
-	//public final int minIndexRange = 4; //TODO is this correct?
-	private final double stdCheckThreshold5 = 1; //TODO at standard deviation requirements for melody. 
 	
 	//Rules relating to climaxes:
 	public final int[] validZenithIndexesPrimitive = {2, 4, 5, 7, 8, 9};
@@ -122,7 +115,7 @@ public class SpeciesRules {
 		}
 		
 		if(!minLeapHit(testIndex, noteMelody)) {
-			log("min leap fail" + noteMelody);
+//			log("min leap fail" + noteMelody);
 			return false;
 		}
 		
@@ -612,14 +605,13 @@ public class SpeciesRules {
 				
 			}
 				
-
 			if(testInterval < 0 &&
 					intervals.get(-1) < 0 &&
 					intervals.get(-2) < 0 &&
 					intervals.get(-3) < 0 &&
 					intervals.get(-4) < 0) {
 //				log("Cannot have more than 4 intervals in one direction " +testInterval + "intervals: " + intervals);
-//				return false;
+				return false;
 			}
 		}
 		
@@ -757,12 +749,12 @@ public class SpeciesRules {
 			//log("Checking First Species repetition");
 			if(testInterval == 0) {
 				if(parentMelody.get(noteMelody.size() + 2) == testIndex) {
-					log("Cantus Firmus Will cause a triplet repeat F <F> C:" + testIndex + "for: " + parentMelody.getAll());
+//					log("Cantus Firmus Will cause a triplet repeat F <F> C:" + testIndex + "for: " + parentMelody.getAll());
 					return false;
 				}
 				//Check for C F <F>
 				if(noteMelody.size() >= 2 && parentMelody.get(noteMelody.size()-1) == testIndex ) {
-					log("Cantus Firmus Will cause a triplet repeat C F <F>:" +testIndex + "for: " + parentMelody.getAll());
+//					log("Cantus Firmus Will cause a triplet repeat C F <F>:" +testIndex + "for: " + parentMelody.getAll());
 					return false;
 				}
 			}
@@ -770,7 +762,7 @@ public class SpeciesRules {
 			//Check for C <F> C
 			if(parentMelody.get(noteMelody.size()) == testIndex &&
 				noteMelody.size() <= parentMelody.size()-2 && parentMelody.get(noteMelody.size() + 2) == testIndex) {
-				log("Cantus Firmus Will cause a triplet repeat C F <F>:" +testIndex + "for: " + parentMelody.getAll());
+//				log("Cantus Firmus Will cause a triplet repeat C F <F>:" +testIndex + "for: " + parentMelody.getAll());
 				return false;
 			}
 			
@@ -1018,14 +1010,14 @@ public class SpeciesRules {
 			//cannot cross voices, need to add logic for not equalinf voices except on first note. 
 			if(upperVoice) {
 				if(testIndex < cfNote) {
-					log("Cannot cross voices during upperVoice:"+ testIndex + " vs: " + cfNote);
+//					log("Cannot cross voices during upperVoice:"+ testIndex + " vs: " + cfNote);
 					return false;
 				}
 			}
 			
 			if(lowerVoice) {
 				if(testIndex > cfNote) {
-					log("Cannot cross voices during lowerVoice:"+ testIndex + " vs: " + cfNote);
+//					log("Cannot cross voices during lowerVoice:"+ testIndex + " vs: " + cfNote);
 					return false;
 				}
 			}
@@ -1035,7 +1027,7 @@ public class SpeciesRules {
 //				log("upperVoice?" + upperVoice);
 //				log("lowerVoice?" + lowerVoice);
 				if((upperVoice && testInterval != -1) ||(lowerVoice && testInterval != 1) ) {
-					log("this note: " + testInterval + "will not resolve the tritone so skip it");
+//					log("this note: " + testInterval + "will not resolve the tritone so skip it");
 					return false;
 				}
 			}
@@ -1045,7 +1037,7 @@ public class SpeciesRules {
 			
 			if(Math.abs((testStepIndex - cfStepIndex)%12) == TRITONE_STEPS) {
 				if(Math.abs(testIndex - cfNote)%7 != TRITONE_INDEXES) {
-					log("Can't have a TTRITONE that won't resolve to an inner third:");
+//					log("Can't have a TTRITONE that won't resolve to an inner third:");
 					return false;
 				}
 //				log("Tritone Harmony: will the cantus Firmus resolve correctly...?" + testIndex);
@@ -1210,7 +1202,7 @@ public class SpeciesRules {
 			if(noteMelody.getParentMelody().get(-3) == 2 ||
 					testInterval == 0) {
 //				log("modE:" + melody.getMode());
-				log("AELIAN nightmare:" + noteMelody.parentNoteMelody);
+//				log("AELIAN nightmare:" + noteMelody.parentNoteMelody);
 				return false;
 			}
 		}
@@ -1333,7 +1325,7 @@ public class SpeciesRules {
 		if(isCantusFirmus()) {
 			for (int i : validEndIndexes) {
 				melody.addValidPentultimate(i+1);
-				log("validPentultimates." + melody.getValidPentultimates());
+//				log("validPentultimates." + melody.getValidPentultimates());
 				
 				//!!!turn this on to allow cantus firmus to approach from below
 				//validPentultimates.add(i -1);

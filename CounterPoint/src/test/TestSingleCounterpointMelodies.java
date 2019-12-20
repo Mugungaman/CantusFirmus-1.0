@@ -72,7 +72,6 @@ class TestSingleCounterpointMelodies {
 		assertTrue(cpt.validCantusFirmus());
 	}
 	
-	//TODO This melody needs to fail because the pentultimate note is not the leading tone
 	@Test
 	void phyrgianIllegalEndWithLeapTest() {
 		FuxianCounterPointSingleMelodyTest cpt = new FuxianCounterPointSingleMelodyTest();
@@ -81,7 +80,7 @@ class TestSingleCounterpointMelodies {
 		cpt.setTestCantusFirmus(testCFMelody);
 		cpt.setMode(Mode.PHYRGIAN);
 		cpt.testMelody();
-		assertTrue(cpt.validCantusFirmus());
+		assertFalse(cpt.validCantusFirmus());
 	}
 	
 	@Test

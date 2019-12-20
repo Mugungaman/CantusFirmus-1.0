@@ -40,18 +40,6 @@ public class FuxianCounterPointLoadMetricsTest {
 		cpr.setTargetBaseSpeciesCount(targetCantusFirmusCount);
 		cpr.generateMusic();
 	}
-	
-
-//	public void setTestCantusFirmus(int[] testCFMelody) {
-//		this.testCFMelody = new TestMelody(testCFMelody, NoteLength.WHOLE_NOTE);
-//		
-//	}
-//
-//	public void setTestFirstSpecies(int[] test1SMelody) {
-//		this.test1SMelody = new TestMelody(test1SMelody, NoteLength.WHOLE_NOTE);
-//		this.test1S = true;
-//		
-//	}
 
 	public void setMode(Mode mode) {
 		this.mode = mode;
@@ -67,11 +55,10 @@ public class FuxianCounterPointLoadMetricsTest {
 		return cpr.getStats();
 	}
 
-//	public boolean validCantusFirmus() {
-//		return cantusFirmusCount == 1 ? true : false;
-//	}
-//	
-//	public boolean validFirstSpecies() {
-//		return firstSpeciesCount == 1 ? true : false;
-//	}
+	public void setBaseMelodyCount(int i) {
+		cpr.setTargetBaseSpeciesCount(i);
+		
+	}
+
+
 }
