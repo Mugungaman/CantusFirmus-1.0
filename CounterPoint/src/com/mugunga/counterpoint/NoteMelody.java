@@ -387,7 +387,7 @@ public abstract class NoteMelody extends NoteCollection {
 	public double melodyLength() {
 		double melodyLength= 0;
 		for(Note note : notes ) {
-			melodyLength += note.noteLength;
+			melodyLength += note.noteLength();
 		}
 		return melodyLength;
 	}

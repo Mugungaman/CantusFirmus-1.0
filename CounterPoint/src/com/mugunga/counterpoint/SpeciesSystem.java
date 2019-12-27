@@ -1,6 +1,7 @@
 package com.mugunga.counterpoint;
 
 public enum SpeciesSystem {
+	
 	FUXIAN_COUNTERPOINT ( 9, //minimum # of measures in a parent melody 
 						  13,  //maximum # of measures in a parent melody //TODO rule for how many notes in measure
 						  2,  //minimum # of leaps/species
@@ -10,6 +11,7 @@ public enum SpeciesSystem {
 						  4, //minimum species range
 						  new int[] {0, 2, 4, 5, 7}, //consonant intervals
 						  true),
+	
 	MARRIN_COUNTERPOINT ( 9, //minimum # of notes in a parent melody 
 			13,  //maximum # of notes in a parent melody
 			2,  //minimum # of leaps/species

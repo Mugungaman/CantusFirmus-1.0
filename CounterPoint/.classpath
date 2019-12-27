@@ -4,5 +4,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/jfugue-5.0.9.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="/Library/Frameworks/R.framework/Versions/3.6/Resources/library/rJava/jri/REngine.jar"/>
+	<classpathentry kind="lib" path="/Library/Frameworks/R.framework/Versions/3.6/Resources/library/rJava/jri/JRI.jar"/>
+	<classpathentry kind="lib" path="/Library/Frameworks/R.framework/Versions/3.6/Resources/library/rJava/jri/JRIEngine.jar"/>
+	<classpathentry kind="lib" path="/Library/Frameworks/R.framework/Versions/3.6/Resources/library/rJava/jri"/>
+	<classpathentry kind="lib" path="/Users/laurencemarrin/Downloads/mysql-connector-java-8.0.18/mysql-connector-java-8.0.18.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

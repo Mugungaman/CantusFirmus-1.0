@@ -113,10 +113,6 @@ public class SpeciesBuilder {
 		minMeasures = cantusFirmus.size();
 	}
 
-//	private void //setTestMelodyFromParent(ArrayList<Integer> childSpeciesTestMelody) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 
 	//This Constructor merely clones all fields from it's parent Species Builder so it's a separate entity and can 
 	public SpeciesBuilder(SpeciesBuilder o) {

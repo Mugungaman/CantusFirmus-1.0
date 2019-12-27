@@ -82,19 +82,19 @@ class TestCounterpointLoadMetric {
 	
 	@Test
 	void massLoadTest() {
-		int baseMelodyCount = 50;
+		int baseMelodyCount = 100;
 		ArrayList<String> csvStats = new ArrayList<String>();
 		for(int i = 1; i <= Mode.values().length; i++) {
 			Mode m = Mode.values()[i-1];
 			log("Mode: " + m);
 			int fsCounter = 0;
-			for(int j = 0; j < 10000; j++) {
+			for(int j = 0; j < 200; j++) {
 				FuxianCounterPointLoadMetricsTest cpt = new FuxianCounterPointLoadMetricsTest(Mode.values()[i-1],baseMelodyCount);
 				
 				cpt.run();
 				fsCounter += cpt.getStats().getFirstSpeciesCount();
 				//csvStats.add(cpt.getStats().toCSV());
-				if (j%100 == 0) {
+				if (j%50 == 0) {
 					log("j " + j);
 				}
 			}

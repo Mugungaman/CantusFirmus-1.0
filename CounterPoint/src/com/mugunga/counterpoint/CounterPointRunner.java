@@ -114,6 +114,7 @@ public class CounterPointRunner {
 			runFirstSpecies(cfx);
 		}
 		cfx.createMIDIfile(MIDIdirectory, generatedCantusFirmi.size() + " Master");
+		
 		//System.exit(1);
 	}
 
@@ -132,8 +133,6 @@ public class CounterPointRunner {
 			log("fail to create new line");
 			e.printStackTrace();
 		}
-
-		
 	}
 
 	private void runFirstSpecies(CantusFirmus cfx) {
