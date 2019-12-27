@@ -7,18 +7,19 @@ public class CounterPointStats {
 	private int totalBaseMelodies;
 	private int baseFailCount;
 	private int totalFirstSpeciesMelodies;
+	private Mode mode;
 	
 	public CounterPointStats() {
 		totalBaseMelodies = 0;
 		totalFirstSpeciesMelodies = 0;
 	}
 
-	public void setStartTime(long currentTimeMillis) {
-		this.startTime = currentTimeMillis;
+	public void logStartTime() {
+		this.startTime = System.currentTimeMillis();
 	}
 	
-	public void setEndTime(long currentTimeMillis) {
-		this.endTime = currentTimeMillis;
+	public void logEndTime() {
+		this.endTime = System.currentTimeMillis();
 	}
 	
 	public double firstSpeciesperBaseSpecies() {
@@ -62,7 +63,13 @@ public class CounterPointStats {
 	public double baseSpeciesSuccessRate() {
 		return (double)totalBaseMelodies/(double)baseFailCount;
 	}
-
 	
+	public void setMode(Mode m) {
+		this.mode = m;
+	}
+
+	public String toCSV() {
+		return mode.toString() + "," + totalBaseMelodies + "," + totalFirstSpeciesMelodies;
+	}
 
 }

@@ -19,7 +19,11 @@ public final class MathUtility {
 			//System.out.println(sum);
 		}
 		return (sum/numbers.length);
-		
 	}
+	
+	public static double stdFromTonic(int[] numbers) {
+		return 0;
+	}
+
 	
 }

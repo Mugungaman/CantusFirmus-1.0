@@ -4,8 +4,6 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class StepIndexCollection extends MusicIntCollection {
-	//ArrayList<Integer> steps = new ArrayList<Integer>();
-	
 	
 	public StepIndexCollection (ArrayList<Integer> steps) {
 		for(int i : steps) {

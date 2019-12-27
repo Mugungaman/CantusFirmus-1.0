@@ -1,16 +1,11 @@
 package com.mugunga.arpeggiator;
-import java.util.ArrayList;
 
-import com.mugunga.counterpoint.Interval;
-import com.mugunga.counterpoint.StepIndexCollection;
+import java.util.ArrayList;
+import com.mugunga.counterpoint.*;
 
 /**
  * 
  * @author laurencemarrin
- *
- * Each Chord is composed of stacked intervals, and each interval is a particular # of half steps.
- * 
- * For example, a Major chord is expressed as a Major 3rd Interval (4 half steps) followed by a Minor 3rd (3 half steps)
  *
  *Step reference:
  *     1   -> minor 2nd
@@ -61,7 +56,7 @@ public enum ChordType {
 			new int[] {}),       
 	MINOR_6th("Minor 6th", "-6",new Interval[]{Interval.MINOR_3RD, Interval.MAJOR_3RD,Interval.MAJOR_2ND},
 			new int[] {}),       
-	NOTHING("", "", new Interval[0], new int[0]);
+	NOTHING();
 
 	public final int ZERO_INVERSION = 0;
 	public final int FIRST_INVERSION = 1;
@@ -96,7 +91,9 @@ public enum ChordType {
 		StepIndexCollection  chordSteps = new StepIndexCollection();
 		chordSteps.add(0);
 		for(Interval i : intervals) {
+//			int nextInterval = chordSteps.sum() + i.steps;
 			chordSteps.appendInterval(i);
+//			chordSteps.add(chordSteps.getLast() + i.steps);
 //			log("chordSteps:" + chordSteps.toString());
 		}
 		return chordSteps;
@@ -187,6 +184,12 @@ public enum ChordType {
 		return null;
 	}
 
+/**
+ *  C MAJOr
+ * 
+ * 
+ * 
+ */
 
 }
 

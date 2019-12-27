@@ -113,10 +113,6 @@ public class SpeciesBuilder {
 		minMeasures = cantusFirmus.size();
 	}
 
-//	private void //setTestMelodyFromParent(ArrayList<Integer> childSpeciesTestMelody) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 
 	//This Constructor merely clones all fields from it's parent Species Builder so it's a separate entity and can 
 	public SpeciesBuilder(SpeciesBuilder o) {
@@ -192,11 +188,6 @@ public class SpeciesBuilder {
 		}
 		log("about to generate valid notes arrays");
 		generateValidNoteArrays();
-//		if(!isCantusFirmus()) {
-//			//check tritone
-//		}
-//		generatevalidnotearrays
-		
 		
 		validNextIndexes = validIndexesMap.get(noteMelody.size() + 1);
 		log("validnextIndexes: " + validNextIndexes);
@@ -207,7 +198,6 @@ public class SpeciesBuilder {
 	
 	//called during constructors
 	private void setNotesAndRanges() {
-		
 		
 		for (int i  = noteMelody.getMinNadirIndex(); i <= noteMelody.getMaxZenithIndex(); i++ ) {
 			int y = 0;
@@ -263,10 +253,10 @@ public class SpeciesBuilder {
 		
 		//an Interval is the # of half steps from the previous note, 
 		testInterval = testIndex - lastIndex;
-		log(" $$$ testingIndex:" + testIndex + "testInterval: " + testInterval + " for " + noteMelody.getAll().toString() + " $$$ "); 
-		log("final note ready? " + noteMelody.finalNoteIsReady() + "  pentultiamte found? " + noteMelody.isPentultimateFound());
+//		log(" $$$ testingIndex:" + testIndex + "testInterval: " + testInterval + " for " + noteMelody.getAll().toString() + " $$$ "); 
+//		log("final note ready? " + noteMelody.finalNoteIsReady() + "  pentultiamte found? " + noteMelody.isPentultimateFound());
 		if(isSecondSpecies()) {
-			log("parent melody length: " + noteMelody.getParentMelody().melodyLength() + " melody length: " + noteMelody.melodyLength());
+//			log("parent melody length: " + noteMelody.getParentMelody().melodyLength() + " melody length: " + noteMelody.melodyLength());
 		}
 		if(isFirstSpecies() && noteMelody.size() == noteMelody.getParentMelody().size() - 1) {
 			if (!rules.validEndIndexForSpecies(testIndex)) {
@@ -364,7 +354,7 @@ public class SpeciesBuilder {
 //			log("invalid interval test from rules...");
 			return false;
 		}
-//		log("Interval Check Passed");
+		log("Interval Check Passed");
 		
 		//Two things: if melodyInProgress had pentultimate found, set that, if needs to be pentultimate,but isn't, error false. 
 		if(!rules.checkPentultimateFound(noteMelody, testIndex, testInterval)) {
@@ -406,7 +396,7 @@ public class SpeciesBuilder {
 //	}
 
 	public boolean addIntervalAndCheckForCompletion(int interval) {
-//		log("!!!!!!adding interval " + interval + "!!!!!");
+		log("!!!!!!adding interval " + interval + "!!!!!");
 		int noteIndex = lastIndex + interval;
 		if(isFirstSpecies() && noteMelody.size() > 0) {
 			noteMelody.addMotion(rules.determineMotionType(noteMelody, interval));
@@ -438,7 +428,7 @@ public class SpeciesBuilder {
 		if(noteMelody.isPentultimateFound()) {
 			noteMelody.setFinalNoteReady();
 		}
-//		log("am 1st species?...");
+
 		if(isFirstSpecies()) {
 //			log("checking tritone");
 			if(!rules.checkLastIndexAsTritone(noteMelody, testIndex, testStepIndex)) {

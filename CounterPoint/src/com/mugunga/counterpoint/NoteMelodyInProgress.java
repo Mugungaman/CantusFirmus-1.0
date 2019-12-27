@@ -142,11 +142,11 @@ public class NoteMelodyInProgress extends NoteMelody {
 		double parentLength = 0;
 		int savedNoteIndex = 0;
 		for(Note note : parentNoteMelody) {
-			if(parentLength + note.noteLength > melodyLength) {
+			if(parentLength + note.noteLength() > melodyLength) {
 				return savedNoteIndex;
 			} else {
-				savedNoteIndex = note.keyIndex;
-				parentLength += note.noteLength;
+				savedNoteIndex = note.index();
+				parentLength += note.noteLength();
 			}
 		}
 		return 0;
@@ -156,10 +156,10 @@ public class NoteMelodyInProgress extends NoteMelody {
 		double melodyLength = melodyLength();
 		double parentLength = 0;
 		for(Note note : parentNoteMelody) {
-			if(parentLength + note.noteLength > melodyLength) {
+			if(parentLength + note.noteLength() > melodyLength) {
 				return note.index();
 			} else {
-				parentLength += note.noteLength;
+				parentLength += note.noteLength();
 			}
 		}
 		return 0;

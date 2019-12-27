@@ -1,5 +1,5 @@
 package com.mugunga.arpeggiator;
-import com.mugunga.counterpoint.xMelody;
+import com.mugunga.counterpoint.NoteMelody;
 
 /**
  * 
@@ -15,7 +15,7 @@ public class Motif {
 		 
 	}
 	
-	public Motif(xMelody melody) {
+	public Motif(NoteMelody melody) {
 		//analyze Melody to create motif
 	}
 }

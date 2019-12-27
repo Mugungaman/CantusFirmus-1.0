@@ -9,6 +9,41 @@ class TestSingleCounterpointMelodies {
 	
 	FuxianCounterPointSingleMelodyTest cpt;
 	
+	
+	/*
+	 * TODO A melody shouldn't move 6 notes in the same direction
+	 */
+	@Test
+	void tooMuchMovementInOneDirectionTest() {
+		FuxianCounterPointSingleMelodyTest cpt = new FuxianCounterPointSingleMelodyTest();
+		
+		int[] testCFMelody =   {0, 5, 4, 3, 2, 9, 8, 5, 4, 2, 1, 0}; 
+		
+		cpt.setTestCantusFirmus(testCFMelody);
+		cpt.setMode(Mode.LOCRIAN);
+		cpt.testMelody();
+		assertFalse(cpt.validCantusFirmus());
+	}
+	
+	/*
+	 * When 1S and CF start on a unison, they should not progress to an octave because 
+	 * there is no melodic movement
+	 */
+	@Test
+	void unisonOctaveViolationTest() {
+		FuxianCounterPointSingleMelodyTest cpt = new FuxianCounterPointSingleMelodyTest();
+		
+		int[] testCFMelody =   {0, 5, 4, 3, 4, 8, 9, 7, 6, 2, 1, 0}; 
+		
+		cpt.setTestCantusFirmus(testCFMelody);
+		int[] test1SMelody  =  {0,-2, -5, -4, 2, 1, 0, -2, -3, -2, -1, 0}; 
+		cpt.setTestFirstSpecies(test1SMelody);
+		cpt.setMode(Mode.LOCRIAN);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
+		assertFalse(cpt.validFirstSpecies());
+	}
+	
 	//TODO should not have 3 steps of parallel motion
 	@Test
 	void parallelMotionViolationTest() {
@@ -37,7 +72,6 @@ class TestSingleCounterpointMelodies {
 		assertTrue(cpt.validCantusFirmus());
 	}
 	
-	//TODO This melody needs to fail because the pentultimate note is not the leading tone
 	@Test
 	void phyrgianIllegalEndWithLeapTest() {
 		FuxianCounterPointSingleMelodyTest cpt = new FuxianCounterPointSingleMelodyTest();
@@ -46,7 +80,7 @@ class TestSingleCounterpointMelodies {
 		cpt.setTestCantusFirmus(testCFMelody);
 		cpt.setMode(Mode.PHYRGIAN);
 		cpt.testMelody();
-		assertTrue(cpt.validCantusFirmus());
+		assertFalse(cpt.validCantusFirmus());
 	}
 	
 	@Test
