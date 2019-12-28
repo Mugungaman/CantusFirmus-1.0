@@ -6,9 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 /**
  * This class should receive the parameters needed to create the melody. It needs to know whether
@@ -27,7 +24,7 @@ public class CounterPointRunner {
 	private File csvout = new File("cantiFirmi.csv");
 	private FileOutputStream csvfos = null;
 	private BufferedWriter csvbw;
-	private Connection dbConnection;
+	private DBHandler dbHandler;
 	
 	private SpeciesSystem speciesSystem;
 	private SpeciesType speciesType;
@@ -115,21 +112,12 @@ public class CounterPointRunner {
 		CantusFirmus cfx = new CantusFirmus(cf, test1S);
 		writeBaseSpecies(cfx);
 		generatedCantusFirmi.add(cfx);
-		Statement q;
-		try {
-			q = dbConnection.createStatement();
-			q.executeUpdate("INSERT INTO mugunga.cantus_firmi (melody, mode_id) "
-					+ "VALUES ('" + cfx.getStepIndexesAsCSV() + "' , " + cfx.getModeID() + ")");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		int x = dbHandler.insertCantusFirmus(cfx);
+		cfx.setdbID(x);
 		if(run1S) {
 			runFirstSpecies(cfx);
 		}
 		cfx.createMIDIfile(MIDIdirectory, generatedCantusFirmi.size() + " Master");
-		
-		//System.exit(1);
 	}
 
 	private void writeBaseSpecies(NoteMelody cfx) {
@@ -291,9 +279,8 @@ public class CounterPointRunner {
 		}
 	}
 
-	public void setDBConnection(Connection con) {
-		dbConnection = con;
-		
+	public void setDBHandler(DBHandler dbHandler) {
+		this.dbHandler = dbHandler;
 	}
 	
 }

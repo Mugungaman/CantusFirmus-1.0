@@ -13,7 +13,7 @@ public class Driver {
 	private static boolean quitAfterCF = false;
 	private static boolean test1S = false;
 	private static boolean run1S = true;
-	private static Connection con = null;
+	private static DBHandler dbHandler;
 	
 	private static int[] testBaseMelody =   {0, 2, 1, 3, 2, 4, 5, 4, 3, 1, 0 }; //Andrew's cantus firmus, gets melodic minor
 	private static int[] test1SMelody  =  {0, 4, 6, 5, 6, 9, 7, 6, 5, 6, 7};  //also need to raise leading tone in final bar.
@@ -21,7 +21,8 @@ public class Driver {
 
 	public static void main(String[] args) {
 		
-		dbSetup();
+		dbHandler = new DBHandler();
+		dbHandler.setup();
 		
 		cpr = new CounterPointRunner(SpeciesSystem.FUXIAN_COUNTERPOINT);
 		if(testCF) {
@@ -33,38 +34,10 @@ public class Driver {
 			cpr.setTestFirstSpeciesMelody(new TestMelody(test1SMelody,NoteLength.WHOLE_NOTE));
 		}
 		cpr.setMode(Mode.DORIAN);
-		cpr.setDBConnection(con);
+		cpr.setDBHandler(dbHandler);
 		cpr.generateMusic();
 		
-		dbCleanup();
-	}
-	
-	
-	private static void dbCleanup() {
-		try {
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}		
-	}
-
-
-	private static void dbSetup() {
-		String JdbcURL = "jdbc:mysql://localhost:3306/mugunga?useSSL=false";
-	      String Username = "gituser";
-	      String password = "gituser1";
-	      
-	      try {
-	         System.out.println("Connecting to database..............."+JdbcURL);
-	         con=DriverManager.getConnection(JdbcURL, Username, password);
-	         System.out.println("Connection is successful!!!!!!");
-	         Statement stmt = con.createStatement();
-	         stmt.close();
-	         
-	      }
-	      catch(Exception e) {
-	         e.printStackTrace();
-	      }
+		dbHandler.cleanup();
 	}
 
 

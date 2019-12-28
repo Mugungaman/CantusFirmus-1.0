@@ -21,6 +21,8 @@ public class CantusFirmus extends NoteMelody {
 	public ArrayList<Pattern> secondSpeciesMIDIPatterns = new ArrayList<Pattern>();
 	private static ArrayList<SpeciesBuilder> buildChain = new ArrayList<SpeciesBuilder>();
 	
+	private int dbID;
+	
 	
 	public CantusFirmus (SpeciesBuilder sb, boolean no1S) {
 		super(sb.getMelody());
@@ -66,14 +68,13 @@ public class CantusFirmus extends NoteMelody {
 		}
 		buildChain.remove(buildChain.size() - 1);
 	}	
+	
 	private void logFirstSpecies(SpeciesBuilder newCFB) {
 		firstSpeciesList.add(new FirstSpecies(newCFB.getMelody()));
 		String patternString = mUtility.getMIDIString(this.getLastFirstSpecies(), getMode(), mUtility.melodyStartIndex);
 		firstSpeciesPatternStrings.add(patternString);
 		firstSpeciesMIDIPatterns.add(new Pattern(patternString));
 	}
-	
-
 
 	private void writeMasterMIDIFile(String prefix) {
 		String masterMIDIPattern = cfMIDIpattern + "R ";
@@ -108,6 +109,10 @@ public class CantusFirmus extends NoteMelody {
 	
 	private void log(String msg) {
 		System.out.println("CantusFirmusLog:      " + msg);
+	}
+
+	public void setdbID(int dbID) {
+		this.dbID = dbID;
 	}
 	
 }
