@@ -14,7 +14,7 @@ public class CantusFirmus extends NoteMelody {
 	//notes in step increment (0 = tonic, 1 = a minor second, 2 =major second, 12 = octave, etc)
 	
 	private Pattern cantusFirmusPattern;
-	public ArrayList<FirstSpecies> firstSpeciesList = new ArrayList<FirstSpecies>();
+	private ArrayList<FirstSpecies> firstSpeciesList = new ArrayList<FirstSpecies>();
 	private String cfMIDIpattern = "";
 	private ArrayList<String> firstSpeciesPatternStrings = new ArrayList<String>();
 	public ArrayList<Pattern> firstSpeciesMIDIPatterns = new ArrayList<Pattern>();
@@ -31,15 +31,10 @@ public class CantusFirmus extends NoteMelody {
 	}
 
 	public void generateSpecies(SpeciesType speciesType) {
-//		if(null == testChildMelody) {
-//			log("Generate like normal");
-//		} else {
-//			log("Sending 1sTest melody: " + testChildMelody);
-//		}
+
 		SpeciesBuilder speciesZero = new SpeciesBuilder(this, speciesType);
 		for(int i : speciesZero.getValidNextIndexesRandomized()) {
 			SpeciesBuilder childSpecies = new SpeciesBuilder(speciesZero);
-//			log("---------Testing child species first note: " + i + "-------");
 			if(childSpecies.checkAndSetFirstNote(i)) {
 				buildChain.add(childSpecies);
 				recursiveMelodySequencer(buildChain);				
@@ -113,6 +108,14 @@ public class CantusFirmus extends NoteMelody {
 
 	public void setdbID(int dbID) {
 		this.dbID = dbID;
+	}
+
+	public ArrayList<FirstSpecies> getFirstSpeciesList() {
+		return firstSpeciesList;
+	}
+
+	public int getDBid() {
+		return dbID;
 	}
 	
 }
