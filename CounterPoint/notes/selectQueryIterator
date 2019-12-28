@@ -1,0 +1,8 @@
+//	         ResultSet rs = stmt.executeQuery("SELECT * FROM cantus_firmi");
+//	         while(rs.next()) {
+////	        	 rs.toString();
+//	        	 System.out.println("rs." + rs.getString(1));
+//	        	 System.out.println("rs." + rs.getString(2));
+//	        	 System.out.println("rs." + rs.getString(3));
+//	        	 System.out.println("rs." + rs.getString(4));
+//	         }

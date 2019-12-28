@@ -338,6 +338,7 @@ public abstract class NoteMelody extends NoteCollection {
 	
 	public void tailorStepIndexes() {
 		stepIndexes = new StepIndexCollection(rules.tailorStepIndexes(this));
+		System.out.println("stepIndexes:" + stepIndexes);
 	}
 
 	public boolean isUpperVoice() {
@@ -404,6 +405,14 @@ public abstract class NoteMelody extends NoteCollection {
 	
 	public double testMelodyLength() {
 		return testMelody.melodyLength();
+	}
+	
+	public int getModeID() {
+		return mode.modeID;
+	}
+	
+	public String getStepIndexesAsCSV() {
+		return stepIndexes.toString().replaceAll("[\\[\\]]", "");
 	}
 	
 }

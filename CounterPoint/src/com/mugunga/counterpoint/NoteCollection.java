@@ -71,10 +71,6 @@ public abstract class NoteCollection implements Iterable<Note> {
 		this.notes.addAll(notes.getAllNotes());
 	}
 	
-//	public void addAll(MusicIntCollection notes) {
-//		this.notes.addAll(notes.getAll());
-//		//this.notes.addAll(notes);
-//	}
 	public ArrayList<Note> getAllNotes() {
 		return notes;
 	}
@@ -104,34 +100,9 @@ public abstract class NoteCollection implements Iterable<Note> {
 		return notes.get(0).index();
 	}
 	
-	
 	public String toString() {
 		return notes.toString();
 	}
-	
-	//randomizes the notes and returns them but does not randomize the actual object's notes
-//	public ArrayList<Integer> getRandomized() {
-//		
-//		ArrayList<Integer> reduceList = new ArrayList<Integer>();
-//		ArrayList<Integer> randomizedSteps = new ArrayList<Integer>();
-//		if(notes.size() > 0) {
-//			Random random = new Random();
-////		log("reduceList:" + reduceList);
-//			for(int i : notes) {
-//				reduceList.add(i);
-//			}
-////		log("reduceList:" + reduceList);
-//			do {
-//				int randomIndex = random.nextInt(reduceList.size());
-//				randomizedSteps.add(reduceList.get(randomIndex));
-//				reduceList.remove(randomIndex);
-//			} while(reduceList.size() > 0);
-////		log(" PRE RANDOMIZED notes:" + this.notes);
-////		log(" PST RANDOMIZED notes:" + randomizedSteps);
-//		}
-//		
-//		return randomizedSteps;
-//	}
 	
 	boolean empty() {
 		return notes.size() == 0 ? true : false;
