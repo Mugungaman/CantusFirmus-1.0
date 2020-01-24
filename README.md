@@ -2,4 +2,4 @@
 
 First attempt at creating musical melody generation algorithms. 
 
-Based on Fuxian Counterpoint
+*Based on Fuxian Counterpoint
