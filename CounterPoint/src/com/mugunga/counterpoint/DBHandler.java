@@ -5,12 +5,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 public class DBHandler {
 	private Connection dbConnection = null;
 	private final String JDBCURL = "jdbc:mysql://localhost:3306/mugunga?useSSL=false";
 	private final String DBUSER = "gituser";
 	private final String DBPASSWORD = "gituser1";
+	private final String TIMEZONE = "UTC";
 	private boolean storeMelodies = true;
 	
 	public DBHandler(boolean storeMelodies) {
@@ -20,8 +22,12 @@ public class DBHandler {
 	void setup() {
 		
 	      try {
+	         Properties info = new Properties();
+	         info.setProperty("user", DBUSER);
+	         info.setProperty("password", DBPASSWORD);
+	         info.setProperty("serverTimezone", TIMEZONE);
 	         System.out.println("Connecting to database: "+JDBCURL);
-	         dbConnection=DriverManager.getConnection(JDBCURL, DBUSER, DBPASSWORD);
+	         dbConnection=DriverManager. getConnection(JDBCURL, info);
 	         System.out.println("Connection is successful.");
 	         Statement stmt = dbConnection.createStatement();
 	         stmt.close();

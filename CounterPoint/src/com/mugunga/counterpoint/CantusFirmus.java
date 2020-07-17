@@ -82,10 +82,9 @@ public class CantusFirmus extends NoteMelody {
 		Pattern masterPattern = new Pattern(masterMIDIPattern);
 		File file = new File(MIDIdirectory + prefix + cantusFirmusPattern.toString() + ".mid" );
 		try {
-		       MidiFileManager.savePatternToMidi((PatternProducer) masterPattern, file);
+			MidiFileManager.savePatternToMidi((PatternProducer) masterPattern, file);
 		} catch (Exception ex) {
-				System.out.println("Could not save midi file");
-		        ex.getStackTrace();
+			ex.getStackTrace();
 		}
 	}
 

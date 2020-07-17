@@ -1,11 +1,8 @@
 package com.mugunga.arpeggiator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class ChordSystem {
-//	HashMap<String, ChordFollowFreq> chordFreq = new HashMap<String, ChordFollowFreq>();
-//	HashMap<String, ChordFollowFreq> chordPrecede = new HashMap<String, ChordFollowFreq>();
 	HashMap<String, ChordFreq> chordFreq = new HashMap<String, ChordFreq>();
 	HashMap<String, ChordFreq> chordPrecede = new HashMap<String, ChordFreq>();
 	ChordProgression chordProg;

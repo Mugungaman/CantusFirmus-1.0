@@ -113,7 +113,6 @@ public class CounterPointRunner {
 		dbHandler.insertCantusFirmus(cfx);
 		if(run1S) {
 			runFirstSpecies(cfx);
-			
 		}
 		cfx.createMIDIfile(MIDIdirectory, generatedCantusFirmi.size() + " Master");
 	}

@@ -29,7 +29,7 @@ public class Driver {
 		if(test1S) {
 			cpr.setTestFirstSpeciesMelody(new TestMelody(test1SMelody,NoteLength.WHOLE_NOTE));
 		}
-		cpr.setMode(Mode.DORIAN);
+		cpr.setMode(Mode.AEOLIAN);
 		cpr.setDBHandler(dbHandler);
 		cpr.generateMusic();
 		
