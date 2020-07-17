@@ -406,4 +406,12 @@ public abstract class NoteMelody extends NoteCollection {
 		return testMelody.melodyLength();
 	}
 	
+	public int getModeID() {
+		return mode.modeID;
+	}
+	
+	public String getStepIndexesAsCSV() {
+		return stepIndexes.toString().replaceAll("[\\[\\]]", "");
+	}
+	
 }

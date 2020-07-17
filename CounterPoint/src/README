@@ -9,8 +9,8 @@ Programming to model musical concepts.
 
 ..............Usage..............
 
-I have no front end yet so one must run the counterpoint DRIVER from an IDE (like eclipse), at whence the folder Counterpoint\MidiFiles will 
-populate with playable midi file(s). Play the midi files with your computer's default midi. 
+I have no front end yet so one must run the counterpoint DRIVER from an IDE (like eclipse), at whence the folder 
+Counterpoint\MidiFiles will populate with playable midi file(s). Play the midi files with your computer's default midi.  
 
 Each MIDI file will have many variations of melodies based upon a single Cantus Firmus (primary melody). It will sound 
 repetitive because of my recursive algorithm, but each bar is slightly different.

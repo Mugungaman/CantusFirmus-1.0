@@ -1,11 +1,8 @@
 package com.mugunga.counterpoint;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
 
 
 public class NoteIndexCollection extends MusicIntCollection{
-	//ArrayList<Integer> notes = new ArrayList<Integer>();
 	
 	public NoteIndexCollection() {
 		
@@ -18,9 +15,5 @@ public class NoteIndexCollection extends MusicIntCollection{
 		}
 	}
 
-	
-//	@Override
-//	public Iterator<Integer> iterator() {
-//		return items.iterator();
-//	}
+
  }

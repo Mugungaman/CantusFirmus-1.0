@@ -1,5 +1,4 @@
 package com.mugunga.arpeggiator;
-import java.util.HashMap;
 
 import com.mugunga.counterpoint.NoteMelody;
 import com.mugunga.counterpoint.NoteMelodyInProgress;
