@@ -116,5 +116,9 @@ public class CantusFirmus extends NoteMelody {
 	public int getDBid() {
 		return dbID;
 	}
+
+	public int getfirstSpeciesCount() {
+		return firstSpeciesList.size();
+	}
 	
 }

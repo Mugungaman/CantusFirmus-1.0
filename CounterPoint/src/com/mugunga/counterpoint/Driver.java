@@ -22,7 +22,7 @@ public class Driver {
 		
 		cpr = new CounterPointRunner(SpeciesSystem.FUXIAN_COUNTERPOINT);
 		if(testCF) {
-			cpr.setTestBaseMelody(new TestMelody(testBaseMelody,NoteLength.WHOLE_NOTE));
+			cpr.setTestBaseMelody(new TestMelody(testBaseMelody, NoteLength.WHOLE_NOTE));
 		} else {
 			cpr.setTargetBaseSpeciesCount(200);
 		}

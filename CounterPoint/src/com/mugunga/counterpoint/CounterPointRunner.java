@@ -25,6 +25,7 @@ public class CounterPointRunner {
 	private FileOutputStream csvfos = null;
 	private BufferedWriter csvbw;
 	private DBHandler dbHandler;
+	private boolean storeInDB;
 	
 	private SpeciesSystem speciesSystem;
 	private SpeciesType speciesType;
@@ -110,7 +111,9 @@ public class CounterPointRunner {
 		CantusFirmus cfx = new CantusFirmus(cf, test1S);
 		writeBaseSpecies(cfx);
 		generatedCantusFirmi.add(cfx);
-		dbHandler.insertCantusFirmus(cfx);
+		if(storeInDB) {
+			dbHandler.insertCantusFirmus(cfx);
+		}
 		if(run1S) {
 			runFirstSpecies(cfx);
 		}
@@ -138,8 +141,10 @@ public class CounterPointRunner {
 		stats.tallyFirstSpecies(cfx.getFirstSpeciesList().size());
 		if(cfx.getFirstSpeciesList().size() > 0) {
 			cfW1s++;
-		}	
-		dbHandler.insertAllFirstSpeciesForCantusFirmus(cfx);
+		}
+		if(storeInDB) {
+			dbHandler.insertAllFirstSpeciesForCantusFirmus(cfx);
+		}
 	}
 
 	public Mode getMode() {
@@ -270,6 +275,12 @@ public class CounterPointRunner {
 
 	public void setDBHandler(DBHandler dbHandler) {
 		this.dbHandler = dbHandler;
+		this.storeInDB = true;
+	}
+
+	public int getFirstBaseMelodyFirstSpeciesCount() {
+		log("1S count: " + generatedCantusFirmi.get(0).getfirstSpeciesCount());
+		return generatedCantusFirmi.get(0).getfirstSpeciesCount();
 	}
 	
 }
