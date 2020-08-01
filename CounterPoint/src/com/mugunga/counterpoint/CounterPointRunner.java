@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
 /**
  * This class should receive the parameters needed to create the melody. It needs to know whether
  * we are using Fuxian Counterpoint or some other SpeciesSystem, as well as the mode or any 
@@ -20,16 +21,21 @@ import java.util.ArrayList;
  */
 public class CounterPointRunner {
 	
+	private static boolean logging = true;
+	
 	private final  String MIDIdirectory = "MidiFiles/LoadTest/";
 	private File csvout = new File("cantiFirmi.csv");
 	private FileOutputStream csvfos = null;
 	private BufferedWriter csvbw;
 	private DBHandler dbHandler;
+	private boolean storeInDB;
 	
 	private SpeciesSystem speciesSystem;
 	private SpeciesType speciesType;
 	private CounterPointStats stats;
 	private Mode mode;
+	private int melodyLength;
+	private boolean strictMelodyLength;
 	private TestMelody testBaseMelody;
 	private TestMelody testFirstSpeciesMelody;
 	private boolean speciesGenerationComplete = false;
@@ -41,7 +47,7 @@ public class CounterPointRunner {
 	private boolean test1S = false;
 	private boolean run1S = true;
 	private int cfW1s = 0;
-	private ArrayList <CantusFirmus> generatedCantusFirmi = new ArrayList<CantusFirmus>();
+	private List <CantusFirmus> generatedCantusFirmi = new ArrayList<>();
 	
 	public CounterPointRunner() {		
 		
@@ -52,6 +58,20 @@ public class CounterPointRunner {
 		if(speciesSystem == SpeciesSystem.FUXIAN_COUNTERPOINT) {
 			speciesType = SpeciesType.CANTUS_FIRMUS;
 		}
+		this.strictMelodyLength = false;
+		this.storeInDB = false;
+	}
+	
+	public CounterPointRunner(SpeciesSystem ss, Mode mode, int melodyLength) {		
+		this.speciesSystem = ss;
+		if(speciesSystem == SpeciesSystem.FUXIAN_COUNTERPOINT) {
+			speciesType = SpeciesType.CANTUS_FIRMUS;
+		}
+		this.mode = mode;
+		this.melodyLength = melodyLength;
+		this.strictMelodyLength = true;
+		this.storeInDB = false;
+		
 	}
 
 	public void generateMusic() {
@@ -62,7 +82,10 @@ public class CounterPointRunner {
 		stats.logStartTime();
 		stats.setMode(mode);
 		SpeciesBuilder patientZero = new SpeciesBuilder(mode, speciesType, testBaseMelody);
-		ArrayList<SpeciesBuilder> buildChain = new ArrayList<SpeciesBuilder>();
+//		if(strictMelodyLength) {
+//			patientZero.setMelodyLength(melodyLength);
+//		}
+		List<SpeciesBuilder> buildChain = new ArrayList<>();
 		buildChain.add(patientZero);
 
 		for(int i: patientZero.getNextValidIndexArrayRandomized()) {
@@ -80,14 +103,12 @@ public class CounterPointRunner {
 		closeOutputFiles();
 	}
 	
-	private void recursiveMelodySequencer(ArrayList<SpeciesBuilder> buildChain) {
-		
+	private void recursiveMelodySequencer(List<SpeciesBuilder> buildChain) {
 		SpeciesBuilder currentCFB = buildChain.get(buildChain.size()-1);
-		ArrayList<Integer> nextValidIndexes = currentCFB.getNextValidIndexArrayRandomized();
-
+		List<Integer> nextValidIndexes = currentCFB.getNextValidIndexArrayRandomized();
+//		log("about to test + " + nextValidIndexes.size() + " indexes");
 		for (int i : nextValidIndexes) {
-			//log("Current cf: " + currentCFB.getNotes().toString() + " current testIndex: " + i);
-			if (currentCFB.testAsNextIndex(i) & ! speciesGenerationComplete) {
+			if (currentCFB.testAsNextIndex(i) & !speciesGenerationComplete) {
 				SpeciesBuilder newCFB = new SpeciesBuilder(currentCFB);
 				if (newCFB.addIntervalAndCheckForCompletion(newCFB.nextInterval) & !speciesGenerationComplete) {
 					baseSpeciesCount++;
@@ -107,13 +128,17 @@ public class CounterPointRunner {
 	}
 	
 	private void processBaseSpecies(SpeciesBuilder cf) {
+		
 		CantusFirmus cfx = new CantusFirmus(cf, test1S);
 		writeBaseSpecies(cfx);
 		generatedCantusFirmi.add(cfx);
-		dbHandler.insertCantusFirmus(cfx);
+		if(storeInDB ) {
+			dbHandler.insertCantusFirmus(cfx);
+		}
 		if(run1S) {
 			runFirstSpecies(cfx);
 		}
+		log("Base Species" + cf.getNotes().getAll() + "1s count: " + cfx.getfirstSpeciesCount());
 		cfx.createMIDIfile(MIDIdirectory, generatedCantusFirmi.size() + " Master");
 	}
 
@@ -138,8 +163,10 @@ public class CounterPointRunner {
 		stats.tallyFirstSpecies(cfx.getFirstSpeciesList().size());
 		if(cfx.getFirstSpeciesList().size() > 0) {
 			cfW1s++;
-		}	
-		dbHandler.insertAllFirstSpeciesForCantusFirmus(cfx);
+		}
+		if(storeInDB) {
+			dbHandler.insertAllFirstSpeciesForCantusFirmus(cfx);
+		}
 	}
 
 	public Mode getMode() {
@@ -171,16 +198,14 @@ public class CounterPointRunner {
 		return baseSpeciesCount;
 	}
 
-	public int getFirstSpeciesCount() {
-		return stats.getFirstSpeciesCount();
-	}
-
 	public CounterPointStats getStats() {
 		return stats;
 	}
 
 	private static void log(String msg) {
-		System.out.println("CounterPointRunner Log:           " + msg);
+		if(logging) {
+			System.out.println("CounterPointRunner Log:           " + msg);
+		}
 	}
 	
 	private static void createMIDIDirectory() throws IOException {
@@ -205,31 +230,23 @@ public class CounterPointRunner {
 	
 	public static void deleteFolder(File file)
 	    	throws IOException{
-	 
 	    	if(file.isDirectory()){
-	 
 	    		//directory is empty, then delete it
 	    		if(file.list().length==0){
-	    			
 	    		   file.delete();
-	    			
 	    		}else{
 	        	   String files[] = file.list();
-	     
 	        	   for (String temp : files) {
 	        	      //construct the file structure
 	        	      File fileDelete = new File(file, temp);
-	        		 
 	        	      //recursive delete
 	        	     deleteFolder(fileDelete);
 	        	   }
-	        		
 	        	   //check the directory again, if empty then delete it
 	        	   if(file.list().length==0){
 	           	     file.delete();
 	        	   }
 	    		}
-	    		
 	    	}else{
 	    		//if file, then delete it
 	    		file.delete();
@@ -260,7 +277,6 @@ public class CounterPointRunner {
 	}
 	
 	private void closeOutputFiles() {
-
 		try {
 			csvbw.close();
 		} catch (IOException e) {
@@ -269,7 +285,16 @@ public class CounterPointRunner {
 	}
 
 	public void setDBHandler(DBHandler dbHandler) {
+		this.storeInDB = true;
 		this.dbHandler = dbHandler;
+	}
+
+	public int getFirstSpeciesCount() {
+		return stats.getFirstSpeciesCount();
+	}
+	
+	public int getFirstBaseMelodyFirstSpeciesCount() {
+		return generatedCantusFirmi.get(0).getfirstSpeciesCount();
 	}
 	
 }

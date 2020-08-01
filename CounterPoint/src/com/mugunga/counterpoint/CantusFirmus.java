@@ -1,6 +1,7 @@
 package com.mugunga.counterpoint;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jfugue.midi.MidiFileManager;
 import org.jfugue.pattern.Pattern;
@@ -45,7 +46,7 @@ public class CantusFirmus extends NoteMelody {
 	private void recursiveMelodySequencer(ArrayList<SpeciesBuilder> buildChain) {
 		
 		SpeciesBuilder currentSB = buildChain.get(buildChain.size()-1);
-		ArrayList<Integer> nextValidIndexes = currentSB.getNextValidIndexArrayRandomized();
+		List<Integer> nextValidIndexes = currentSB.getNextValidIndexArrayRandomized();
 		
 		for (int i : nextValidIndexes) {
 			//log("Current melody: " + currentSB.getNotes().getAll()+ " current testIndex: " + i);
@@ -115,6 +116,10 @@ public class CantusFirmus extends NoteMelody {
 
 	public int getDBid() {
 		return dbID;
+	}
+
+	public int getfirstSpeciesCount() {
+		return firstSpeciesList.size();
 	}
 	
 }

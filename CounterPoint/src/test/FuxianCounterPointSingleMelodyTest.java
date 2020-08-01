@@ -44,4 +44,9 @@ public class FuxianCounterPointSingleMelodyTest {
 	public boolean validFirstSpecies() {
 		return cpr.getFirstSpeciesCount() == 1 ? true : false;
 	}
+	
+	public int getFirstSpeciesCountForSingleBaseMelody() {
+		return cpr.getFirstBaseMelodyFirstSpeciesCount();
+	}
+	
 }

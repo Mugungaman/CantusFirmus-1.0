@@ -1,5 +1,5 @@
 package com.mugunga.counterpoint;
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class NoteIndexCollection extends MusicIntCollection{
@@ -8,12 +8,13 @@ public class NoteIndexCollection extends MusicIntCollection{
 		
 	}
 	
-	//This constructor deliberately does not use the add() method of parent class because it will trigger a bunch of uneeded logic
-	public NoteIndexCollection(ArrayList<Integer> notes) {
+	/*
+	 *  This constructor deliberately does not use the add() method of parent class because 
+	 *  it will trigger a bunch of uneeded logic
+	 */ 
+	public NoteIndexCollection(List<Integer> notes) {
 		for(int i : notes) {
 			items.add(i);
 		}
 	}
-
-
  }

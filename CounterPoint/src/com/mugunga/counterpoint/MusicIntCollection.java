@@ -1,12 +1,13 @@
 package com.mugunga.counterpoint;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public abstract class MusicIntCollection implements Iterable<Integer> {
-	public ArrayList<Integer> items = new ArrayList<Integer>();
+	public List<Integer> items = new ArrayList<>();
 	
-	/*
+	/**
 	 * This class has some important assumptions:
 	 * 
 	 * 1) Generally we are looking back from the most recent notes. So if we send a parameter -3, it means we want the 3rd note
@@ -42,7 +43,7 @@ public abstract class MusicIntCollection implements Iterable<Integer> {
 		this.items.addAll(items.getAll());
 	}
 	
-	public ArrayList<Integer> getAll() {
+	public List<Integer> getAll() {
 		return items;
 	}
 	
@@ -68,10 +69,10 @@ public abstract class MusicIntCollection implements Iterable<Integer> {
 	}
 	
 	//randomizes the notes and returns them but does not randomize the actual object's notes
-	public ArrayList<Integer> getRandomized() {
+	public List<Integer> getRandomized() {
 		
-		ArrayList<Integer> reduceList = new ArrayList<Integer>();
-		ArrayList<Integer> randomizedSteps = new ArrayList<Integer>();
+		List<Integer> reduceList = new ArrayList<>();
+		List<Integer> randomizedSteps = new ArrayList<>();
 		if(items.size() > 0) {
 			Random random = new Random();
 //		log("reduceList:" + reduceList);
@@ -84,12 +85,12 @@ public abstract class MusicIntCollection implements Iterable<Integer> {
 				randomizedSteps.add(reduceList.get(randomIndex));
 				reduceList.remove(randomIndex);
 			} while(reduceList.size() > 0);
-//		log(" PRE RANDOMIZED notes:" + this.items);
-//		log(" PST RANDOMIZED notes:" + randomizedSteps);
 		}
 		
 		return randomizedSteps;
 	}
+	
+	//TODO create getRandomized(int weight) where you weight the randomization to favor smaller intervals (creating a smoother melody)
 	
 	public boolean empty() {
 		return items.size() == 0 ? true : false;
@@ -103,9 +104,4 @@ public abstract class MusicIntCollection implements Iterable<Integer> {
 	private void log(String msg) {
 		System.out.println("MusicIntColl-Log:     " + msg);
 	}
-	
-	public void removeDuplicates() {
-		//
-	}
-	
 }

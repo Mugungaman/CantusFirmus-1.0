@@ -1,6 +1,5 @@
 package com.mugunga.counterpoint;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,8 +13,6 @@ public final class MusicUtility {
 	public final Map<Integer, String> indexNoteLetterMap = new HashMap<Integer, String>();
 	public final Map<String, Integer> noteLetterIndexMap = new HashMap<String, Integer>();
 	public final int START_SPECIES_ON_REST = 1001;
-	//public final static String CANTUS_FIRMUS = "Cantus Firmus";
-	//public final String FIRST_SPECIES = "First Species";
 	
 	public MusicUtility() {
 		
@@ -45,10 +42,7 @@ public final class MusicUtility {
 				break;
 			
 			case FIRST_SPECIES:
-				//int startIndex1 = noteLetterIndexMap.get(startNote.trim());
 				StepIndexCollection fs = melody.getStepIndexes();
-				//System.out.println("fs.string" + fs.toString());
-				//System.out.println("cf.getnotes" + cf.getStepIndexes());
 				
 				for (int i = 1; i <= fs.size(); i++) {
 					pattern += indexNoteLetterMap.get(startIndex + melody.getStepIndex(i - 1)) + "+";
@@ -71,7 +65,6 @@ public final class MusicUtility {
 				break;
 		}
 		
-		//System.out.println("midi pattern: " + pattern);
 		return new Pattern(pattern);
 	}
 	
@@ -79,7 +72,6 @@ public final class MusicUtility {
 	public String getMIDIString(NoteMelody melody, Mode mode, String startNote) {
 		String pattern = "";
 		int startIndex = noteLetterIndexMap.get(startNote.trim());
-		//System.out.println("Starting Index:" + startIndex);
 		
 		switch(melody.getSpeciesType()) {
 			case CANTUS_FIRMUS:

@@ -33,12 +33,12 @@ class TestSingleCounterpointMelodies {
 	void unisonOctaveViolationTest() {
 		FuxianCounterPointSingleMelodyTest cpt = new FuxianCounterPointSingleMelodyTest();
 		
-		int[] testCFMelody =   {0, 5, 4, 3, 4, 8, 9, 7, 6, 2, 1, 0}; 
+		int[] testCFMelody =   {0, -2, 0, 1, -2, -3, -4, -5, 2, 1, 0}; ; 
 		
 		cpt.setTestCantusFirmus(testCFMelody);
-		int[] test1SMelody  =  {0,-2, -5, -4, 2, 1, 0, -2, -3, -2, -1, 0}; 
+		int[] test1SMelody  =  {0, 5, 0, 1, -2, -3, -4, -5, 2, 1, 0}; 
 		cpt.setTestFirstSpecies(test1SMelody);
-		cpt.setMode(Mode.LOCRIAN);
+		cpt.setMode(Mode.PHYRGIAN);
 		cpt.testMelody();
 		assertTrue(cpt.validCantusFirmus());
 		assertFalse(cpt.validFirstSpecies());
@@ -119,7 +119,7 @@ class TestSingleCounterpointMelodies {
 		cpt.setTestCantusFirmus(testCFMelody);
 		cpt.setMode(Mode.IONIAN);
 		cpt.testMelody();
-		assertTrue(cpt.validCantusFirmus());
+		assertFalse(cpt.validCantusFirmus());
 	}
 	
 	@Test
@@ -164,6 +164,43 @@ class TestSingleCounterpointMelodies {
 		assertTrue(cpt.validCantusFirmus());
 		assertTrue(cpt.validFirstSpecies());
 		//TODO assertEquals(cpy.failCode,FailCode.ILLEGAL_VOICE_CROSS), etc
+	}
+	
+	@Test
+	void firstSpeciesCountTest001() {
+		FuxianCounterPointSingleMelodyTest cpt = new FuxianCounterPointSingleMelodyTest();
+		
+		int[] testCFMelody =   {0, -2, 3, 2, 1, -3, -4, 3, 2, 1, 0}; 
+		cpt.setTestCantusFirmus(testCFMelody);
+		cpt.setMode(Mode.AEOLIAN);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
+		assertEquals(cpt.getFirstSpeciesCountForSingleBaseMelody(),0);
+	}
+	
+	@Test
+	void firstSpeciesCountTest002() {
+		FuxianCounterPointSingleMelodyTest cpt = new FuxianCounterPointSingleMelodyTest();
+		
+		int[] testCFMelody =   {0, 5, 4, 3, 4, 8, 9, 5, 4, 3, 0, 1, 0}; 
+		cpt.setTestCantusFirmus(testCFMelody);
+		cpt.setMode(Mode.AEOLIAN);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
+		assertEquals(cpt.getFirstSpeciesCountForSingleBaseMelody(),2);
+	}
+	
+	@Test
+	void firstSpeciesCountTest003() {
+		FuxianCounterPointSingleMelodyTest cpt = new FuxianCounterPointSingleMelodyTest();
+		
+		int[] testCFMelody =   {0, 7, 6, 8, 7, 8, 9, 2, 3, 4, 3, 1, 0}; 
+		cpt.setTestCantusFirmus(testCFMelody);
+		cpt.setMode(Mode.AEOLIAN);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
+		assertEquals(cpt.getFirstSpeciesCountForSingleBaseMelody(),28);
+		
 	}
 	
 	

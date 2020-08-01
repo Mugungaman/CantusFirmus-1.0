@@ -2,6 +2,7 @@ package com.mugunga.counterpoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 /**
  * 
@@ -9,7 +10,7 @@ import java.util.Map;
  *
  */
 public class SpeciesBuilder {
-	//public boolean logTestString = false;
+	//testing parameters, turn these on for extra logging. 
 	public boolean logginOn = false;
 	public boolean logCF = false;
 	public boolean testingAMelody = false;
@@ -21,13 +22,12 @@ public class SpeciesBuilder {
 	private int minNotes;
     //private boolean seedNextIndexNoteArray = false;
 
-	private NoteIndexCollection validNextIndexes;// = new NoteIndexCollection();
+	private NoteIndexCollection validNextIndexes;
 	private NoteIndexCollection validNextIndexesSaved;
-	//private TestMelody testMelody;
+	private int melodyLength;
 	private int lastIndex = 0;
 	private int lastInterval = 0;
 	private Map<Integer, Integer> indexMap = new HashMap<Integer, Integer>();
-	//private MelodyInProgress melodyInProgress; // = new MelodyInProgress();
 	private NoteMelodyInProgress noteMelody;
 	
 	//Test Fields used to vet whether the current note being tested will be a valid addition to the melody
@@ -43,7 +43,7 @@ public class SpeciesBuilder {
 	
 	//main constructor from Driver. This SB will create Cantus Firmi
 	public SpeciesBuilder(Mode mode, 
-						SpeciesType speciesType, 
+						SpeciesType speciesType,
 						TestMelody testMelody) {
 		
 		rules = new SpeciesRules(speciesType);
@@ -51,7 +51,7 @@ public class SpeciesBuilder {
 		maxMeasures = rules.maxMeasures;
 		minMeasures = rules.minMeasures;
 		
-		ArrayList<Integer> startIdxList = new ArrayList<Integer>();
+		List<Integer> startIdxList = new ArrayList<>();
 		if(null == testMelody) {
 			log("ASDF adding valid StartIndex");
 			for(int i : rules.validStartIndexes ) {
@@ -69,7 +69,6 @@ public class SpeciesBuilder {
 		
 		validIndexesMap = new HashMap <Integer, NoteIndexCollection>();
 		validIndexesMap.put(1, new NoteIndexCollection(startIdxList) );
-//		log("validIndexesMap" + validIndexesMap);
 		validNextIndexes = validIndexesMap.get(1);
 		lastIndex = 0;
 	}
@@ -113,7 +112,11 @@ public class SpeciesBuilder {
 	}
 
 
-	//This Constructor merely clones all fields from it's parent Species Builder so it's a separate entity and can 
+	/*
+	 * This Constructor merely clones all fields from it's parent Species Builder 
+	 * 	so it's a separate entity and can be manipulated without altering the original. 
+	 */
+	
 	public SpeciesBuilder(SpeciesBuilder o) {
 		this.rules = o.rules;
 		//log("SB second constructor rules:" + rules + " speciesType = " + rules.speciesType);
@@ -136,13 +139,7 @@ public class SpeciesBuilder {
 		this.maxNotes = o.maxNotes;
 		this.minNotes = o.minNotes;
 		this.indexMap = o.indexMap;
-		
-//		if(testingAMelody) {
-//			this.testMelody = new NoteIndexCollection();
-//			for(int i : o.testMelody.getAll()) {
-//				this.testMelody.add(i);
-//			}			
-//		}
+		this.melodyLength = o.melodyLength;
 		
 		validNextIndexes = new NoteIndexCollection();
 		for(int i : o.validNextIndexes) {
@@ -154,7 +151,14 @@ public class SpeciesBuilder {
 				this.validNextIndexesSaved.add(i);
 			}			
 		}
-//		log("validNextIndexes:" + validNextIndexes);
+	}
+	
+	public void setMelodyLength(int melodyLength) {
+		this.melodyLength = melodyLength;
+		this.maxMeasures = melodyLength;
+		this.minMeasures = melodyLength;
+		this.rules.setStrictMelodyLength(melodyLength);
+		
 	}
 	
 	public boolean checkAndSetFirstNote(int firstNote) {
@@ -164,8 +168,6 @@ public class SpeciesBuilder {
 			log("failed rules check");
 			return false;
 		}
-//		log("species Type:" + rules.speciesType);
-//		log("Setting first note:" + firstNote + "first species?" + isFirstSpecies());
 		if(isCantusFirmus() || isFirstSpecies()) {
 			noteMelody.addNote(firstNote, NoteLength.WHOLE_NOTE.noteLength);			
 		} else if(isSecondSpecies()) {
@@ -247,16 +249,16 @@ public class SpeciesBuilder {
 			logginOn = false;
 		}
 		
-		//the starting note is 0, so our Index is the # of half steps away from the starting note. 
+		//the starting note is 0, so our testIndex is the # of half steps away from the starting note. 
 		this.testIndex = testIndex;
 		
 		//an Interval is the # of half steps from the previous note, 
 		testInterval = testIndex - lastIndex;
-//		log(" $$$ testingIndex:" + testIndex + "testInterval: " + testInterval + " for " + noteMelody.getAll().toString() + " $$$ "); 
-//		log("final note ready? " + noteMelody.finalNoteIsReady() + "  pentultiamte found? " + noteMelody.isPentultimateFound());
+		
 		if(isSecondSpecies()) {
-//			log("parent melody length: " + noteMelody.getParentMelody().melodyLength() + " melody length: " + noteMelody.melodyLength());
+			//TODO Coming Soon... 
 		}
+		
 		if(isFirstSpecies() && noteMelody.size() == noteMelody.getParentMelody().size() - 1) {
 			if (!rules.validEndIndexForSpecies(testIndex)) {
 //				log("needs to be last note of species but isn't");
@@ -277,12 +279,12 @@ public class SpeciesBuilder {
 			} 
 		}
 		
-		//is note in bounds of cantus firmus range? -> if not, sets testNote
+		//is note ibeyond predetermined range for this melody?
 		if(!rules.checkTestNoteRange(testIndex, noteMelody)) {
 //			log("Index " + testIndex + " out of range");
 			return false;
 		}
-//		log("Index Bounds Passed");
+		log("Index Bounds Passed");
 		
 		setTestStepFields();
 		
@@ -304,7 +306,7 @@ public class SpeciesBuilder {
 		}
 		
 		if(noteMelody.size() > 0) {
-//			log("about to check motion..");
+			log("about to check motion..");
 			if(!rules.validMotionCheck(noteMelody, testIndex, testInterval)) {
 //				log("motion issue detected");
 				return false;
@@ -339,7 +341,7 @@ public class SpeciesBuilder {
 //			log("rules note repetition check failed testing: " + testIndex + " for " + melodyInProgress.getAll());
 			return false;
 		}
-//		log("Repetition Check Passed");
+		log("Repetition Check Passed");
 		
 		
 		if(!rules.checkLeaps(noteMelody, testIndex)) {
@@ -350,30 +352,25 @@ public class SpeciesBuilder {
 		
 		
 		if(!rules.validTestInterval(noteMelody, testInterval, testStepInterval)) {
-//			log("invalid interval test from rules...");
+			log("invalid interval test from rules...");
 			return false;
 		}
-		log("Interval Check Passed");
 		
-		//Two things: if melodyInProgress had pentultimate found, set that, if needs to be pentultimate,but isn't, error false. 
+		/*
+		 * Two things: 
+		 *     1) If a valid pentultimate note is found, set that
+		 *     2) If this note *needs* to be the pentultimate based on length constraints, 
+		 *     but isn't, return false
+		 */
+		log("Checking pentultimate");
 		if(!rules.checkPentultimateFound(noteMelody, testIndex, testInterval)) {
-			
-//			log("pentultimate check issue, failing" + testIndex + " for: " + melodyInProgress.getAll());
+			log("Failed Pentultimate. Needed to be but was not");
 			return false;
 		}
+		log("Pentultimate Found?: " + noteMelody.isPentultimateFound());
 		
-//		log("Pentultimate has determine: " + melodyInProgress.isPentultimateFound());
 		
-//		if(isSecondSpecies()) {
-//			log("looking for valid second note");
-//			if(!rules.getValid2SHalfNotes()) {
-//				//No valid half note, return false;
-//			} else {
-//				//return valid half notes to parent.
-//			}
-//		}
-		
-//		log("PASSED ALL");
+		log("PASSED ALL"); //If we get to this point, we have found a valid note that can be added to the melody. 
 		nextInterval = testInterval;
 		nextMotion = testMotionType;
 		return true;
@@ -414,17 +411,19 @@ public class SpeciesBuilder {
 		noteMelody.addStepIndex(indexMap.get(noteIndex));
 //		log("notes after adding: " + melodyInProgress);
 		
-//		log("about to check if we have completed a species with " + testNoteIndex);
+		log("about to check if we have completed a species with " + noteIndex);
 		
-//		log("is my final note ready?" + melodyInProgress.finalNoteIsReady());
+		log("is my final note ready?" + noteMelody.finalNoteIsReady());
 		if(noteMelody.finalNoteIsReady()) {
 			//finalNoteReady = false;
+			log("final Note is Ready! checking for valid end index...");
 			if(rules.validEndIndexForSpecies(noteIndex)) {
 				return true;
 			} 
 		}
 		
 		if(noteMelody.isPentultimateFound()) {
+			log("Setting final Note Ready");
 			noteMelody.setFinalNoteReady();
 		}
 
@@ -441,9 +440,10 @@ public class SpeciesBuilder {
 		}
 		lastInterval = interval;
 		lastIndex = noteIndex;
-
+		
+		log("About prune and return, false, I am note a complete melody!");
 		pruneValidIndexArrays();
-//		log("About to return, am I complete?");
+		
 		return false;
 	}
 	
@@ -451,11 +451,11 @@ public class SpeciesBuilder {
 		return noteMelody;
 	}
 
-	public ArrayList<Integer> getValidNextIndexes() {
+	public List<Integer> getValidNextIndexes() {
 		return validNextIndexes.getAll();
 	}
 	
-	public ArrayList<Integer>getValidNextIndexesRandomized() {
+	public List<Integer>getValidNextIndexesRandomized() {
 		return validNextIndexes.getRandomized();
 	}
 	
@@ -499,14 +499,15 @@ public class SpeciesBuilder {
 	
 	private void generateCFArraysFromValidIndexes() {
 		int c = 0;
-		for(int i = 1; i <= maxMeasures; i ++) {
+		int maxNotes = melodyLength == 0 ? (int)maxMeasures : melodyLength;
+		for(int i = 1; i <= maxNotes; i ++) {
 			c++;
 			ArrayList<Integer> currIdxList = new ArrayList<Integer>();
 			if(i == 1) {
 				for(int j : rules.validStartIndexes) {
 					currIdxList.add(j);
 				}
-			} else if(i == maxMeasures) {
+			} else if(i == maxNotes) {
 				for(int j : rules.validEndIndexes) {
 					currIdxList.add(j);
 				}
@@ -685,6 +686,7 @@ public class SpeciesBuilder {
 	
 	
 	public void pruneValidIndexArrays() {
+		log("Hello prune indexes");
 		validNextIndexes = new NoteIndexCollection();
 		
 		if(noteMelody.pruneIndexArraysForVoiceDisposition()) {
@@ -692,7 +694,6 @@ public class SpeciesBuilder {
 			pruneForUpperLowerVoice();
 			noteMelody.indexArraysPrunedForVoiceDisposition();
 		}
-		
 //		log("melodyInProgress size:" + melodyInProgress.size());
 		
 		
@@ -722,24 +723,31 @@ public class SpeciesBuilder {
 						tritoneResolutionIndex.add(j);
 					}
 				}
-				
 			}
 			validNextIndexes = tritoneResolutionIndex;
-//			log(validNextIndexes + "c next indexes");
+			log(validNextIndexes + "c next indexes");
 			
-			//melodyInProgress.setTritoneResolved();
 		} else if(noteMelody.leapTally() >= rules.maxLeaps) {
+			
 			NoteIndexCollection leapRestraintIndexes = new NoteIndexCollection();
 			for(int j : validNextIndexes) {
-//				log("checking j" + j);
+				log("checking j" + j);
 				if(Math.abs(noteMelody.getLast() - j) == 1) {
 					leapRestraintIndexes.add(j);
 				}
 			}
-//			log("max leap pruning?" + leapRestraintIndexes);
+			log("max leap pruning?" + leapRestraintIndexes);
 			validNextIndexes = leapRestraintIndexes;
 		}
-		
+		log("valid indexes checkpoint b:" + validNextIndexes);
+		/* 
+		 * if the next note needs to be a pentultimate approach back to the ending note, 
+		 * limit the validNextIndexes to valid pentulatimate indexes. 
+		 */
+//		if(isCantusFirmus() && noteMelody.size() == maxMeasures - 2) {
+//			validNextIndexes = new NoteIndexCollection(noteMelody.getValidPentultimates());
+//		}
+		log("valid indexes checkpoint a :" + validNextIndexes);
 		
 		
 		if(isSecondSpecies()) {
@@ -780,7 +788,8 @@ public class SpeciesBuilder {
 				case 3:
 					addIfConsonantHarmony(lastNote - 1, nextParentDownbeat, validNextDownbeatIndexes );
 					addIfConsonantHarmony(lastNote + 2, nextParentDownbeat, validNextDownbeatIndexes );
-//					addIfConsonantHarmony(lastNote + 1, nextParentDownbeat, validNextDownbeatIndexes ); //TODO can we jump up a fourth then climb to the fifth?
+					//TODO determine if its valid to jump up a fourth then climb to the fifth?
+//					addIfConsonantHarmony(lastNote + 1, nextParentDownbeat, validNextDownbeatIndexes ); 
 					break;
 				case -3:
 					addIfConsonantHarmony(lastNote + 1, nextParentDownbeat, validNextDownbeatIndexes );
@@ -823,7 +832,7 @@ public class SpeciesBuilder {
 				validNextIndexes = validNextHalfbeatIndexes;
 			}
 			
-			log("final form validNextIndexes:" + validNextIndexes);
+			log("valid indexes checkpoint c:" + validNextIndexes);
 			
 //			if(noteMelody.size() % 2 == 0) {
 //				for(int i : validNextIndexes) {
@@ -991,13 +1000,14 @@ public class SpeciesBuilder {
 //				validNextIndexes = validNextIndexesSaved;
 //			}
 		}
+		log("return valid indexes after pruning:" + validNextIndexes);
 		
 	}
 
 	private void pruneForUpperLowerVoice() {
 		if(isFirstSpecies()) {
 			for(int i = 1; i <= noteMelody.getParentMelody().size(); i++) {
-				ArrayList<Integer> currIdxList = validIndexesMap.get(i).getAll();
+				List<Integer> currIdxList = validIndexesMap.get(i).getAll();
 				for (int j = currIdxList.size() - 1; j >= 0	; j--) {
 					if(noteMelody.isUpperVoice() && 
 							noteMelody.getParentMelody().get(i) > currIdxList.get(j)) {
@@ -1047,11 +1057,11 @@ public class SpeciesBuilder {
 		return false;
 	}
 
-	public ArrayList<Integer> getNextValidIndexArray() {
+	public List<Integer> getNextValidIndexArray() {
 		return validIndexesMap.get(noteMelody.size() + 1).getAll();
 	}
 
-	public ArrayList<Integer> getNextValidIndexArrayRandomized() {
+	public List<Integer> getNextValidIndexArrayRandomized() {
 //		log("notes:" + melodyInProgress.getAll().toString());
 		if(null == noteMelody) {
 			log("notes are null");
@@ -1080,7 +1090,7 @@ public class SpeciesBuilder {
 		testStepIndex = indexMap.get(testIndex);
 		testStepInterval = testStepIndex - indexMap.get(lastIndex);
 //		log("testStepInterval:" + testStepInterval);
-		
 	}
+
 
 }

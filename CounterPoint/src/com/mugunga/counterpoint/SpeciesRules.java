@@ -19,6 +19,8 @@ import java.util.ArrayList;
  */
 public class SpeciesRules {
 	
+	private boolean logging = false;
+	
 	private static final int TRITONE_STEPS = Interval.TRITONE.steps;
 	private static final int TRITONE_INDEXES = Interval.TRITONE.modeIndex;
 	private static final int MELODIC_INDEX = 5;
@@ -44,8 +46,8 @@ public class SpeciesRules {
 	public final int[] invalidStepOutlines;
 	
 	//SpeciesSystem variables
-	public final int maxMeasures;
-	public final int minMeasures;
+	public int maxMeasures;
+	public int minMeasures;
 	public final int minLeaps;
 	public final int maxLeaps;
 	
@@ -61,6 +63,7 @@ public class SpeciesRules {
 		minMeasures = speciesType.speciesSystem.minMeasures;
 		minLeaps = speciesType.speciesSystem.minLeaps;
 		maxLeaps = speciesType.speciesSystem.maxLeaps;
+		
 	}
 
 	/*
@@ -78,12 +81,12 @@ public class SpeciesRules {
 	/*
 	 * Determine if this note can be the second to last note (implying the next note will attempt to conclude the melody)
 	 */
-	public boolean checkAsPotentialPentultimate(NoteMelodyInProgress noteMelody, int testIndex,  int testInterval) {
+	public boolean checkAndSetPentultimate(NoteMelodyInProgress noteMelody, int testIndex,  int testInterval) {
 		boolean pentultimateFound = false;
-//		log("melody's valid pentultimates:" + melody.getValidPentultimates());
-//		log("are we testing a valid Pentultimate:" + melody.getValidPentultimates().contains(testIndex));
+		log("melody's valid pentultimates:" + noteMelody.getValidPentultimates());
+		log("are we testing a valid Pentultimate:" + noteMelody.getValidPentultimates().contains(testIndex));
 		if(!noteMelody.getValidPentultimates().contains(testIndex)) {
-//			log("valid pents doesn't contain my index");
+			log("valid pents doesn't contain my index");
 			return false;
 		}
 		
@@ -303,7 +306,7 @@ public class SpeciesRules {
 		 */
 		if(noteMelody.size() > 2) {
 			if(!consecutiveLeapsCheck(testInterval, noteMelody )) {
-//				log("consecutive leaps check");
+				log("consecutive leaps check");
 				return false;
 			}
 		}
@@ -506,7 +509,9 @@ public class SpeciesRules {
 	}
 	
 	private void log(String msg) {
-		System.out.println("Rules-Log:            " + msg);
+		if(logging) {
+			System.out.println("Rules-Log:            " + msg);
+		}
 	}
 
 	public boolean validateTestInterval(int testInterval) {
@@ -544,13 +549,13 @@ public class SpeciesRules {
 		
 		if(isCantusFirmus() || isFirstSpecies()) {
 			if(!directionChangeCheck(noteMelody.getIntervals(), testInterval)) {
-//				log("direction has changed too much");
+				log("direction has changed too much");
 				return false;
 			}	
 		}
 		
 		if(Math.abs(testStepInterval) == TRITONE_STEPS ) {
-//			log("Cannot jump a tritone");
+			log("Cannot jump a tritone");
 			return false;
 		}
 		
@@ -566,6 +571,12 @@ public class SpeciesRules {
 		return false;
 	}
 
+	/*
+	 * This checks for any violation relating to direction changeS:
+	 * 		-Too many direction changes
+	 * 		-Too many steps in the same direction
+	 *      -Too many notes moving in the same direction
+	 */
 	private boolean directionChangeCheck(IntervalIndexCollection intervals, int testInterval) {
 		//if meldoy changes direction more than X times in a row, BAD
 		
@@ -712,7 +723,7 @@ public class SpeciesRules {
 		if (noteMelody.size() >= 5) {
 			if(testIndex == noteMelody.get(-2) &&
 				testIndex == noteMelody.get(-4)) {
-				log("Cannot have B x B x B pattern:" + testIndex + noteMelody.getAll());
+//				log("Cannot have B x B x B pattern:" + testIndex + noteMelody.getAll());
 				return false;
 			}
 			
@@ -1290,31 +1301,28 @@ public class SpeciesRules {
 	}
 
 	public boolean checkPentultimateFound(NoteMelodyInProgress noteMelody, int testIndex, int testInterval) {
-//		log("checking pentultimate...." + testIndex + " for " + melody.getAll() + " min notes: " + minNotes);
-		//log("maxNotes:" + maxNotes);
-		
+		log("checking pentultimate...." + testIndex + " for " + noteMelody.getAll());
+		log("checking pentultimate after " + noteMelody.size() + "notes, min/max measure: " + minMeasures + "/" + maxMeasures);
 		if(isCantusFirmus() && noteMelody.size() >= minMeasures - 2 && !noteMelody.finalNoteIsReady()) {	
-//			log("inside check cantus");
-			if(!checkAsPotentialPentultimate(noteMelody, testIndex, testInterval)) {
-//				log("Pentultimate is breached, should be quitting...");
-				//TODO verify assumes maxNotes for a child melody is set to the parent size??
+			log("inside check cantus");
+			if(!checkAndSetPentultimate(noteMelody, testIndex, testInterval)) {
+				log("Pentultimate is breached, should be quitting...");
+//				return false;
 				if(noteMelody.size() == maxMeasures - 2 && !noteMelody.finalNoteIsReady()) {
-//					log("breaching max notes for CF, must be a penutltimate");
+					log("breaching max notes for CF, must be a penutltimate");
 					return false;
 				}
-			} else {
-//				log("checkPentultimateReady returned true");
 			}
 		} else if(isFirstSpecies() && noteMelody.size() == noteMelody.parentNoteMelody.size() - 2 && !noteMelody.finalNoteIsReady()) {
 //			log("about to check 1S");
-			if(!checkAsPotentialPentultimate(noteMelody, testIndex, testInterval)) {
+			if(!checkAndSetPentultimate(noteMelody, testIndex, testInterval)) {
 //				log("must be pentultiamte for 1sr species here:");
 				return false;
 			}
 			
 		} else if(isSecondSpecies() && noteMelody.melodyLength() >= noteMelody.parentMelodyLength() - 1 && !noteMelody.finalNoteIsReady()) {
-			if(!checkAsPotentialPentultimate(noteMelody, testIndex, testInterval)) {
-				log("second species must be a pentultimate by this point (FAIL!): " + noteMelody.melodyLength());
+			if(!checkAndSetPentultimate(noteMelody, testIndex, testInterval)) {
+//				log("second species must be a pentultimate by this point (FAIL!): " + noteMelody.melodyLength());
 				return false;
 			}
 		}
@@ -1514,6 +1522,12 @@ public class SpeciesRules {
 		return true;
 		
 		//TODO is there anything else that needs to be checked?
+	}
+
+	public void setStrictMelodyLength(int melodyLength) {
+		this.maxMeasures = melodyLength;
+		this.minMeasures = melodyLength;
+		
 	}
 }
 	

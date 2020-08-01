@@ -1,5 +1,6 @@
 package com.mugunga.counterpoint;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  A Note Melody that is a type of Note Melody, but it tracks certain characteristics that need to be met for
@@ -17,7 +18,7 @@ public class NoteMelodyInProgress extends NoteMelody {
 	private boolean pentultimateWholeNote;
 	
 	//valid notes for the second to last note, do we need to add 5-1 to allow fifths? 
-	private ArrayList<Integer> validPentultimates = new ArrayList<Integer>();
+	private List<Integer> validPentultimates = new ArrayList<>();
 	
 	public NoteMelodyInProgress() {
 		
@@ -34,12 +35,9 @@ public class NoteMelodyInProgress extends NoteMelody {
 		this.skipFirstDownbeat = melody.skipFirstDownbeat;
 		this.pentultimateWholeNote = melody.pentultimateWholeNote;
 //		this.killMelody = melody.killMelody;
-//		log("melody clone constructor:" + finalNoteReady);
-//		log("melody clone constructor:" + pentultimateFound);
 		for(int i : melody.validPentultimates) {
 			validPentultimates.add(i);
 		}
-		
 	}
 	
 	public NoteMelodyInProgress(SpeciesRules rules, Mode mode) {
@@ -53,11 +51,6 @@ public class NoteMelodyInProgress extends NoteMelody {
 	}
 	
 	public void setTritoneResolved() {
-		if(tritoneResolutionNeeded) {
-			log("RESOLVING TRITTTTONE!" + getAll());
-			log("w/ parent: " + parentNoteMelody.getAll());
-			
-		}
 		tritoneResolutionNeeded = false;
 	}
 	
@@ -75,11 +68,9 @@ public class NoteMelodyInProgress extends NoteMelody {
 		if(!upperVoice && !lowerVoice && hasParentMelody()) {
 			int cfNote = parentNoteMelody.getFirst();
 			if(newNote > cfNote) {
-//				log("setting upper voice to true in MIP:" + newNote + " vs cf note: " + cfNote);
 				upperVoice = true;
 				pruneIndexArraysForVoiceDisposition = true;
 			} else if(newNote< cfNote) {
-//				log("setting lower voice to true in MIP:" + newNote + " vs cf note: " + cfNote);
 				lowerVoice = true;
 				pruneIndexArraysForVoiceDisposition = true;
 			}
@@ -100,7 +91,6 @@ public class NoteMelodyInProgress extends NoteMelody {
 	}
 	
 	public void setPentultimateFound(boolean pentultimateFound) {
-//		log("actually seting P found");
 		this.pentultimateFound = pentultimateFound;
 	}
 
@@ -108,8 +98,7 @@ public class NoteMelodyInProgress extends NoteMelody {
 		validPentultimates.add(noteIndex);
 	}
 
-	public ArrayList<Integer> getValidPentultimates() {
-		
+	public List<Integer> getValidPentultimates() {
 		return validPentultimates;
 	}
 

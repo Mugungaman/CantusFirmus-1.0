@@ -8,6 +8,7 @@ public class Driver {
 	private static boolean test1S = false;
 	private static boolean run1S = true;
 	private static DBHandler dbHandler;
+	
 	// storeMelodies tells the dbHandler whether to insert melodies into our database. 
 	private static boolean storeMelodies = true;
 	
@@ -20,7 +21,9 @@ public class Driver {
 		dbHandler = new DBHandler(storeMelodies);
 		dbHandler.setup();
 		
-		cpr = new CounterPointRunner(SpeciesSystem.FUXIAN_COUNTERPOINT);
+		cpr = new CounterPointRunner(SpeciesSystem.FUXIAN_COUNTERPOINT,
+										Mode.AEOLIAN,
+										9);
 		if(testCF) {
 			cpr.setTestBaseMelody(new TestMelody(testBaseMelody,NoteLength.WHOLE_NOTE));
 		} else {
@@ -29,8 +32,8 @@ public class Driver {
 		if(test1S) {
 			cpr.setTestFirstSpeciesMelody(new TestMelody(test1SMelody,NoteLength.WHOLE_NOTE));
 		}
-		cpr.setMode(Mode.AEOLIAN);
-		cpr.setDBHandler(dbHandler);
+		
+//		cpr.setDBHandler(dbHandler);
 		cpr.generateMusic();
 		
 		dbHandler.cleanup();
