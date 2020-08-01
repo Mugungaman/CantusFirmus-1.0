@@ -1,6 +1,7 @@
 package com.mugunga.counterpoint;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jfugue.midi.MidiFileManager;
 import org.jfugue.pattern.Pattern;
@@ -14,12 +15,12 @@ public class CantusFirmus extends NoteMelody {
 	//notes in step increment (0 = tonic, 1 = a minor second, 2 =major second, 12 = octave, etc)
 	
 	private Pattern cantusFirmusPattern;
-	private ArrayList<FirstSpecies> firstSpeciesList = new ArrayList<FirstSpecies>();
+	private List<FirstSpecies> firstSpeciesList = new ArrayList<>();
 	private String cfMIDIpattern = "";
-	private ArrayList<String> firstSpeciesPatternStrings = new ArrayList<String>();
-	public ArrayList<Pattern> firstSpeciesMIDIPatterns = new ArrayList<Pattern>();
-	public ArrayList<Pattern> secondSpeciesMIDIPatterns = new ArrayList<Pattern>();
-	private static ArrayList<SpeciesBuilder> buildChain = new ArrayList<SpeciesBuilder>();
+	private List<String> firstSpeciesPatternStrings = new ArrayList<>();
+	public List<Pattern> firstSpeciesMIDIPatterns = new ArrayList<>();
+	public List<Pattern> secondSpeciesMIDIPatterns = new ArrayList<>();
+	private static List<SpeciesBuilder> buildChain = new ArrayList<>();
 	
 	private int dbID;
 	
@@ -42,10 +43,10 @@ public class CantusFirmus extends NoteMelody {
 		}
 	}
 	
-	private void recursiveMelodySequencer(ArrayList<SpeciesBuilder> buildChain) {
+	private void recursiveMelodySequencer(List<SpeciesBuilder> buildChain) {
 		
 		SpeciesBuilder currentSB = buildChain.get(buildChain.size()-1);
-		ArrayList<Integer> nextValidIndexes = currentSB.getNextValidIndexArrayRandomized();
+		List<Integer> nextValidIndexes = currentSB.getNextValidIndexArrayRandomized();
 		
 		for (int i : nextValidIndexes) {
 			//log("Current melody: " + currentSB.getNotes().getAll()+ " current testIndex: " + i);
@@ -66,6 +67,7 @@ public class CantusFirmus extends NoteMelody {
 	
 	private void logFirstSpecies(SpeciesBuilder newCFB) {
 		firstSpeciesList.add(new FirstSpecies(newCFB.getMelody()));
+		log("First Species: " + newCFB.getMelody().getAll());
 		String patternString = mUtility.getMIDIString(this.getLastFirstSpecies(), getMode(), mUtility.melodyStartIndex);
 		firstSpeciesPatternStrings.add(patternString);
 		firstSpeciesMIDIPatterns.add(new Pattern(patternString));
@@ -109,7 +111,7 @@ public class CantusFirmus extends NoteMelody {
 		this.dbID = dbID;
 	}
 
-	public ArrayList<FirstSpecies> getFirstSpeciesList() {
+	public List<FirstSpecies> getFirstSpeciesList() {
 		return firstSpeciesList;
 	}
 

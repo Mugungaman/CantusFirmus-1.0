@@ -1,5 +1,6 @@
 package com.mugunga.counterpoint;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class contains all the rule checks for building the melody. SpeciesBuilder will call this class
@@ -807,9 +808,9 @@ public class SpeciesRules {
 		return speciesType == SpeciesType.FOURTH_SPECIES ? true : false;
 	}
 	
-	public ArrayList<Integer> tailorStepIndexes(NoteMelody melody) {
+	public List<Integer> tailorStepIndexes(NoteMelody melody) {
 //		log("tailoring Step Indexes...");
-		ArrayList<Integer> stepIndexes = new ArrayList<Integer>();
+		List<Integer> stepIndexes = new ArrayList<>();
 		int c = 0;
 		int stepIndex = 0;
 		//TODO RAISE FINAL BAR LOGIC APPLIED TO RAISE ANY INSTANCE IN FINAL BAR. REMOVING FOR NOW
@@ -1238,7 +1239,7 @@ public class SpeciesRules {
 		if(isFirstSpecies()) {
 //			log("first species mothion");
 			int testMotionType = determineMotionType(noteMelody, testInterval);
-			ArrayList<Integer> motions = noteMelody.getMotions();
+			List<Integer> motions = noteMelody.getMotions();
 			if(motions.size()>2) {
 //				log("motions are:" + motions.toString());
 				//test for 3 intervals of same motion type. 

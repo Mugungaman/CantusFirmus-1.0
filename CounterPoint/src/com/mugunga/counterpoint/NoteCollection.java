@@ -1,11 +1,12 @@
 package com.mugunga.counterpoint;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public abstract class NoteCollection implements Iterable<Note> {
 	
-	protected ArrayList<Note> notes = new ArrayList<Note>();
+	protected List<Note> notes = new ArrayList<>();
 	
 	public NoteCollection() {
 		
@@ -71,12 +72,12 @@ public abstract class NoteCollection implements Iterable<Note> {
 		this.notes.addAll(notes.getAllNotes());
 	}
 	
-	public ArrayList<Note> getAllNotes() {
+	public List<Note> getAllNotes() {
 		return notes;
 	}
 	
-	public ArrayList<Integer> getAll() {
-		ArrayList<Integer> getNotes = new ArrayList<Integer>();
+	public List<Integer> getAll() {
+		List<Integer> getNotes = new ArrayList<>();
 		for(Note note : notes) {
 			getNotes.add(note.index());
 		}

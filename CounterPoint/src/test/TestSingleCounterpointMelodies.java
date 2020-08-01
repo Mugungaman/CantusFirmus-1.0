@@ -203,6 +203,17 @@ class TestSingleCounterpointMelodies {
 		
 	}
 	
+	@Test
+	void firstSpeciesContainsTest003() {
+		FuxianCounterPointSingleMelodyTest cpt = new FuxianCounterPointSingleMelodyTest();
+		int[] testCFMelody =   {0, 7, 6, 8, 7, 8, 9, 2, 3, 4, 3, 1, 0}; 
+		cpt.setTestCantusFirmus(testCFMelody);
+		cpt.setMode(Mode.AEOLIAN);
+		cpt.testMelody();
+		assertTrue(cpt.validCantusFirmus());
+		int[] test1SMelody  =  {0, -2, -1, -3, 0, -1, -2, -3, -4, -1, -2, -1, 0};  
+		assertTrue(cpt.firstSpeciesIncludes(test1SMelody));
+		
+	}
 	
-
 }

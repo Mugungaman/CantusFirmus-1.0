@@ -2,6 +2,7 @@ package com.mugunga.counterpoint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 /**
  * 
@@ -451,11 +452,11 @@ public class SpeciesBuilder {
 		return noteMelody;
 	}
 
-	public ArrayList<Integer> getValidNextIndexes() {
+	public List<Integer> getValidNextIndexes() {
 		return validNextIndexes.getAll();
 	}
 	
-	public ArrayList<Integer>getValidNextIndexesRandomized() {
+	public List<Integer>getValidNextIndexesRandomized() {
 		return validNextIndexes.getRandomized();
 	}
 	
@@ -997,7 +998,7 @@ public class SpeciesBuilder {
 	private void pruneForUpperLowerVoice() {
 		if(isFirstSpecies()) {
 			for(int i = 1; i <= noteMelody.getParentMelody().size(); i++) {
-				ArrayList<Integer> currIdxList = validIndexesMap.get(i).getAll();
+				List<Integer> currIdxList = validIndexesMap.get(i).getAll();
 				for (int j = currIdxList.size() - 1; j >= 0	; j--) {
 					if(noteMelody.isUpperVoice() && 
 							noteMelody.getParentMelody().get(i) > currIdxList.get(j)) {
@@ -1047,11 +1048,11 @@ public class SpeciesBuilder {
 		return false;
 	}
 
-	public ArrayList<Integer> getNextValidIndexArray() {
+	public List<Integer> getNextValidIndexArray() {
 		return validIndexesMap.get(noteMelody.size() + 1).getAll();
 	}
 
-	public ArrayList<Integer> getNextValidIndexArrayRandomized() {
+	public List<Integer> getNextValidIndexArrayRandomized() {
 //		log("notes:" + melodyInProgress.getAll().toString());
 		if(null == noteMelody) {
 			log("notes are null");
