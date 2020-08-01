@@ -7,6 +7,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.List;
+
+import com.mugunga.utils.JChops;
 /**
  * This class should receive the parameters needed to create the melody. It needs to know whether
  * we are using Fuxian Counterpoint or some other SpeciesSystem, as well as the mode or any 
@@ -42,7 +45,7 @@ public class CounterPointRunner {
 	private boolean test1S = false;
 	private boolean run1S = true;
 	private int cfW1s = 0;
-	private ArrayList <CantusFirmus> generatedCantusFirmi = new ArrayList<CantusFirmus>();
+	private List <CantusFirmus> generatedCantusFirmi = new ArrayList<>();
 	
 	public CounterPointRunner() {		
 		
@@ -63,7 +66,7 @@ public class CounterPointRunner {
 		stats.logStartTime();
 		stats.setMode(mode);
 		SpeciesBuilder patientZero = new SpeciesBuilder(mode, speciesType, testBaseMelody);
-		ArrayList<SpeciesBuilder> buildChain = new ArrayList<SpeciesBuilder>();
+		List<SpeciesBuilder> buildChain = new ArrayList<>();
 		buildChain.add(patientZero);
 
 		for(int i: patientZero.getNextValidIndexArrayRandomized()) {
@@ -81,10 +84,10 @@ public class CounterPointRunner {
 		closeOutputFiles();
 	}
 	
-	private void recursiveMelodySequencer(ArrayList<SpeciesBuilder> buildChain) {
+	private void recursiveMelodySequencer(List<SpeciesBuilder> buildChain) {
 		
 		SpeciesBuilder currentCFB = buildChain.get(buildChain.size()-1);
-		ArrayList<Integer> nextValidIndexes = currentCFB.getNextValidIndexArrayRandomized();
+		List<Integer> nextValidIndexes = currentCFB.getNextValidIndexArrayRandomized();
 
 		for (int i : nextValidIndexes) {
 			//log("Current cf: " + currentCFB.getNotes().toString() + " current testIndex: " + i);
@@ -281,6 +284,16 @@ public class CounterPointRunner {
 	public int getFirstBaseMelodyFirstSpeciesCount() {
 		log("1S count: " + generatedCantusFirmi.get(0).getfirstSpeciesCount());
 		return generatedCantusFirmi.get(0).getfirstSpeciesCount();
+	}
+
+	public boolean firstSpeciesIncludes(int[] test1sMelody) {
+		List<FirstSpecies> list = generatedCantusFirmi.get(0).getFirstSpeciesList();
+		for(FirstSpecies fs : list) {
+			if(JChops.compare(test1sMelody, fs.getAll())){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

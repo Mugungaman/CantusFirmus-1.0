@@ -1,9 +1,9 @@
 package com.mugunga.counterpoint;
-import java.util.ArrayList;
+import java.util.List;
 
 public class StepIndexCollection extends MusicIntCollection {
 	
-	public StepIndexCollection (ArrayList<Integer> steps) {
+	public StepIndexCollection (List<Integer> steps) {
 		for(int i : steps) {
 			this.items.add(i);
 		}

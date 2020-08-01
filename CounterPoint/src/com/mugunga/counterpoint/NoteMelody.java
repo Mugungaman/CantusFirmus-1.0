@@ -17,11 +17,11 @@ public abstract class NoteMelody extends NoteCollection {
 	public boolean raisedLeadingTone;
 	private int minNadirIndex;
 	private int maxZenithIndex;
-	private List<Integer> validZenithIndexes = new ArrayList<Integer>();
-	private List<Integer> validNadirIndexes = new ArrayList<Integer>();
+	private List<Integer> validZenithIndexes = new ArrayList<>();
+	private List<Integer> validNadirIndexes = new ArrayList<>();
 	private StepIndexCollection stepIndexes = new StepIndexCollection();
-	private ArrayList<Integer> motions = new ArrayList<Integer>();
-	private ArrayList<Integer> downBeats = new ArrayList<Integer>();
+	private List<Integer> motions = new ArrayList<>();
+	private List<Integer> downBeats = new ArrayList<>();
 	protected NoteMelody parentNoteMelody;
 	private TestMelody testMelody;
 	protected TestMelody testChildMelody;
@@ -155,9 +155,7 @@ public abstract class NoteMelody extends NoteCollection {
 			for(int i : rules.validNadirIndexesPrimitive) {
 				this.validNadirIndexes.add(i + getFirst());
 			}
-			
 		}
-		
 	}
 	
 	protected boolean hasParentMelody() {
@@ -360,7 +358,7 @@ public abstract class NoteMelody extends NoteCollection {
 		return raisedLeadingTone;
 	}
 	
-	public ArrayList<Integer> getMotions() {
+	public List<Integer> getMotions() {
 		return motions;
 	}
 	

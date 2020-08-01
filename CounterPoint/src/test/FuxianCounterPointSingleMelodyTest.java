@@ -1,5 +1,7 @@
 package test;
 
+import java.util.function.BooleanSupplier;
+
 import com.mugunga.counterpoint.CounterPointRunner;
 import com.mugunga.counterpoint.Mode;
 import com.mugunga.counterpoint.NoteLength;
@@ -47,5 +49,9 @@ public class FuxianCounterPointSingleMelodyTest {
 
 	public int getFirstSpeciesCountForSingleBaseMelody() {
 		return cpr.getFirstBaseMelodyFirstSpeciesCount();
+	}
+
+	public boolean firstSpeciesIncludes(int[] test1sMelody) {
+		return cpr.firstSpeciesIncludes(test1sMelody);
 	}
 }
