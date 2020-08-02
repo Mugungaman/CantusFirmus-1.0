@@ -23,6 +23,8 @@ import com.mugunga.utils.JChops;
  */
 public class CounterPointRunner {
 	
+	private boolean logging = false;
+	
 	private final  String MIDIdirectory = "MidiFiles/LoadTest/";
 	private File csvout = new File("cantiFirmi.csv");
 	private FileOutputStream csvfos = null;
@@ -38,7 +40,6 @@ public class CounterPointRunner {
 	private TestMelody testFirstSpeciesMelody;
 	private boolean speciesGenerationComplete = false;
 	//private boolean validFirstSpecies = false;
-	private int firstSpeciesCount = 0;
 	private int baseSpeciesCount = 0;
 	private int baseFailCount = 0;
 	private int targetBaseSpeciesCount;
@@ -140,7 +141,12 @@ public class CounterPointRunner {
 
 	private void runFirstSpecies(CantusFirmus cfx) {
 		cfx.setChildSpeciesTest(testFirstSpeciesMelody);
-		cfx.generateSpecies(SpeciesType.FIRST_SPECIES);				
+		cfx.generateSpecies(SpeciesType.FIRST_SPECIES);			
+		
+		log("First Species Created:************* " + cfx.getFirstSpeciesList().size());
+		for(FirstSpecies fs : cfx.getFirstSpeciesList()) {
+			log("FS : " + fs.getAll());
+		}
 		stats.tallyFirstSpecies(cfx.getFirstSpeciesList().size());
 		if(cfx.getFirstSpeciesList().size() > 0) {
 			cfW1s++;
@@ -187,11 +193,13 @@ public class CounterPointRunner {
 		return stats;
 	}
 
-	private static void log(String msg) {
-		System.out.println("CounterPointRunner Log:           " + msg);
+	private void log(String msg) {
+		if(logging) {
+			System.out.println("CounterPointRunner Log:           " + msg);
+		}
 	}
 	
-	private static void createMIDIDirectory() throws IOException {
+	private void createMIDIDirectory() throws IOException {
 		 File file = new File("MidiFiles");
 		 if (file.exists() ) {
 			 deleteFolder(file);
@@ -211,7 +219,7 @@ public class CounterPointRunner {
 		 }
 	}
 	
-	public static void deleteFolder(File file)
+	public void deleteFolder(File file)
 	    	throws IOException{
 	 
 	    	if(file.isDirectory()){
