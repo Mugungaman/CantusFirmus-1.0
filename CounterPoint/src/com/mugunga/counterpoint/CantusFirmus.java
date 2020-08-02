@@ -10,6 +10,8 @@ import org.jfugue.pattern.PatternProducer;
 
 public class CantusFirmus extends NoteMelody {
 	
+	private boolean logging = true;
+	
 	private final  String MIDIdirectory = "MidiFiles/";
 	private final MusicUtility mUtility = new MusicUtility();
 	//notes in step increment (0 = tonic, 1 = a minor second, 2 =major second, 12 = octave, etc)
@@ -41,13 +43,13 @@ public class CantusFirmus extends NoteMelody {
 				recursiveMelodySequencer(buildChain);				
 			}
 		}
+		log("First Species Count: " + firstSpeciesList.size());
 	}
 	
 	private void recursiveMelodySequencer(List<SpeciesBuilder> buildChain) {
 		
 		SpeciesBuilder currentSB = buildChain.get(buildChain.size()-1);
 		List<Integer> nextValidIndexes = currentSB.getNextValidIndexArrayRandomized();
-		
 		for (int i : nextValidIndexes) {
 			//log("Current melody: " + currentSB.getNotes().getAll()+ " current testIndex: " + i);
 			if (currentSB.testAsNextIndex(i)) {
@@ -59,7 +61,6 @@ public class CantusFirmus extends NoteMelody {
 					buildChain.add(newSB);
 					recursiveMelodySequencer(buildChain);
 				}
-			} else {
 			}
 		}
 		buildChain.remove(buildChain.size() - 1);
@@ -67,7 +68,7 @@ public class CantusFirmus extends NoteMelody {
 	
 	private void logFirstSpecies(SpeciesBuilder newCFB) {
 		firstSpeciesList.add(new FirstSpecies(newCFB.getMelody()));
-		log("First Species: " + newCFB.getMelody().getAll());
+//		log("First Species: " + newCFB.getMelody().getAll());
 		String patternString = mUtility.getMIDIString(this.getLastFirstSpecies(), getMode(), mUtility.melodyStartIndex);
 		firstSpeciesPatternStrings.add(patternString);
 		firstSpeciesMIDIPatterns.add(new Pattern(patternString));
@@ -104,7 +105,9 @@ public class CantusFirmus extends NoteMelody {
 	}
 	
 	private void log(String msg) {
-		System.out.println("CantusFirmusLog:      " + msg);
+		if(logging) {
+			System.out.println("CantusFirmusLog:      " + msg);
+		}
 	}
 
 	public void setdbID(int dbID) {

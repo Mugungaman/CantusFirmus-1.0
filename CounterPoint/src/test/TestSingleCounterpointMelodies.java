@@ -187,7 +187,7 @@ class TestSingleCounterpointMelodies {
 		cpt.setMode(Mode.AEOLIAN);
 		cpt.testMelody();
 		assertTrue(cpt.validCantusFirmus());
-		assertEquals(cpt.getFirstSpeciesCountForSingleBaseMelody(),2);
+		assertEquals(cpt.getFirstSpeciesCountForSingleBaseMelody(),5);
 	}
 	
 	@Test
@@ -212,6 +212,8 @@ class TestSingleCounterpointMelodies {
 		cpt.testMelody();
 		assertTrue(cpt.validCantusFirmus());
 		int[] test1SMelody  =  {0, -2, -1, -3, 0, -1, -2, -3, -4, -1, -2, -1, 0};  
+		assertTrue(cpt.firstSpeciesIncludes(test1SMelody));
+		test1SMelody = new int[] {0, -4, -5, -3, -2, -1, -2, 0, 1, -1, -2, -1, 0};
 		assertTrue(cpt.firstSpeciesIncludes(test1SMelody));
 		
 	}

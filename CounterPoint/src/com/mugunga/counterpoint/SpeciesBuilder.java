@@ -123,6 +123,10 @@ public class SpeciesBuilder {
 //		this.melodyInProgress = new MelodyInProgress(o.melodyInProgress);
 		this.testingAMelody = o.testingAMelody;
 		this.validIndexesMap = o.validIndexesMap;
+//		this.validIndexesMap = new HashMap<>();
+//		for(Integer i : o.validIndexesMap.keySet()) {
+//			this.validIndexesMap.put(i, o.validIndexesMap.get(i));
+//		}
 		this.lastIndex = o.lastIndex;
 		this.testIndex = o.testIndex;
 		this.testInterval = o.testInterval;
@@ -247,7 +251,7 @@ public class SpeciesBuilder {
 		if(! logCF && isCantusFirmus()) {
 			logginOn = false;
 		}
-		
+		log("valid indexes A : " + validIndexesMap.get(noteMelody.size()+1));
 		//the starting note is 0, so our Index is the # of half steps away from the starting note. 
 		this.testIndex = testIndex;
 		
@@ -303,6 +307,7 @@ public class SpeciesBuilder {
 				}
 			}
 		}
+		log("valid indexes B : " + validIndexesMap.get(noteMelody.size()+1));
 		
 		if(noteMelody.size() > 0) {
 //			log("about to check motion..");
@@ -333,7 +338,7 @@ public class SpeciesBuilder {
 				return false;
 			}
 		}
-		
+		log("valid indexes C : " + validIndexesMap.get(noteMelody.size()+1));
 //		log("about to check note repeition");
 		//make sure notes or patterns are not repeating too much within the series. 
 		if(!rules.checkNoteRepetition(testIndex, lastIndex, testInterval, noteMelody)) {
@@ -355,6 +360,7 @@ public class SpeciesBuilder {
 			return false;
 		}
 		log("Interval Check Passed");
+		log("valid indexes D : " + validIndexesMap.get(noteMelody.size()+1));
 		
 		//Two things: if melodyInProgress had pentultimate found, set that, if needs to be pentultimate,but isn't, error false. 
 		if(!rules.checkPentultimateFound(noteMelody, testIndex, testInterval)) {
@@ -397,6 +403,7 @@ public class SpeciesBuilder {
 
 	public boolean addIntervalAndCheckForCompletion(int interval) {
 		log("!!!!!!adding interval " + interval + "!!!!!");
+		log("valid indexes AA: " + validIndexesMap.get(noteMelody.size()+1));
 		int noteIndex = lastIndex + interval;
 		if(isFirstSpecies() && noteMelody.size() > 0) {
 			noteMelody.addMotion(rules.determineMotionType(noteMelody, interval));
@@ -435,15 +442,16 @@ public class SpeciesBuilder {
 				//return false;
 				//melodyInProgress.setTritoneResolutionNeeded();
 			} else {
-				log("Tritone is def needed!");
+//				TODO log("Tritone logic def needed!");
 //				log("tritone resolution form this step isn't needed, set to resolved");
 				//melodyInProgress.setTritoneResolved();			
 			}	
 		}
 		lastInterval = interval;
 		lastIndex = noteIndex;
-
+		log("valid indexes pre prune : " + validIndexesMap.get(noteMelody.size()+1));
 		pruneValidIndexArrays();
+		log("valid indexes pst prune : " + validIndexesMap.get(noteMelody.size()+1));
 //		log("About to return, am I complete?");
 		return false;
 	}
@@ -687,22 +695,23 @@ public class SpeciesBuilder {
 	
 	public void pruneValidIndexArrays() {
 		validNextIndexes = new NoteIndexCollection();
+
+		log("valid indexes from map:" + validNextIndexes);
+		
+		for(int i = noteMelody.size() + 1; i < validIndexesMap.size(); i++) {
+			log("valid indexes for step" + i + ":" + validIndexesMap.get(i));
+		}
 		
 		if(noteMelody.pruneIndexArraysForVoiceDisposition()) {
 //			log("prune the validIndex arrays for upper?" + melodyInProgress.isUpperVoice() + " lower?" + melodyInProgress.isLowerVoice() );
 			pruneForUpperLowerVoice();
 			noteMelody.indexArraysPrunedForVoiceDisposition();
+		} else {
+			for(int i : validIndexesMap.get(noteMelody.size() + 1)) {
+				validNextIndexes.add(i);
+			}
 		}
-		
-//		log("melodyInProgress size:" + melodyInProgress.size());
-		
-		
-//		for(int i : validIndexesMap.get(melodyInProgress.size() + 1)) {
-//			validNextIndexes.add(i);
-//		}
-		log("valid indexes first:" + validNextIndexes);
-		validNextIndexes = validIndexesMap.get(noteMelody.size() + 1);
-		log("valid indexes from map:" + validNextIndexes);
+		log("prune voice disp : " + validIndexesMap.get(noteMelody.size()+1));
 		
 		if(noteMelody.isTritoneResolutionNeeded()) {
 			log("Need log to prune everything that isn't a resolution of the next tritone");
@@ -739,282 +748,26 @@ public class SpeciesBuilder {
 			}
 //			log("max leap pruning?" + leapRestraintIndexes);
 			validNextIndexes = leapRestraintIndexes;
+			log("leap prune : " + validIndexesMap.get(noteMelody.size()+1));
 		}
-		
-		
-		
-		if(isSecondSpecies()) {
+
+		log("final form validNextIndexes:" + validNextIndexes);
 			
-			int lastNote = noteMelody.getLast();
-			int lastParentNote = noteMelody.getPreviousParentNote();
-			log("last Parent NOte:" + lastParentNote);
-			int nextParentDownbeat = noteMelody.getNextParentNote();
-			log("next Parent Downbeat:" + nextParentDownbeat);
-			if(nextNoteDownbeat()) {
-				log("determine indexes for next down beat from interval:" + lastInterval);
-				//NoteIndexCollection validNextHalfbeatIndexes = new NoteIndexCollection();
-				NoteIndexCollection validNextDownbeatIndexes = new NoteIndexCollection();
-				//what are next valid downbeats
-				switch(lastInterval) {
-				case 1:
-					validNextDownbeatIndexes.add(lastNote + 1);
-					addIfConsonantHarmony(lastNote - 1, nextParentDownbeat, validNextDownbeatIndexes );
-					addIfConsonantHarmony(lastNote + 2, nextParentDownbeat, validNextDownbeatIndexes );
-					break;
-				case -1:
-					validNextDownbeatIndexes.add(lastNote - 1);
-					addIfConsonantHarmony(lastNote + 1, nextParentDownbeat, validNextDownbeatIndexes );
-					addIfConsonantHarmony(lastNote - 2, nextParentDownbeat, validNextDownbeatIndexes );
-					break;
-				case 2:
-					addIfConsonantHarmony(lastNote - 1, nextParentDownbeat, validNextDownbeatIndexes );
-					addIfConsonantHarmony(lastNote + 1, nextParentDownbeat, validNextDownbeatIndexes );
-					addIfConsonantHarmony(lastNote + 2, nextParentDownbeat, validNextDownbeatIndexes );
-					addIfConsonantHarmony(lastNote + 3, nextParentDownbeat, validNextDownbeatIndexes );
-					break;
-				case -2:
-					addIfConsonantHarmony(lastNote + 1, nextParentDownbeat, validNextDownbeatIndexes );
-					addIfConsonantHarmony(lastNote - 1, nextParentDownbeat, validNextDownbeatIndexes );
-					addIfConsonantHarmony(lastNote - 2, nextParentDownbeat, validNextDownbeatIndexes );
-					addIfConsonantHarmony(lastNote - 3, nextParentDownbeat, validNextDownbeatIndexes );
-					break;
-				case 3:
-					addIfConsonantHarmony(lastNote - 1, nextParentDownbeat, validNextDownbeatIndexes );
-					addIfConsonantHarmony(lastNote + 2, nextParentDownbeat, validNextDownbeatIndexes );
-//					addIfConsonantHarmony(lastNote + 1, nextParentDownbeat, validNextDownbeatIndexes ); //TODO can we jump up a fourth then climb to the fifth?
-					break;
-				case -3:
-					addIfConsonantHarmony(lastNote + 1, nextParentDownbeat, validNextDownbeatIndexes );
-					addIfConsonantHarmony(lastNote - 2, nextParentDownbeat, validNextDownbeatIndexes );
-					break;
-				case 4:
-					addIfConsonantHarmony(lastNote - 1, nextParentDownbeat, validNextDownbeatIndexes );
-					break;
-				case -4:
-					addIfConsonantHarmony(lastNote + 1, nextParentDownbeat, validNextDownbeatIndexes );
-					break;
-				case 5:
-					addIfConsonantHarmony(lastNote - 1, nextParentDownbeat, validNextDownbeatIndexes );
-					break;
-				case -5:
-					addIfConsonantHarmony(lastNote + 1, nextParentDownbeat, validNextDownbeatIndexes );
-					break;
-				case 7:
-					addIfConsonantHarmony(lastNote - 1, nextParentDownbeat, validNextDownbeatIndexes );
-					break;
-				case -7:
-					addIfConsonantHarmony(lastNote + 1, nextParentDownbeat, validNextDownbeatIndexes );
-					break;
-				default:
-					log("unhanlded test interval in valid index pruning section!!");
-					break;
-				}
-				//TODO -> verify against validNext Indexes
-				validNextIndexes = validNextDownbeatIndexes;
-			} else {
-				log("determineing next half beat now:");
-				NoteIndexCollection validNextHalfbeatIndexes = new NoteIndexCollection();
-				for(int i : validNextIndexes) {
-					if (Math.abs(i) != 1) {
-						addIfConsonantHarmony(i, nextParentDownbeat, validNextHalfbeatIndexes);
-					} else {
-						validNextHalfbeatIndexes.addIfNotDuplicate(i);
-					}
-				}
-				validNextIndexes = validNextHalfbeatIndexes;
-			}
-			
-			log("final form validNextIndexes:" + validNextIndexes);
-			
-//			if(noteMelody.size() % 2 == 0) {
-//				for(int i : validNextIndexes) {
-//					testInterval = i - lastNote ;
-//					boolean hasValidHalfNote = false;
-//					switch(testInterval) {
-//					case 0:
-//						//check for consonant neighbor tone
-//						if(rules.isConsonantHarmony(lastNote - 1, lastParentNote)) {
-//							validNextHalfNoteIndexes.addIfNotDuplicate(lastNote-1);
-//							hasValidHalfNote = true;
-//						}
-//						if(rules.isConsonantHarmony(lastNote + 1, lastParentNote)) {
-//							validNextHalfNoteIndexes.addIfNotDuplicate(lastNote + 1);
-//							hasValidHalfNote = true;
-//						}
-//						break;
-//					case 1:
-//						if(rules.isConsonantHarmony(lastNote + 2, lastParentNote)) {
-//							validNextHalfNoteIndexes.addIfNotDuplicate(lastNote + 2);
-//							hasValidHalfNote = true;
-//						}
-//						break;
-//					case -1:
-//						if(rules.isConsonantHarmony(lastNote - 2, lastParentNote)) {
-//							validNextHalfNoteIndexes.addIfNotDuplicate(lastNote - 2);
-//							hasValidHalfNote = true;
-//						}
-//						break;
-//					case 2:
-//						//passing tone
-//						validNextHalfNoteIndexes.addIfNotDuplicate(lastNote + 1);
-//						hasValidHalfNote = true;
-//						//fourth jump
-//						if(rules.isConsonantHarmony(lastNote + 3, lastParentNote)) {
-//							validNextHalfNoteIndexes.addIfNotDuplicate(lastNote + 3);
-////							hasValidHalfNote = true;
-//						}
-//						break;
-//					case -2:
-//						//passing tone
-//						validNextHalfNoteIndexes.addIfNotDuplicate(lastNote - 1);
-//						hasValidHalfNote = true;
-//						//consonant substitution
-//						if(rules.isConsonantHarmony(lastNote - 3, lastParentNote)) {
-//							validNextHalfNoteIndexes.addIfNotDuplicate(lastNote - 3);
-////							hasValidHalfNote = true;
-//						}
-//						break;
-//					case 3:
-//						//split a fourth by a step and a 2nd
-//						if(rules.isConsonantHarmony(lastNote + 2, lastParentNote)) {
-//							validNextHalfNoteIndexes.addIfNotDuplicate(lastNote + 2);
-//							hasValidHalfNote = true;
-//						}
-//						if(rules.isConsonantHarmony(lastNote + 1, lastParentNote)) {
-//							validNextHalfNoteIndexes.addIfNotDuplicate(lastNote + 1);
-//							hasValidHalfNote = true;
-//						}
-//						if(rules.isConsonantHarmony(lastNote + 4, lastParentNote)) {
-//							validNextHalfNoteIndexes.addIfNotDuplicate(lastNote + 4);
-//							hasValidHalfNote = true;
-//						}
-//						break;
-//					case -3:
-//						//split a fourth by a step and a 2nd
-//						if(rules.isConsonantHarmony(lastNote - 2, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote - 2);
-//							hasValidHalfNote = true;
-//						}
-//						//split a fourth by a step and a 2nd
-//						if(rules.isConsonantHarmony(lastNote - 1, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote - 1);
-//							hasValidHalfNote = true;
-//						}
-//						if(rules.isConsonantHarmony(lastNote - 4, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote - 4);
-//							hasValidHalfNote = true;
-//						}
-//						break;
-//						
-//					case 4:
-//						//split a fifth jump by a half
-//						if(rules.isConsonantHarmony(lastNote + 2, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote + 2);
-//							hasValidHalfNote = true;
-//						}
-//						if(rules.isConsonantHarmony(lastNote + 5, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote + 5);
-//							hasValidHalfNote = true;
-//						}
-//						break;
-//						
-//					case -4:
-//						//split a fifth jump by a half
-//						if(rules.isConsonantHarmony(lastNote - 2, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote - 2);
-//							hasValidHalfNote = true;
-//						}
-//						if(rules.isConsonantHarmony(lastNote - 5, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote - 5);
-//							hasValidHalfNote = true;
-//						}
-//						break;
-//						
-//					case 5:
-//						//split a sixth jump by a half
-//						if(rules.isConsonantHarmony(lastNote + 2, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote + 2);
-//							hasValidHalfNote = true;
-//						}
-//						if(rules.isConsonantHarmony(lastNote + 3, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote + 3);
-//							hasValidHalfNote = true;
-//						}
-//						break;
-//					case -5:
-//						if(rules.isConsonantHarmony(lastNote - 2, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote - 2);
-//							hasValidHalfNote = true;
-//						}
-//						if(rules.isConsonantHarmony(lastNote - 3, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote - 3);
-//							hasValidHalfNote = true;
-//						}
-//						break;
-//					case 6:
-//						if(rules.isConsonantHarmony(lastNote + 7, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote +7);
-//							hasValidHalfNote = true;
-//						}
-//						break;
-//					case -6:
-//						if(rules.isConsonantHarmony(lastNote -7, lastParentNote)) {
-//							validNextHalfNoteIndexes.add(lastNote - 7);
-//							hasValidHalfNote = true;
-//						}
-//						break;
-//					case 7:
-//						//TODO -> how to traverse this?
-//						break;
-//					case -7:
-//						//TODO -> how to traverse this? 
-//						break;
-//						
-//					default:
-//						log("Unhandled Second Species Interval INVESTIGATE THIS IMMEDIATELY");
-//						break;
-//						
-//						
-//					}
-//					if(hasValidHalfNote) {
-//						validNextWholeNoteIndexes.add(i);
-//					}
-//					
-//				}
-//				
-//				validNextIndexes = validNextHalfNoteIndexes;
-//				validNextIndexesSaved = validNextWholeNoteIndexes;
-//				log("validNextIndexes are half note idexes");
-//				
-//			} else {
-//				log("else we set the valid Next Indexes Saved to true");
-//				//TODO logic to truly prune this second index. 
-//				validNextIndexes = validNextIndexesSaved;
-//			}
-		}
-		
 	}
 
 	private void pruneForUpperLowerVoice() {
 		if(isFirstSpecies()) {
-			for(int i = 1; i <= noteMelody.getParentMelody().size(); i++) {
-				List<Integer> currIdxList = validIndexesMap.get(i).getAll();
-				for (int j = currIdxList.size() - 1; j >= 0	; j--) {
-					if(noteMelody.isUpperVoice() && 
-							noteMelody.getParentMelody().get(i) > currIdxList.get(j)) {
-//						log("Pruning away " + currIdxList.get(j) + " less than CF note: " + noteMelody.getParentNote(i));
-						currIdxList.remove(j);
-					}
-					if(noteMelody.isLowerVoice() && 
-							noteMelody.getParentMelody().get(i) < currIdxList.get(j)) {
-//						log("Pruning away " + currIdxList.get(j) + " greater than CF note: " + noteMelody.getParentNote(i));
-						currIdxList.remove(j);
-					}
+			int nextIdx = noteMelody.size() + 1;
+			NoteIndexCollection toFilter = validIndexesMap.get(nextIdx);
+			for(int i : toFilter) {
+				if(noteMelody.isUpperVoice() &&
+						noteMelody.getParentMelody().get(nextIdx) < i) {
+					validNextIndexes.add(i);
+				} else if(noteMelody.isLowerVoice() && 
+						noteMelody.getParentMelody().get(nextIdx) > i) {
+					validNextIndexes.add(i);
 				}
-//			log("Pruned idx list for " + i + " is " + currIdxList.toString());
 			}
-		} else if(isSecondSpecies()) {
-			log("will prune on it's own");
 		} else {
 			log("pruning for something unhandled:" + rules.speciesType.name);
 		}
