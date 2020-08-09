@@ -1,12 +1,10 @@
 package test;
 
-import java.util.function.BooleanSupplier;
-
 import com.mugunga.counterpoint.CounterPointRunner;
-import com.mugunga.counterpoint.Mode;
-import com.mugunga.counterpoint.NoteLength;
 import com.mugunga.counterpoint.SpeciesSystem;
 import com.mugunga.counterpoint.TestMelody;
+import com.mugunga.musicmodels.Mode;
+import com.mugunga.musicmodels.NoteLength;
 /**
  * This is basically a wrapper class for single-melody testing via CounterPointRunner
  * 

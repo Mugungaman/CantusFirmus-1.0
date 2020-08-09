@@ -1,4 +1,7 @@
 package com.mugunga.counterpoint;
+
+import com.mugunga.musicmodels.NoteLength;
+
 public class TestMelody extends NoteMelody {
 
 	public TestMelody() {

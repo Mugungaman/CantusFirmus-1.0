@@ -1,6 +1,9 @@
 package com.mugunga.counterpoint;
 import java.util.ArrayList;
 
+import com.mugunga.musicmodels.Mode;
+import com.mugunga.musicmodels.Note;
+
 /**
  *  A Note Melody that is a type of Note Melody, but it tracks certain characteristics that need to be met for
  *  the melody to be complete, mostly in the form of boolean switchs that are turned on when certain conditions are 

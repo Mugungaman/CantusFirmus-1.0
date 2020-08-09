@@ -13,7 +13,7 @@ public class CantusFirmus extends NoteMelody {
 	private boolean logging = true;
 	
 	private final  String MIDIdirectory = "MidiFiles/";
-	private final MusicUtility mUtility = new MusicUtility();
+	private final CounterPointUtility mUtility = new CounterPointUtility();
 	//notes in step increment (0 = tonic, 1 = a minor second, 2 =major second, 12 = octave, etc)
 	
 	private Pattern cantusFirmusPattern;

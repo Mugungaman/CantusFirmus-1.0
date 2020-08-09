@@ -9,12 +9,13 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mugunga.utils.JChops;
+import com.mugunga.musicmodels.JChops;
+import com.mugunga.musicmodels.Mode;
 /**
  * This class should receive the parameters needed to create the melody. It needs to know whether
  * we are using Fuxian Counterpoint or some other SpeciesSystem, as well as the mode or any 
  * other pertinent information. It then creates the SpeciesBuilders and performs the recursive 
- * logic upon them to build out the music. 
+ * logic upon them to build out the music..
  * 
  * It should be able to be called by various drivers: Applications, Test Classes, etc.
  * 

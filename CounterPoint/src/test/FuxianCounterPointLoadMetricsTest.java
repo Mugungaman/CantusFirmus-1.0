@@ -2,8 +2,8 @@ package test;
 
 import com.mugunga.counterpoint.CounterPointRunner;
 import com.mugunga.counterpoint.CounterPointStats;
-import com.mugunga.counterpoint.Mode;
 import com.mugunga.counterpoint.SpeciesSystem;
+import com.mugunga.musicmodels.Mode;
 
 /**
  * This Test class is for large batch monitoring of algorithm. When running many Cantus/Firmus, metrics like 

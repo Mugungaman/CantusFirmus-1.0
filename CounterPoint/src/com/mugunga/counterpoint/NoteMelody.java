@@ -2,6 +2,12 @@ package com.mugunga.counterpoint;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mugunga.musicmodels.IntervalIndexCollection;
+import com.mugunga.musicmodels.Mode;
+import com.mugunga.musicmodels.Note;
+import com.mugunga.musicmodels.NoteCollection;
+import com.mugunga.musicmodels.StepIndexCollection;
+
 public abstract class NoteMelody extends NoteCollection {
 	
 	protected SpeciesRules rules;

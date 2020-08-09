@@ -1,5 +1,7 @@
 package com.mugunga.counterpoint;
 
+import com.mugunga.musicmodels.Mode;
+
 public class CounterPointStats {
 	
 	private long startTime;
