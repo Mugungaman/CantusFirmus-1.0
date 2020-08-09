@@ -82,9 +82,9 @@ public class CounterPointRunner {
 		stats.logStartTime();
 		stats.setMode(mode);
 		SpeciesBuilder patientZero = new SpeciesBuilder(mode, speciesType, testBaseMelody);
-//		if(strictMelodyLength) {
-//			patientZero.setMelodyLength(melodyLength);
-//		}
+		if(strictMelodyLength) {
+			patientZero.setMelodyLength(melodyLength);
+		}
 		List<SpeciesBuilder> buildChain = new ArrayList<>();
 		buildChain.add(patientZero);
 

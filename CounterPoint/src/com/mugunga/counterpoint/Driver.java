@@ -22,7 +22,7 @@ public class Driver {
 		dbHandler.setup();
 		
 		cpr = new CounterPointRunner(SpeciesSystem.FUXIAN_COUNTERPOINT,
-										Mode.AEOLIAN,
+										Mode.IONIAN,
 										9);
 		if(testCF) {
 			cpr.setTestBaseMelody(new TestMelody(testBaseMelody,NoteLength.WHOLE_NOTE));
