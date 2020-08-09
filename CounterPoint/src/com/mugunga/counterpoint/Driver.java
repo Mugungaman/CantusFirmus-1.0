@@ -1,5 +1,8 @@
 package com.mugunga.counterpoint;
 
+import com.mugunga.musicmodels.Mode;
+import com.mugunga.musicmodels.NoteLength;
+
 public class Driver {
 	
 	private static CounterPointRunner cpr;

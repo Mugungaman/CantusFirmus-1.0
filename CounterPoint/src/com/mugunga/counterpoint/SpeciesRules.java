@@ -2,6 +2,10 @@ package com.mugunga.counterpoint;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mugunga.musicmodels.Interval;
+import com.mugunga.musicmodels.IntervalIndexCollection;
+import com.mugunga.musicmodels.Mode;
+
 /**
  * This class contains all the rule checks for building the melody. SpeciesBuilder will call this class
  * many times, as it validates each index as a valid note to add to the melody. 

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.mugunga.musicmodels.Mode;
+import com.mugunga.musicmodels.NoteIndexCollection;
+import com.mugunga.musicmodels.NoteLength;
 /**
  * 
  * @author laurencemarrin

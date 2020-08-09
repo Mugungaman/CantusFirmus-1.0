@@ -1,7 +1,8 @@
 package test;
 
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import com.mugunga.counterpoint.CSVWriter;
 import com.mugunga.counterpoint.CounterPointStats;
-import com.mugunga.counterpoint.Mode;
+import com.mugunga.musicmodels.Mode;
 
 
 class TestCounterpointLoadMetric {
