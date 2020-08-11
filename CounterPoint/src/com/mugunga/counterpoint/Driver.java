@@ -4,7 +4,13 @@ import com.mugunga.musicmodels.Mode;
 import com.mugunga.musicmodels.NoteLength;
 
 /** 
- *Create a CounterPointRunner instance, configure the run settings, and generate Classical Music. 
+ * Create a CounterPointRunner instance, configure the run settings, and generate Classical Music. 
+ *
+ * Setting the base species count limits the number of melodies generated so the algorithm doens't run 
+ * indefinitely
+ *
+ * Setting storeMelodies to 'true' will store the melodies in the relational database inaddition to outputting to 
+ * MIDI
  * 
  * @author laurencemarrin
  *
@@ -29,7 +35,7 @@ public class Driver {
 		if(testCF) {
 			cpr.setTestBaseMelody(new TestMelody(testBaseMelody, NoteLength.WHOLE_NOTE));
 		} else {
-			cpr.setTargetBaseSpeciesCount(200);
+			cpr.setTargetBaseSpeciesCount(50);
 		}
 		if(test1S) {
 			cpr.setTestFirstSpeciesMelody(new TestMelody(test1SMelody,NoteLength.WHOLE_NOTE));

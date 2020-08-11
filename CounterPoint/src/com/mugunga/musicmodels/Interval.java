@@ -1,5 +1,11 @@
 package com.mugunga.musicmodels;
-
+/**
+ * In music theory, an interval is the number of steps between two notes. These intervals are used to 
+ * describe music, most importantly, to stack on top of each other to construct chords. 
+ * 
+ * @author laurencemarrin
+ *
+ */
 public enum Interval {
 	UNISON(0, 0),
 	MINOR_2ND(1, 1),
@@ -20,12 +26,20 @@ public enum Interval {
 	
 	public final int steps;
 	public final int modeIndex;
-	
+	/**
+	 * Enum constructor
+	 * @param steps
+	 * @param modeIndex
+	 */
 	Interval(int steps, int modeIndex) {
 		this.steps = steps;
 		this.modeIndex = modeIndex;
 	}
-	
+	/**
+	 * Given a number of steps, return the type of interval those steps spanned
+	 * @param steps
+	 * @return
+	 */
 	public static Interval getInterval(int steps) {
 		for(Interval i : Interval.values()) {
 			if(steps == i.steps) {

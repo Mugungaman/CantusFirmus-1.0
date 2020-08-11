@@ -96,7 +96,7 @@ public class CounterPointRunner {
 		}
 		
 		stats.logEndTime();
-		stats.setBaseMeldies(baseSpeciesCount);
+		stats.setBaseMelodies(baseSpeciesCount);
 		stats.setBaseFailCount(baseFailCount);
 		//stats.logStats();
 		closeOutputFiles();

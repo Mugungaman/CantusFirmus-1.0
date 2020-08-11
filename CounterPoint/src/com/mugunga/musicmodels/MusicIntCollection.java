@@ -3,7 +3,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
+/**
+ * A collection of integers representing musical notes. When a melody is being built, the melody class
+ * will imply that the order of these notes is important. However, sometimes the list of notes is not ordered, 
+ * for example, when it is being used as a list of the next valid notes in a melody. 
+ * 
+ * @author laurencemarrin
+ *
+ */
 public abstract class MusicIntCollection implements Iterable<Integer> {
 	public List<Integer> items = new ArrayList<>();
 	
@@ -68,25 +75,27 @@ public abstract class MusicIntCollection implements Iterable<Integer> {
 		return items.toString();
 	}
 	
-	//randomizes the notes and returns them but does not randomize the actual object's notes
+	/**
+	 * Sometimes the notes need to be randomized so that the algorithm has an element of surprise and randomness
+	 * when choosing the next note to build off of. Otherwise, it would build the exact same melodies in the 
+	 * same order every time. 
+	 * 
+	 * @return a randomized version of itself without altering the original 
+	 */
 	public List<Integer> getRandomized() {
 		
 		List<Integer> reduceList = new ArrayList<>();
 		List<Integer> randomizedSteps = new ArrayList<>();
 		if(items.size() > 0) {
 			Random random = new Random();
-//		log("reduceList:" + reduceList);
 			for(int i : items) {
 				reduceList.add(i);
 			}
-//		log("reduceList:" + reduceList);
 			do {
 				int randomIndex = random.nextInt(reduceList.size());
 				randomizedSteps.add(reduceList.get(randomIndex));
 				reduceList.remove(randomIndex);
 			} while(reduceList.size() > 0);
-//		log(" PRE RANDOMIZED notes:" + this.items);
-//		log(" PST RANDOMIZED notes:" + randomizedSteps);
 		}
 		
 		return randomizedSteps;
