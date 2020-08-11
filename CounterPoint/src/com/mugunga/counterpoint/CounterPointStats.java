@@ -1,7 +1,18 @@
 package com.mugunga.counterpoint;
 
 import com.mugunga.musicmodels.Mode;
-
+/**
+ * CounterPointStats helps track various metrics related to the Cantus Firmus algorithm. The metrics can tie into
+ * unit testing and ensure code changes do not drastically alter the results, or if they do, give cause for 
+ * investigation.
+ * 
+ * Once the algorithm starts receiving social feedback, the stats can be regressed against the social feedback
+ * to determine which types of melodies are more pleasing, and then used to bias the algorithm towards making better
+ * and better melodies. 
+ * 
+ * @author laurencemarrin
+ *
+ */
 public class CounterPointStats {
 	
 	private long startTime;
@@ -10,7 +21,9 @@ public class CounterPointStats {
 	private int baseFailCount;
 	private int totalFirstSpeciesMelodies;
 	private Mode mode;
-	
+	/**
+	 * Class constructor
+	 */
 	public CounterPointStats() {
 		totalBaseMelodies = 0;
 		totalFirstSpeciesMelodies = 0;
@@ -23,7 +36,10 @@ public class CounterPointStats {
 	public void logEndTime() {
 		this.endTime = System.currentTimeMillis();
 	}
-	
+	/**
+	 * What is the average # of counter melodies found per base melody. 
+	 * @return
+	 */
 	public double firstSpeciesperBaseSpecies() {
 		return (double)totalFirstSpeciesMelodies/(double)totalBaseMelodies;
 	}
@@ -40,10 +56,10 @@ public class CounterPointStats {
 		totalFirstSpeciesMelodies += firstSpecies; 
 	}
 	
-	public void setBaseMeldies(int baseMelodies) {
+	public void setBaseMelodies(int baseMelodies) {
 		totalBaseMelodies += baseMelodies; 
 	}
-
+	
 	public void logStats() {
 		long totalTime = endTime-startTime;
 		log("totalTime:" + totalTime);
@@ -61,7 +77,10 @@ public class CounterPointStats {
 	public void setBaseFailCount(int baseFailCount) {
 		this.baseFailCount = baseFailCount;
 	}
-
+	/**
+	 * Ratio of base melodies that actually successfully find counter melodies
+	 * @return
+	 */
 	public double baseSpeciesSuccessRate() {
 		return (double)totalBaseMelodies/(double)baseFailCount;
 	}

@@ -1,5 +1,11 @@
 package com.mugunga.musicmodels;
-
+/**
+ * Whereas the enum ChordType is the theoretical representation of a chord, the Chord class is a real applicable
+ * instance of a chord. Once a Key is applied to a ChordType, the actual notes can be determined. 
+ * 
+ * @author laurencemarrin
+ *
+ */
 public class Chord {
 	private ChordType type;
 	private Key baseKey;

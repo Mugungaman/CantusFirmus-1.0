@@ -1,5 +1,12 @@
 package com.mugunga.counterpoint;
-
+/**
+ * A Species System defines the entire paradigm of melodic structure. For example, Fuxian Counterpoint is the 
+ * set of rules set forth by composer Johann Joseph Fux. This can be thought of as global constraints for a given
+ * collection of Species Types while constructing melodies. 
+ *  
+ * @author laurencemarrin
+ *
+ */
 public enum SpeciesSystem {
 	
 	FUXIAN_COUNTERPOINT ( 9, //minimum # of measures in a parent melody 

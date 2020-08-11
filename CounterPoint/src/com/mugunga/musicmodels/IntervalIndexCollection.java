@@ -1,11 +1,9 @@
 package com.mugunga.musicmodels;
-import java.util.ArrayList;
+import java.util.List;
 
 public class IntervalIndexCollection extends MusicIntCollection  {
-	//ArrayList<Integer> intervals = new ArrayList<Integer>();
 	
-	public IntervalIndexCollection (ArrayList<Integer> intervals) {
-		//addAll(intervals)
+	public IntervalIndexCollection (List<Integer> intervals) {
 		for(int i : intervals) {
 			this.items.add(i);
 		}

@@ -1,5 +1,9 @@
 package com.mugunga.musicmodels;
-
+/**
+ * A Mode represents a musical scale. 
+ * @author laurencemarrin
+ *
+ */
 public enum Mode {
 	IONIAN(new int[] {0, 2, 4, 5, 7, 9, 11, 12}, "IONIAN",1), //-> tested
 	DORIAN(new int[] {0, 2, 3, 5, 7, 9, 10, 12},"DORIAN",2 ),
@@ -13,7 +17,12 @@ public enum Mode {
 	final public int[] notes;
 	final public String modeName;
 	final public int modeID;
-	
+	/**
+	 * Enum constructor
+	 * @param notes
+	 * @param modeName
+	 * @param modeID
+	 */
 	Mode(int[] notes, String modeName, int modeID) {
 		this.notes = notes;
 		this.modeName = modeName;

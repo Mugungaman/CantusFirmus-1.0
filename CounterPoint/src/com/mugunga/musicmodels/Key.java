@@ -1,6 +1,14 @@
 package com.mugunga.musicmodels;
 
-
+/**
+ * A Key is the name of a note. The black notes on a piano can have two different names, depending
+ * which scale you are using, and we address that here.
+ * 
+ * In MIDI, 0 represents C, so other notes are built off that. 
+ * 
+ * @author laurencemarrin
+ *
+ */
 public enum Key {
 	C("C", 0),
 	Cs("C#", 1),
@@ -23,7 +31,11 @@ public enum Key {
 	
 	final String name;
 	final int relativeIndex;
-	
+	/**
+	 * Enum constructor
+	 * @param name
+	 * @param relativeIndex
+	 */
 	Key(String name, int relativeIndex) {
 		this.name= name;
 		this.relativeIndex = relativeIndex;

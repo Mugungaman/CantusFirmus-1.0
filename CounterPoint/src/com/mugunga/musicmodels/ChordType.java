@@ -1,13 +1,18 @@
 package com.mugunga.musicmodels;
 
 import java.util.ArrayList;
-import com.mugunga.counterpoint.*;
+import java.util.List;
 
 /**
+ * A musical Chord is composed of several different notes, and its quality and emotion evoked is 
+ * determined by the intervals between the notes. This enum stores all the information to construct a type of chord:
+ * the name and the musical intervals between notes. 
  * 
  * @author laurencemarrin
  *
- *Step reference:
+ * A step is the interval between notes. 
+ *
+ * Step reference:
  *     1   -> minor 2nd
  *     2  -> major 2nd
  *     3   -> minor 3rd
@@ -69,6 +74,13 @@ public enum ChordType {
 	public final Interval[] intervals;
 	public final int[] firstInversionSteps;
 	
+	/**
+	 * Enum constructor
+	 * @param longDisplay
+	 * @param shortDisplay
+	 * @param intervals
+	 * @param i
+	 */
 	ChordType(String longDisplay,
 			String shortDisplay,
 			Interval[] intervals, 
@@ -80,27 +92,34 @@ public enum ChordType {
 		this.firstInversionSteps = i;
 	}
 	
+	/**
+	 * Blank constructor
+	 */
 	ChordType() {
 		longDisplay = "";
 		shortDisplay = "";
 		firstInversionSteps = null;
 		intervals = null;
 	}
-	
+	/**
+	 * Returns the numeric indexes of the notes in the chord
+	 * @return
+	 */
 	public StepIndexCollection getChord() {
-		StepIndexCollection  chordSteps = new StepIndexCollection();
+		StepIndexCollection chordSteps = new StepIndexCollection();
 		chordSteps.add(0);
 		for(Interval i : intervals) {
-//			int nextInterval = chordSteps.sum() + i.steps;
 			chordSteps.appendInterval(i);
-//			chordSteps.add(chordSteps.getLast() + i.steps);
-//			log("chordSteps:" + chordSteps.toString());
 		}
 		return chordSteps;
 	}
-	
+	/**
+	 * Return numeric indexes of the notes for a given inversion
+	 * @param inversionType
+	 * @return
+	 */
 	public StepIndexCollection getSteps(int inversionType) {
-		ArrayList<Interval> invertedIntervals = invertedIntervals(inversionType);
+		List<Interval> invertedIntervals = invertedIntervals(inversionType);
 		StepIndexCollection  chordSteps = new StepIndexCollection();
 		if(intervals.length < inversionType) {
 			return chordSteps;
@@ -118,9 +137,13 @@ public enum ChordType {
 		log("Chord:" + longDisplay);
 		
 	}
-	
-	public ArrayList<Interval> invertedIntervals(int inversion) {
-		ArrayList<Interval> invertedIntervals = new ArrayList<Interval>();
+	/**
+	 * For a given chord inversion, the intervals are reordered.
+	 * @param inversion
+	 * @return
+	 */
+	public List<Interval> invertedIntervals(int inversion) {
+		List<Interval> invertedIntervals = new ArrayList<>();
 		if(intervals.length  < inversion) {
 			return new ArrayList<Interval>();
 		}
@@ -135,23 +158,30 @@ public enum ChordType {
 			invertedIntervals.add(interval);
 			accum += interval.steps;
 			
-			
-			
 			for(int i = 0; i < inversion - 1; i++) {
 				invertedIntervals.add(intervals[i]);
 				accum += intervals[i].steps;
 			}
-			
 		}
-		
 		return invertedIntervals;
 	}
 	
+	/**
+	 * When flipping a chord, a final interval is uncovered. For example, a Major Chord generally consists of a 
+	 * Major third (C->E) followed by a  Minor Third (E -> G). In the First inversion, the notes are reordered to be
+	 * (E->G->C). Now the minor third is on the bottom (E->G) and we have a new interval G->C, which we must determine 
+	 * and return.
+	 * 
+	 * @return
+	 */
 	private Interval lastHiddenInterval() {
-//		log("Last HIdden INterval: 12-" + sumIntervals());
 		return Interval.getInterval(12-sumIntervals());
 	}
-
+	
+	/**
+	 * The sum of intervals is the total steps spanned by the chord
+	 * @return
+	 */
 	public int sumIntervals() {
 		int sum = 0;
 		for(Interval i : intervals) {
@@ -177,9 +207,13 @@ public enum ChordType {
 		}
 		
 	}
-
+	/**
+	 * Get the inverted steps of a given inversion
+	 * @param i
+	 * @return
+	 */
 	private StepIndexCollection inversionSteps(int i) {
-		ArrayList<Interval> invertedIntervals = invertedIntervals(i);
+		List<Interval> invertedIntervals = invertedIntervals(i);
 		log("inverted Intervals..." + invertedIntervals);
 		return null;
 	}
